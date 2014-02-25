@@ -104,7 +104,7 @@
 			
 			<div class="row">
 				
-				<!--************************************** LIST VIEW ***************************************************************** -->
+				<!--************************************** LIST VIEW ******************************************************************-->
 				<div class="col-md-8" ng-hide="gridMode">
 					<div class="panel panel-default">
 						<div class="panel-heading">
@@ -118,7 +118,7 @@
 										{{folder.name}}
 									</input>
 								</div>
-								<div ng-hide="notAdded" ng-repeat="file in currentFolder.fileList" ng-show="root">
+								<div ng-hide="notAdded" ng-repeat="file in currentFolder.fileList">
 									<input type="image" src="img/fileList.png" ng-click="showListPreview(file)">
 										{{file.name}}
 									</input>
@@ -148,17 +148,20 @@
 							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="folder in currentFolder.folderList">
 								<input type="image" src="img/cleaar.png" ng-click="deleteFolder($index)" />
 								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)">
-								<input type="checkbox" ng-show="editing" ng-model="folder.checked"/>
-								<div ng-show="showFont && !editing" ng-style="font">{{folder.name}}</div>
-								<span id="tb_cont" ng-show="showFont && editing">
-									<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click="folder.name = '';clearName($index)" ><img src="img/cleaar.png"/></span></input>
-								</span>
+									<input type="checkbox" ng-show="editing" ng-model="folder.checked"/>
+									<div ng-show="showFont && !editing" ng-style="font">{{folder.name}}</div>
+									<span id="tb_cont" ng-show="showFont && editing">
+										<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click="folder.name = '';clearName($index)" ><img src="img/cleaar.png"/></span></input>
+									</span>
 								</input>
 							</div>
 							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="file in currentFolder.fileList">
 								<input type="image" src="img/cleaar.png" ng-click="deleteFile($index)" />
 								<div id="{{'thumb-'+$index}}" class="thumb" ng-show="showThumb"></div>
-								<input type="image" ng-src="img/file.png" ng-hide="showThumb"><input type="checkbox" ng-show="editing"/><div ng-show="showFont" ng-style="font">{{file.name}}</div></input>
+								<input type="image" ng-src="{{file.img}}" ng-hide="showThumb">
+									<input type="checkbox" ng-show="editing" ng-model="file.checked"/>
+									<div ng-show="showFont" ng-style="font">{{file.name}}</div>
+								</input>
 							</div>
 							<div ng-class="colStyle">
 								<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="notAdded" id="dnd"/>	
@@ -179,7 +182,7 @@
 						<!-- Settings body-->
 						<div class="panel-body" ng-show="editing">
 							<!-- Standard Settings -->
-							<div class="firstSetting" ng-hide="underMenu0 || underMenu || underMenu2 || underMenu3 || underMenu4">
+							<div class="firstSetting" ng-hide="underMenu0 || underMenu || underMenu2 || underMenu3 || underMenu4 || underMenu5">
 								Scrolling:
 								<input type="checkbox" name="scrollingBox" id="scrollingBox" data-on-color="default" data-off-color="default" data-on-text="<span class='glyphicon glyphicon-resize-vertical'></span>" data-off-text="<span class='glyphicon glyphicon-resize-horizontal'></span>">
 								<p>
@@ -211,10 +214,14 @@
 											
 											{{nrOfFolders}}
 											
-											<button type="button" class="btn btn-default" ng-click="addNrOfFolders()">+</button>
+											<button type="button" class="btn btn-default" ng-click="addFolders()">+</button>
 										</p>
 										<p>
 											Folder icon: <input type="image" src="img/folder.png" ng-click="folderIconMenu()"></input>
+										</p>
+										
+										<p>
+											File icon: <input type="image" src="img/file.png" ng-click="fileIconMenu()"></input>
 										</p>
 										
 										<p>
@@ -285,6 +292,17 @@
 							</div>
 							<!-- --------------------- -->
 							
+							<!-- File icon settings -->
+							<div class="chooseFileIcon" ng-show="underMenu5">
+								<p>File icon</p>
+								<ul>
+									<li><input type="image" src="img/file.png" ng-click="changeFileIcon(1)">Standard</input></li>
+									<li><input type="image" src="img/picFile.png" ng-click="changeFileIcon(2)">Picture File</input></li>
+									<li><input type="image" src="img/pdfFile.jpg" ng-click="changeFileIcon(3)">PDF File</input></li>
+								</ul>
+							</div>
+							<!-- --------------------- -->
+							
 							<!-- Font settings -->
 							<div class="chooseFont" ng-show="underMenu3">
 								<p>Choose font:</p>
@@ -327,7 +345,7 @@
 						</div>
 						<div class="modal-body">
 							<ul>
-								<li><input type="image" src="img/addFolder.jpg" data-dismiss="modal" ng-click="addFolder()">Add Folders</input></li>
+								<li><input type="image" src="img/addFolder.jpg" data-dismiss="modal" ng-click="add()">Add Folders</input></li>
 								
 								<li><input type="image" data-toggle="modal" href="#addDropbox" src="img/dropbox.jpg" data-dismiss="modal" ng-click="add()">Add from Dropbox</input></li>
 								
@@ -437,10 +455,6 @@
 			$('#q').focus();
 			$('#q').val('');
 		});
-		
-		// ------------------- Make plus button droppable ----------------------
-
-
 	</script>
 	</body>
 </html>
