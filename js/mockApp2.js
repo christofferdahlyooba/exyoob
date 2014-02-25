@@ -1,4 +1,6 @@
-var app = angular.module('mockApp', [])
+
+var app = angular.module('mockApp', []);
+var fileIcion = "img/file.png"
 
 app.controller('FirstController', function($scope) {
 	$scope.notAdded = true;
@@ -10,6 +12,7 @@ app.controller('FirstController', function($scope) {
 	$scope.underMenu2 = false;
 	$scope.underMenu3 = false;
 	$scope.underMenu4 = false;
+	$scope.underMenu5 = false;
 	$scope.cols = true;
 	$scope.gridMode = true;
 	$scope.viewsAllowed = "Grid & List";
@@ -30,44 +33,54 @@ app.controller('FirstController', function($scope) {
 	var folders = [];
 	
 	
-	$scope.folders = [];
 	//Set root folder to the current folder
-	//$scope.currentFolder = $scope.folders[0];
 	$scope.rootFolder = {name:'Home',fileType:'Folder',img:$scope.folderIcon,checked:false,folderList:null,fileList: null,parentFolder:null};
 	$scope.currentFolder = $scope.rootFolder;
-	$scope.nrOfFolders = $scope.folders.length;
+	$scope.nrOfFolders = folders.length;
 	
 	
 	//Enter a folder
 	$scope.enter = function(folder) {
+		//Clear earlier folders and reset nrOfFolders
 		folders = [];
 		$scope.nrOfFolders = 0;
 		$scope.dir = folder.name;
+		//Set the currentFolder to be the entered folder
 		$scope.currentFolder = folder;
-		console.log($scope.currentFolder);
-		console.log($scope.rootFolder);
+		//console.log($scope.currentFolder.fileList);
+		if($scope.currentFolder.fileList !== null)
+		{
+			showThumbnail($scope.currentFolder.fileList);
+		}
+		//console.log($scope.currentFolder);
+		//console.log($scope.rootFolder);
 		if($scope.dir !== "Home")
 		{
 			$scope.root = false;
 		}
-		if($scope.currentFolder.fileList !== null)
-		{
-			$scope.showThumbnail();
-		}
-		
+		console.log("Entered: ");
+		console.log($scope.currentFolder);
 	};
 	
 	
 	$scope.goBack = function() {
+		folders = $scope.currentFolder.folderList;
+		$scope.nrOfFolders = folders.length;
 		if($scope.currentFolder.name !== 'Home')
 		{
 			$scope.currentFolder = $scope.currentFolder.parentFolder;
 			$scope.dir = $scope.currentFolder.name;
 		}
-		if($scope.currentFolder.fileList !== null)
+		else
 		{
-			$scope.showThumbnail();
+			$scope.currentFolder = $scope.rootFolder;
 		}
+		console.log("Went back to: ");
+		console.log($scope.currentFolder);
+		// if($scope.currentFolder.fileList !== null)
+		// {
+			// showThumbnail($scope.currentFolder.filesList);
+		// }
 	};
 	
 	
@@ -85,14 +98,10 @@ app.controller('FirstController', function($scope) {
 		//$scope.add();
 	};
 
-	//Add files to the current folder
+	//Add files or folders to the current folder
 	$scope.add = function() {
 		$scope.notAdded=false; 
 		$scope.editing = true;
-		var fileList = new Array(); 
-		fileList = $scope.fileList;
-		$scope.currentFolder.fileList = fileList; 
-		console.log($scope.currentFolder.fileList);
 	} 
 	
 	$scope.viewMenu = function() {$scope.underMenu0=true;}
@@ -129,8 +138,6 @@ app.controller('FirstController', function($scope) {
 	
 	$scope.bgMenu = function() {$scope.underMenu=true;}
 	
-	$scope.folderIconMenu = function() {$scope.underMenu2=true;}
-	
 	$scope.fontMenu = function() {$scope.underMenu3=true;}
 	
 	$scope.fontColorMenu = function() {$scope.underMenu4=true;}
@@ -145,6 +152,7 @@ app.controller('FirstController', function($scope) {
 		$scope.font = {'font-size':$scope.fontSize+'pt','font-family':$scope.fontText,'color':$scope.fontColor};
 	}
 	
+	$scope.folderIconMenu = function() {$scope.underMenu2=true;}
 	$scope.changeFolderIcon = function(i) {
 		$scope.underMenu2=false;
 		if(i === 1)
@@ -160,11 +168,38 @@ app.controller('FirstController', function($scope) {
 			$scope.folderIcon = 'img/musicFolder.png';
 		}
 		
-		for(var j=0;j<$scope.folders.length;j++)
+		for(var j=0;j<folders.length;j++)
 		{
-			if($scope.folders[j].checked)
+			if(folders[j].checked)
 			{
-				$scope.folders[j].img = $scope.folderIcon;
+				folders[j].img = $scope.folderIcon;
+			}	
+		}
+	};
+	
+	$scope.fileIconMenu = function() {$scope.underMenu5=true;}
+	$scope.changeFileIcon = function(i) {
+		$scope.underMenu5=false;
+		if(i === 1)
+		{
+			fileIcon = 'img/file.png';
+		}
+		else if(i === 2)
+		{
+			fileIcon = 'img/picFile.png';
+		}
+		else if(i === 3)
+		{
+			fileIcon = 'img/pdfFile.jpg';
+		}
+		
+		for(var j=0;j<$scope.currentFolder.fileList.length;j++)
+		{
+			if($scope.currentFolder.fileList[j].checked)
+			{
+				console.log("Nåt är checkat yao!");
+				$scope.currentFolder.fileList[j].img = fileIcon;
+				console.log(fileIcon);
 			}	
 		}
 	};
@@ -198,11 +233,7 @@ app.controller('FirstController', function($scope) {
 			$scope.bgImage = {'background-image':'url(img/sky.jpg)'};
 		}
 	};
-	
-	
-	$scope.addFolder = function() {
-		$scope.add();
-	}
+
 	$scope.addRow = function() {
 		$scope.nrOfRows++;
 	}
@@ -241,19 +272,31 @@ app.controller('FirstController', function($scope) {
 	
 	
 	//Add a new folder
-	$scope.addNrOfFolders = function() {
+	$scope.addFolders = function() {
 		var folder = new Object();
-		folder.name = "Folder"+($scope.nrOfFolders+1);
+		//Adds  _1, _2, _3 etc to the folder name if it's a subfolder
+		if($scope.currentFolder.name === 'Home')
+		{
+			folder.name = "Folder"+($scope.nrOfFolders+1);
+		}
+		else
+		{
+			folder.name = $scope.currentFolder.name+"_"+($scope.nrOfFolders+1);
+		}
+		
+		//Set all the attributes to the new folder
 		folder.fileType = "Folder";
 		folder.img = $scope.folderIcon;
 		folder.checked = false;
 		folder.folderList = null;
 		folder.fileList = null;
+		//Set the current folder to be the parent folder of the new folder
 		folder.parentFolder = $scope.currentFolder;
-		//$scope.folders.push(folder); 
+		//Adds the new folder to the folders array
 		folders.push(folder);
+		//Updates the number of folders
 		$scope.nrOfFolders = folders.length;
-		//$scope.currentFolder.folderList = $scope.folders;
+		//Updates the folderList of the currentFolder
 		$scope.currentFolder.folderList = folders;
 	}
 	
@@ -265,17 +308,9 @@ app.controller('FirstController', function($scope) {
 		folder.checked = false;
 		folder.folderList = null;
 		folder.fileList = null;
-		$scope.folders.push(folder)
-		$scope.nrOfFolders = $scope.folders.length;
-		$scope.currentFolder.folderList = $scope.folders;
-	}
-	
-	$scope.addDBFile = function(folderName) {
-		var folder = new Object();
-		folder.name = folderName;
-		folder.fileType = "PDF";
-		$scope.folders.push(folder)
-		$scope.nrOfFolders = $scope.folders.length;
+		folders.push(folder)
+		$scope.nrOfFolders = folders.length;
+		$scope.currentFolder.folderList = folders;
 	}
 	
 	$scope.minusFolder = function() {
@@ -330,10 +365,11 @@ app.controller('FirstController', function($scope) {
 			ctx.drawImage(image,100,100)
 		}
 	}
-	
-	document.getElementById('files').addEventListener('change', handleFileSelect, false);
-	
-	// ------------------- Make plus button droppable ----------------------
+});
+		fileIcon = "img/file.png";
+		document.getElementById('files').addEventListener('change', handleFileSelect, false);
+		
+		
 		var fileDiv = document.getElementById("dnd");
 		fileDiv.addEventListener("dragenter",function(e){
 			e.stopPropagation();
@@ -360,46 +396,57 @@ app.controller('FirstController', function($scope) {
 					fileArr.push(f);
 			}
 		  
-			// var scope = angular.element($("#ng")).scope();
-			// scope.$apply(function(){
-				// scope.currentFolder.fileList = fileArr;
-			// });
-			$scope.currentFolder.fileList = filerArr;
+			var scope = angular.element($("#ng")).scope();
+			scope.$apply(function(){
+				scope.currentFolder.fileList = fileArr;
+			});
 
-			//showThumbnail(fileArr);
-			 $scope.showThumbnail();
+			showThumbnail(fileArr);
 		},false);
 		// -----------------------------------------------------------------
 		
 		function handleFileSelect(evt) {
 			var files = evt.target.files; // FileList object
 			$('#addFiles').modal('hide');
-			console.log(files);
+			//console.log(files);
 			
 			var fileArr = new Array();
-			
 			for (var i = 0, f; f = files[i]; i++) 
 			{
-				
+				f.checked = false;
+				f.img = fileIcon;
 				fileArr.push(f);
 			}
 			//console.log(fileArr);
 			
-			// var scope = angular.element($("#ng")).scope();
-			// scope.$apply(function(){
-				// scope.currentFolder.fileList = fileArr;
-			// });
-			$scope.currentFolder.fileList = fileArr;
-			
-			//showThumbnail(fileArr);
-			$scope.showThumbnail();
+			var scope = angular.element($("#ng")).scope();
+			scope.$apply(function(){
+				if(scope.currentFolder.fileList === null)
+				{
+					scope.currentFolder.fileList = fileArr;
+				}
+				else
+				{
+					console.log("merging yao!")
+					scope.currentFolder.fileList = scope.currentFolder.fileList.concat(fileArr);
+				}
+				console.log(scope.currentFolder.fileList);
+			});
+			showThumbnail();
 		}
 		
-		$scope.showThumbnail = function()
+		function showThumbnail()
 		{
-			var files = $scope.currentFolder.fileList;
+			var files = null;
+			var scope = angular.element($("#ng")).scope();
+			scope.$apply(function(){
+				files = scope.currentFolder.fileList
+				
+			})
+			console.log(files);
 			for (var i = 0, f; f = files[i]; i++) 
 			{
+				
 				// Only process image files.
 				if (!f.type.match('image.*')) {
 					continue;
@@ -409,7 +456,6 @@ app.controller('FirstController', function($scope) {
 				var id = "thumb-"+i;
 				// image.classList.add("")
 				var thumbnail = document.getElementById(id);
-				console.log(thumbnail);
 				image.file = f;
 				thumbnail.appendChild(image)
 
@@ -427,4 +473,5 @@ app.controller('FirstController', function($scope) {
 				}
 			}
 		}
-});
+		
+		
