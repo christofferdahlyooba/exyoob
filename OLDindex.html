@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html ng-app="mockApp">
+	<head>
+		<title>Columns BS3</title>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap-switch.css">
+		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" >
+		<style>
+		
+		.col-settings {
+			margin-left: 15px;
+			margin-right: 15px;
+			width: 30%;
+		}
+		
+		.btn2 {width:50%;}
+		
+		.contentpanel {
+			background-image: url(img/bg.jpg);
+		}
+		
+		.contentpanel2 {
+			height:600px;
+			overflow:auto;
+		}
+		
+		.contentpanel3 {
+			width:300px;
+			overflow:auto;
+		}
+		
+		ul
+		{
+			list-style-type: none;
+		}
+		</style>
+	</head>
+	<body id="ng" ng-controller="FirstController">
+		<div class="container">
+			
+			<h1>HTML Mockup med BootStrap</h1>
+			
+			<div class="row">
+				
+				
+				<div class="col-md-8">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<input type="image" src="img/backSmall.png" ng-hide="root" ng-click="goBack()"/>   {{dir}}
+						</div>
+						<div class="panel-body text-center contentpanel2" ng-style="bgImage">
+							<!-- Content Body -->
+							<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add.png" ng-show="notAdded"/>
+							<div ng-show="root">
+								<div class="col-md-12" ng-hide="notAdded" ng-repeat="folder in folders">
+									<div ng-switch on="folder.fileType">
+										<div ng-switch-when="Folder"><input type="image" ng-src="{{folder.img}}" ng-click="enter(folder.name)"><div ng-show="showFont" ng-style="font">{{folder.name}}</div></input></div>
+										<div ng-switch-when="PDF"><input type="image" ng-src="img/pdf.png"><div ng-show="showFont" ng-style="font">{{folder.name}}</div></input></div>
+									</div>
+								</div>
+							</div>
+							<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_mini.png" ng-hide="notAdded"/>
+							<!-- ---------- --->
+							
+							<!-- First add popup -->
+							<div class="modal" id="addFiles">
+								<div class="modal-dialog">
+								  <div class="modal-content">
+									<div class="modal-header">
+									  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+									  <h4 class="modal-title">ADD</h4>
+									</div>
+									<div class="modal-body">
+										<ul>
+											<li><input type="image" src="img/addFolder.jpg" data-dismiss="modal" ng-click="addFolder()">Add Folders</input></li>
+											
+											<li><input type="image" data-toggle="modal" href="#addDropbox" src="img/dropbox.jpg" data-dismiss="modal" ng-click="add()">Add from Dropbox</input></li>
+											
+											<li><input type="image" src="img/box_logo.png" data-dismiss="modal" ng-click="add()">Add from Box</input></li>
+
+											<li><input type="image" src="img/drive.png" data-dismiss="modal" ng-click="add()">Add from Google Drive</input></li>
+											
+											<li><input type="image" src="img/computer.png" data-dismiss="modal" ng-click="add()">Add from Computer</input></li>
+										</ul>
+									</div>
+								  </div>
+								</div>
+							</div>
+							<!-- ------------------------------- -->
+							
+							<!-- Dropbox add popup --></!-->
+							<div class="modal" id="addDropbox">
+								<div class="modal-dialog">
+								  <div class="modal-content">
+									<div class="modal-header">
+									  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+									  <h4 class="modal-title">ADD FROM DROPBOX</h4>
+									</div>
+									<div class="modal-body">
+										<ul>
+											<li><input type="image" src="img/dbFolder.png" data-dismiss="modal" ng-click="addDBFolder('DBFolder1')">DBFolder1</input></li>
+											
+											<li><input type="image" src="img/dbFolder.png" data-dismiss="modal" ng-click="addDBFolder('DBFolder2')">DBFolder2</input></li>
+											
+											<li><input type="image" src="img/dbFolder.png" data-dismiss="modal" ng-click="addDBFolder('DBFolder3')">DBFolder3</input></li>
+											
+											<li><input type="image" src="img/pdf.png" data-dismiss="modal" ng-click="addDBFile('PDF1')">PDF1</input></li>
+											
+											<li><input type="image" src="img/pdf.png" data-dismiss="modal" ng-click="addDBFile('PDF2')">PDF2</input></li>
+											
+											<li><input type="image" src="img/pdf.png" data-dismiss="modal" ng-click="addDBFile('PDF3')">PDF3</input></li>
+
+										</ul>
+									</div>
+								  </div>
+								</div>
+							</div>
+							<!-- ---------------------------- -->
+							
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-md-4 col-settings">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							Settings
+						</div>
+						<!-- Settings body-->
+						<div class="panel-body" ng-show="editing">
+							<!-- Standard Settings -->
+							<div class="firstSetting" ng-hide="underMenu || underMenu2 || underMenu3">
+								Scrolling:
+								<input type="checkbox" name="scrollingBox" id="scrollingBox" data-on-color="default" data-off-color="default" data-on-text="<span class='glyphicon glyphicon-resize-vertical'></span>" data-off-text="<span class='glyphicon glyphicon-resize-horizontal'></span>">
+								<p ng-hide="cols">
+								Number of rows:
+									<button type="button" class="btn btn-default" ng-click="minusRow()">-</button>
+									
+									{{nrOfRows}}
+									
+									<button type="button" class="btn btn-default" ng-click="addRow()">+</button>
+								</p>
+								<p ng-show="cols">
+								Number of cols:
+									<button type="button" class="btn btn-default" ng-click="minusCol()">-</button>
+									
+									{{nrOfCols}}
+									
+									<button type="button" class="btn btn-default" ng-click="addCol()">+</button>
+								</p>
+								<hr>
+								Change background: <input type="image" src="img/bg_mini.jpg" ng-click="bgMenu()"></input>
+								<hr>
+								<div class="folderSettings">
+										<p>Number of folders:
+											<button type="button" class="btn btn-default" ng-click="minusFolder()">-</button>
+											
+											{{nrOfFolders}}
+											
+											<button type="button" class="btn btn-default" ng-click="addNrOfFolders()">+</button>
+										</p>
+										<p>
+											Folder icon: <input type="image" src="img/folder.png" ng-click="folderIconMenu()"></input>
+										</p>
+										<p>
+										Show Folder names:
+											<input type="checkbox" name="my-checkbox" id="my-checkbox" data-on-color="default" data-off-color="default">
+										</p>
+										<div class="fontSettings" ng-show="showFont">
+											Font size:
+											<button type="button" class="btn btn-default" ng-click="minusFontSize()">-</button>
+											
+											{{fontSize}}
+											
+											<button type="button" class="btn btn-default" ng-click="addFontSize()">+</button>
+											
+											<p>
+											Font: {{fontText}} <input type="image" src="img/forward.png" ng-click="fontMenu()"/>
+											</p>
+										</div>
+										<hr>
+								</div>
+							</div>
+							<!-- ----------------------- -->
+							
+							<!-- Background settings -->
+							<div class="chooseBg" ng-show="underMenu">
+								<p>Change background</p>
+								<ul>
+									<li><input type="image" src="img/bg_mini.jpg" ng-click="changeBg(1)">Standard</input></li>
+									
+									<li><input type="image" src="img/bw_sand.jpg" ng-click="changeBg(2)">Relaxing Sand</input></li>
+									
+									<li><input type="image" src="img/bw_sunset.jpg" ng-click="changeBg(3)">Green Sunset</input></li>
+									
+									<li><input type="image" src="img/bw_sky.jpg" ng-click="changeBg(44)">Amazing Sky</input></li>
+								</ul>
+							</div>
+							<!-- --------------------- -->
+							
+							<!-- Folder icon settings -->
+							<div class="chooseFolderIcon" ng-show="underMenu2">
+								<p>Folder icon</p>
+								<ul>
+									<li><input type="image" src="img/folder.png" ng-click="changeFolderIcon(1)">Standard</input></li>
+									<li><input type="image" src="img/picFolder.png" ng-click="changeFolderIcon(2)">Picture Folder</input></li>
+									<li><input type="image" src="img/musicFolder.png" ng-click="changeFolderIcon(3)">Music Folder</input></li>
+								</ul>
+							</div>
+							<!-- --------------------- -->
+							
+							<!-- Font settings -->
+							<div class="chooseFont" ng-show="underMenu3">
+								<p>Folder icon</p>
+								<ul>
+									<li><input type="radio" ng-model="fontText" ng-click="applyFont()" value="Verdana"> Verdana</input></li>
+									<li><input type="radio" ng-model="fontText" ng-click="applyFont()" value="Webdings"> Webdings</input></li>
+									<li><input type="radio" ng-model="fontText" ng-click="applyFont()" value="Arial">Arial</input></li>
+								</ul>
+							</div>
+							<!-- --------------------- -->
+						</div>
+						<!-- ------------------ -->
+						<div class="panel-footer text-center">
+							<button type="button" class="btn btn-default" ng-click="edit()">{{mode}}</button>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+		</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<script src="js/mockApp.js"></script>
+	<script src="js/bootstrap-switch.js"></script>
+	<script>
+		$('#openBtn').click(function(){
+			$('#myModal').modal({show:true})
+		});
+		
+		$("[name='my-checkbox']").bootstrapSwitch();
+		
+		$("[name='scrollingBox']").bootstrapSwitch();
+		
+		$('#my-checkbox').on('switchChange', function (e, data) {
+		  var $element = $(data.el),
+			  value = data.value;
+		  var scope = angular.element($("#ng")).scope();
+			scope.$apply(function(){
+				scope.showFont = !scope.showFont;
+			});
+		});
+		
+		$('#scrollingBox').on('switchChange', function (e, data) {
+		  var $element = $(data.el),
+			  value = data.value;
+		  var scope = angular.element($("#ng")).scope();
+			scope.$apply(function(){
+				scope.cols = !scope.cols;
+			});
+		});
+	</script>
+	</body>
+</html>
