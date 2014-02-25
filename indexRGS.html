@@ -145,7 +145,7 @@
 						<div class="panel-body text-center contentpanel2" ng-style="bgImage">
 							<!-- ----------------Content Body-------------------------  -->
 							<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add.png" ng-show="notAdded"/>
-							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="folder in currentFolder.folderList">
+							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="folder in currentFolder.children">
 								<input type="image" src="img/cleaar.png" ng-click="deleteFolder($index)" />
 								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)">
 									<input type="checkbox" ng-show="editing" ng-model="folder.checked"/>
@@ -405,7 +405,8 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-	<script src="js/mockApp2.js"></script>
+	<script src="js/node.js"></script>
+	<script src="js/mockApp_j.js"></script>
 	<script src="js/bootstrap-switch.js"></script>
 	<script>
 		//$('#openBtn').click(function(){
@@ -455,6 +456,8 @@
 			$('#q').focus();
 			$('#q').val('');
 		});
+		var hej = function(){console.log(angular.element($("#ng")).scope().currentFolder)};
 	</script>
+	<a href='#' onclick="hej()">t</a>
 	</body>
 </html>

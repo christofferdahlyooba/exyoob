@@ -2,16 +2,14 @@ function Node(name, type){
 	this.name = name;
 	this.type = type;
 	this.Parent = null;
+	this.img = null;
+	this.checked = null;
 }
 
 
 
 function Folder(name, type){
 	Node.call(this, name, type);
-	this.img = null;
-	this.checked = null;
-	this.folderList = null;
-	this.fileList = null;
 	this.children = [];
 };
 Folder.prototype = new Node();
