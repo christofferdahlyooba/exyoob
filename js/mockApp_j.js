@@ -1,15 +1,19 @@
 var app = angular.module('mockApp', []);
 
-app.controller('FirstController', function($scope){
+var rootFolder = new Folder('Root', 'Folder');
+var defaultFileIcon = 'img/file.png';
+var defaultFolderIcon = 'img/folder.png';
+
+app.controller('FirstController', function($scope){		
 	
-	var defaultFileIcon = 'img/file.png';
-	var defaultFolderIcon = 'img/folder.png';	
-	var rootFolder = new Folder('Root', 'Folder');
 	rootFolder.img = defaultFolderIcon;
 	
 	$scope.currentFolder = rootFolder;
 	$scope.nrOfFolders = 0;
-	$scope.currDirName = rootFolder.name;
+	$scope.cols = true;
+	$scope.nrOfCols = 3;
+	$scope.colStyle = "col span_1_of_"+$scope.nrOfCols;
+	$scope.dir = rootFolder.name;
 	$scope.editing = false;
 	$scope.mode = "Edit Mode";
 	$scope.notAdded=true;
@@ -22,7 +26,10 @@ app.controller('FirstController', function($scope){
 	$scope.viewsAllowed = "Grid & List";
 	$scope.allAllowed = true;
 	$scope.gridMode = true;	
+	$scope.showThumb = false;
 	$scope.folderIcon = defaultFolderIcon;
+	$scope.fileIcon = defaultFileIcon;
+	$scope.bgImage = {'background-image':'url(img/bg.jpg)'};
 	$scope.fontSize = 12;
 	$scope.fontText = "Verdana";
 	$scope.fontColor = "black";
@@ -30,15 +37,18 @@ app.controller('FirstController', function($scope){
 	
 	
 	$scope.enter = function(folder){
-		$scope.currentFolder = folder;
-		$scope.nrOfFolders = getNrOfFolders(folder);
-		$scope.currDirName = folder.name;
-		
+		if(folder.type === 'Folder'){
+			$scope.currentFolder = folder;
+			$scope.nrOfFolders = $scope.getNrOfFolders(folder);
+			$scope.dir += ' -> ' + folder.name;
+		}
 	}
 	$scope.goBack = function(){
-		$scope.currentFolder = $scope.currentFolder.Parent;
-		$scope.nrOfFolders = getNrOfFolders($scope.currentFolder);
-		$scope.currDirName = $scope.currentFolder.name;
+		if($scope.currentFolder.Parent !== null){
+			$scope.currentFolder = $scope.currentFolder.Parent;
+			$scope.nrOfFolders = $scope.getNrOfFolders($scope.currentFolder);
+			$scope.dir = $scope.getFolderPath($scope.currentFolder);
+		}
 	}
 	$scope.editMode = function(){
 		$scope.editing = !$scope.editing;
@@ -124,15 +134,15 @@ app.controller('FirstController', function($scope){
 		{
 			$scope.folderIcon = 'img/musicFolder.png';
 		}
-		
-		for(var j = 0; j < $scope.currentFolder.children.length; j++)
+		var folders = $scope.getFolders($scope.currentFolder);
+		for(var j = 0; j < folders.length; j++)
 		{
-			if($scope.currentFolder.children.type === 'Folder'){
-				if($scope.currentFolder.children[j].checked)
+			//if($scope.currentFolder.children[j].type === 'Folder'){
+				if(folders[j].checked)
 				{
-					$scope.currentFolder.children[j].img = $scope.folderIcon;
+					folders[j].img = $scope.folderIcon;
 				}
-			}				
+			//}				
 		}
 	}
 	$scope.fileIconMenu = function(){
@@ -152,53 +162,273 @@ app.controller('FirstController', function($scope){
 		{
 			fileIcon = 'img/pdfFile.jpg';
 		}
-		
-		for(var j = 0; j < $scope.currentFolder.children.length; j++)
+		var files = $scope.getFiles($scope.currentFolder);
+		for(var j = 0; j < files.length; j++)
 		{
-			if($scope.currentFolder.children.type !== 'Folder'){
-				if($scope.currentFolder.children[j].checked)
+			//if($scope.currentFolder.children[j].type !== 'Folder'){
+				if(files[j].checked)
 				{
-					$scope.currentFolder.children[j].img = fileIcon;
+					files[j].img = fileIcon;
 				}
+			//}
+		}
+	}
+	$scope.deleteFolder = function(folder){
+		$scope.currentFolder.remove(folder);
+		$scope.nrOfFolders = $scope.getNrOfFolders($scope.currentFolder);
+	}
+	//deletefile
+	$scope.changeBg = function(i){
+		$scope.underMenu=false;
+		if(i === 1)
+		{
+			$scope.bgImage = {'background-image':'url(img/bg.jpg)'};
+		}
+		else if(i === 2)
+		{
+			$scope.bgImage = {'background-image':'url(img/sand.jpg)'};
+		}
+		else if(i === 3)
+		{
+			$scope.bgImage = {'background-image':'url(img/sunset.jpg)'};
+		}
+		else
+		{
+			$scope.bgImage = {'background-image':'url(img/sky.jpg)'};
+		}
+	}
+	$scope.changeCol = function(i) {
+		if(i<0){
+			if($scope.nrOfCols > 1){				
+				$scope.nrOfCols --;
+				$scope.colStyle = "col span_1_of_"+$scope.nrOfCols;
+			}
+		}
+		else{
+			if($scope.nrOfCols < 12){
+				$scope.nrOfCols++;
+				$scope.colStyle = "col span_1_of_"+$scope.nrOfCols;
 			}
 		}
 	}
-	//deletefolder
-	//deletefile
-	//changebg
-	//addRow
-	//minusRow
-	//addCol
-	//minusCol
+	//addrow
+	//minusrow
 	$scope.addFolders = function(){
 		var folder;
 		if($scope.currentFolder.Parent === null){//rootfolder
 			folder = new Folder("Folder"+($scope.nrOfFolders+1), 'Folder');
 		}
 		else{
-			folder = new Folder($scope.currentFolder.name+"_"+($scope.nrOfFolders+1));
+			folder = new Folder($scope.currentFolder.name+"_"+($scope.nrOfFolders+1), 'Folder');
 		}
 		folder.img = $scope.folderIcon;
 		$scope.currentFolder.add(folder);
-		$scope.nrOfFolders = getNrOfFolders($scope.currentFolder);
+		$scope.nrOfFolders = $scope.getNrOfFolders($scope.currentFolder);
 	}
 	//addDBFolder
 	//minusFolder
-	//addFontSize
-	//minusFontsize
-	//clearName
-	//showListPreview
-	
-});
-	
-	
-	
-var getNrOfFolders = function(folder){
-	var nr = 0;
-	for(var i = 0; i < folder.children.length; i++){
-		if(folder.children[i].type === 'Folder'){
-			nr++;
+	$scope.changeFontSize = function(i){
+		if(i > 0){
+			$scope.fontSize++;
+			$scope.font = {'font-size':$scope.fontSize+'pt','font-family':$scope.fontText,'color':$scope.fontColor};
+		}
+		else{
+			if($scope.fontSize > 1){
+				$scope.fontSize--;
+				$scope.font = {'font-size':$scope.fontSize+'pt','font-family':$scope.fontText,'color':$scope.fontColor};
+			}
 		}
 	}
-	return nr;
+	$scope.clearName = function(index, folder){
+		document.getElementById("folder-"+index).focus();
+		folder.name = '';
+	}
+	$scope.showListPreview = function(f)
+	{
+		// Only process image files.
+		// if (!f.type.match('image.*')) {
+			// continue;
+		// }
+		
+		var image = document.createElement("img");
+		//var id = "thumb-"+i;
+		// image.classList.add("")
+		var preview = document.getElementById("preview");
+		image.file = f;
+		preview.replaceChild(image,preview.childNodes[0]);
+		//preview.appendChild(image)
+
+		var reader = new FileReader()
+		reader.onload = (function(aImg){
+		  return function(e){
+			aImg.src = e.target.result;
+		  };
+		}(image))
+		var ret = reader.readAsDataURL(f);
+		var canvas = document.createElement("canvas");
+		ctx = canvas.getContext("2d");
+		image.onload= function(){
+			ctx.drawImage(image,100,100)
+		}
+	}
+	
+	$scope.getNrOfFolders = function(folder){
+		var nr = 0;
+		var folders = $scope.getFolders(folder);
+		for(var i = 0; i < folders.length; i++){
+			//if(folder.children[i].type === 'Folder'){
+				nr++;
+			//}
+		}
+		return nr;
+	}
+	$scope.getNrOfParents = function(folder){
+		var nr = 0;
+		while(folder.Parent !== null){
+			folder = folder.Parent;
+			nr++;
+		}
+		return nr;	
+	}
+	$scope.getFolderPath = function(folder){
+		var path = [];
+		var ret = rootFolder.name;
+		if(folder === rootFolder){
+			return ret;
+		}
+		for(var i = 0; i < $scope.getNrOfParents(folder); i++){
+			path.push(folder.name);
+			folder = folder.Parent;
+		}
+		for(var i = path.length-1; 0 <= i; i--){
+			ret += ' -> ' + path[i];
+		}
+		return ret;
+	}
+	$scope.getFolders = function(folder){
+		var ret = [];
+		for(var i = 0; i < folder.children.length; i++){
+			if(folder.children[i].type === 'Folder'){
+				ret.push(folder.children[i]);
+			}
+		}
+		return ret;
+	}
+	$scope.getFiles = function(folder){
+		var ret = [];
+		for(var i = 0; i < folder.children.length; i++){
+			if(folder.children[i].type !== 'Folder'){
+				ret.push(folder.children[i]);
+			}
+		}
+		return ret;
+	}
+	
+	
+});
+		
+
+/*------------------------------------------------------------------
+--------------------DRAG AND DROP-----------------------------------
+--------------------------------------------------------------------*/
+var fileDiv = document.getElementById("dnd");
+fileDiv.addEventListener("dragenter", function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+}, false);
+
+fileDiv.addEventListener("dragover", function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+}, false);
+
+fileDiv.addEventListener("drop", function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    var dt = e.dataTransfer;
+    var files = dt.files;
+
+	var scope = angular.element($("#ng")).scope();
+    for (var i = 0, f; f = files[i]; i++) {
+		var file = new File(f.name, f.type);
+		file.img = scope.fileIcon;
+		file.lastModifiedDate = f.lastModifiedDate;
+		file.size = f.size;
+		file.webkitRelativePath = f.webkitRelativePath;
+		file.$$hashKey = f.$$hashKey;
+		file.data = f;
+		scope.$apply(function () {			
+			scope.currentFolder.add(file);
+		});
+    }
+    showThumbnail();
+}, false);
+/*------------------------------------------------------------------
+--------------------ADD FILES FROM COMPUTER-------------------------
+--------------------------------------------------------------------*/
+document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+function handleFileSelect(evt) {
+	var files = evt.target.files; // FileList object
+	$('#addFiles').modal('hide');
+	
+	var scope = angular.element($("#ng")).scope();
+	for (var i = 0, f; f = files[i]; i++) 
+	{
+		var file = new File(f.name, f.type);
+		file.img = scope.fileIcon;
+		file.lastModifiedDate = f.lastModifiedDate;
+		file.size = f.size;
+		file.webkitRelativePath = f.webkitRelativePath;
+		file.$$hashKey = f.$$hashKey;
+		file.data = f;
+		scope.$apply(function () {			
+			scope.currentFolder.add(file);
+		});
+		console.log(f);
+	}
+	
+	showThumbnail();
+}
+
+function showThumbnail(){
+	var files = null;
+	var scope = angular.element($("#ng")).scope();
+	scope.$apply(function(){
+		files = scope.getFiles(scope.currentFolder);
+		
+	})
+	for (var i = 0, f; f = files[i]; i++) 
+	{		
+		// Only process image files.
+		if (!f.type.match('image.*')) {
+			continue;
+		}
+		
+		var image = document.createElement("img");
+		var id = "thumb-"+i;
+		// image.classList.add("")
+		var thumbnail = document.getElementById(id);		
+		image.file = f.data;
+		thumbnail.appendChild(image)
+
+		var reader = new FileReader()
+		reader.onload = (function(aImg){
+		  return function(e){
+			aImg.src = e.target.result;
+		  };
+		}(image))
+		var ret = reader.readAsDataURL(f.data);
+		var canvas = document.createElement("canvas");
+		ctx = canvas.getContext("2d");
+		  image.onload= function(){
+		  ctx.drawImage(image,100,100)
+		}
+	}
+}
+
+
+var hej = function(){
+	console.log(JSON.stringify(rootFolder, replacer));
 }

@@ -113,7 +113,7 @@
 						</div>
 						<div class="panel-body contentpanel2">
 							<div class="col-md-4" >
-								<div ng-hide="notAdded" ng-repeat="folder in currentFolder.folderList">
+								<div ng-hide="notAdded" ng-repeat="folder in currentFolder.children">
 									<input type="image" src="img/folderList.png" ng-click="enter(folder)">
 										{{folder.name}}
 									</input>
@@ -145,17 +145,17 @@
 						<div class="panel-body text-center contentpanel2" ng-style="bgImage">
 							<!-- ----------------Content Body-------------------------  -->
 							<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add.png" ng-show="notAdded"/>
-							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="folder in currentFolder.children">
-								<input type="image" src="img/cleaar.png" ng-click="deleteFolder($index)" />
+							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="folder in getFolders(currentFolder)">
+								<input type="image" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
 								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)">
 									<input type="checkbox" ng-show="editing" ng-model="folder.checked"/>
 									<div ng-show="showFont && !editing" ng-style="font">{{folder.name}}</div>
 									<span id="tb_cont" ng-show="showFont && editing">
-										<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click="folder.name = '';clearName($index)" ><img src="img/cleaar.png"/></span></input>
+										<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click='clearName($index, folder)' ><img src="img/cleaar.png"/></span></input>
 									</span>
 								</input>
 							</div>
-							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="file in currentFolder.fileList">
+							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="file in getFiles(currentFolder)">
 								<input type="image" src="img/cleaar.png" ng-click="deleteFile($index)" />
 								<div id="{{'thumb-'+$index}}" class="thumb" ng-show="showThumb"></div>
 								<input type="image" ng-src="{{file.img}}" ng-hide="showThumb">
@@ -195,15 +195,15 @@
 									
 									{{nrOfRows}}
 									
-									<button type="button" class="btn btn-default" ng-click="addRow()">+</button>
+									<button type="button" class="btn btn-default" ng-click="addRow(1)">+</button>
 								</p>
 								<p ng-show="cols">
 								Number of cols:
-									<button type="button" class="btn btn-default" ng-click="minusCol()">-</button>
+									<button type="button" class="btn btn-default" ng-click="changeCol(-1)">-</button>
 									
 									{{nrOfCols}}
 									
-									<button type="button" class="btn btn-default" ng-click="addCol()">+</button>
+									<button type="button" class="btn btn-default" ng-click="changeCol(1)">+</button>
 								</p>
 								<hr>
 								Change background: <input type="image" src="img/bg_mini.jpg" ng-click="bgMenu()"></input>
@@ -235,11 +235,11 @@
 										<!-- FONT SETTINGS -->
 										<div class="fontSettings" ng-show="showFont">
 											Font size:
-											<button type="button" class="btn btn-default" ng-click="minusFontSize()">-</button>
+											<button type="button" class="btn btn-default" ng-click="changeFontSize(-1)">-</button>
 											
 											{{fontSize}}
 											
-											<button type="button" class="btn btn-default" ng-click="addFontSize()">+</button>
+											<button type="button" class="btn btn-default" ng-click="changeFontSize(1)">+</button>
 											
 											<p>
 											Font: {{fontText}} <input type="image" src="img/forward.png" ng-click="fontMenu()"/>
@@ -456,7 +456,6 @@
 			$('#q').focus();
 			$('#q').val('');
 		});
-		var hej = function(){console.log(angular.element($("#ng")).scope().currentFolder)};
 	</script>
 	<a href='#' onclick="hej()">t</a>
 	</body>
