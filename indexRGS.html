@@ -6,7 +6,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/bootstrap-switch.css">
-		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" >
+		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/css/base/jquery.ui.all.css" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/css/lightness/jquery-ui-1.10.2.custom.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="css/col.css" media="all">
 		<style>
 		
@@ -143,7 +145,7 @@
 							<input type="image" src="img/backSmall.png" ng-hide="root" ng-click="goBack()"/>   {{dir}}
 							<input class="gridButton" type="image" src="img/list.png" ng-show="allAllowed" ng-click="changeView()"/>
 						</div>
-						<div class="panel-body text-center contentpanel2" ng-style="bgImage">
+						<div class="panel-body text-center contentpanel2" ng-style="bgImage" id="resizable">
 							<!-- ----------------Content Body-------------------------  -->
 							<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add.png" ng-show="notAdded"/>
 							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="folder in getFolders(currentFolder)">
@@ -409,17 +411,22 @@
 	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 	<script src="js/node.js"></script>
-	<script src="js/mockApp_j.js"></script>
+	<script src="js/jquery-ui.min.js"
+	<script src="js/jquery.ui.touch-punch.js"></script>
+	<script src="js/mockApp.js"></script>
 	<script src="js/bootstrap-switch.js"></script>
 	<script>
 		//$('#openBtn').click(function(){
 		//	$('#myModal').modal({show:true})
 		//});
-		$(function() {
+				$(function() {
 			$( "#resizable" ).resizable({
-			  maxHeight: 600
+			  maxHeight: 600,
+			  maxWidth: 745,
+			  minHeight: 0,
+			  minWidth: 0
 			});
-		});
+		  }); 
 		
 		//Toggle button for showing folder names
 		$("[name='showFolderName']").bootstrapSwitch();
