@@ -2,16 +2,14 @@ function Node(name, type){
 	this.name = name;
 	this.type = type;
 	this.Parent = null;
+	this.img = null;
+	this.checked = false;
 }
 
 
 
 function Folder(name, type){
 	Node.call(this, name, type);
-	this.img = null;
-	this.checked = null;
-	this.folderList = null;
-	this.fileList = null;
 	this.children = [];
 };
 Folder.prototype = new Node();
@@ -30,7 +28,7 @@ Folder.prototype.remove = function(node){
 		return; //Not a child here
 	}
 	for(var i = 0; i< this.children.length; i++){
-		if(this.childen[i] === node){
+		if(this.children[i] === node){
 			this.children.splice(i,1);
 		}
 	}
@@ -41,11 +39,10 @@ Folder.prototype.remove = function(node){
 
 function File(name, type){
 	Node.call(this, name, type);
-	this.hashKey = null;
+	this.$$hashKey = null;
 	this.lastModifiedDate = null;
 	this.size = null;
-	this.webKitRelativePath = null;
-	
+	this.webkitRelativePath = null;	
 };
 File.prototype = new Node();
 File.prototype.addTo = function(folder){
@@ -53,18 +50,6 @@ File.prototype.addTo = function(folder){
 }
 File.prototype.removeFrom = function(folder){
 	folder.remove(this);
-}
-
-
-var hej = function(){
-	var root = new Folder('root', 'Folder');
-	var folder = new Folder('folder1', 'Folder');
-	var file = new File('file1', 'File');
-	root.add(folder);
-	folder.add(file);
-	root.add(file);
-	console.log(root);
-	console.log(JSON.stringify(root, replacer));
 }
 
 var replacer = function(key, value)
