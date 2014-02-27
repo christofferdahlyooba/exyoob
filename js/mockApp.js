@@ -4,9 +4,7 @@ var rootFolder = new Folder('Root', 'Folder');
 var defaultFileIcon = 'img/file.png';
 var defaultFolderIcon = 'img/folder.png';
 
-app.controller('FirstController', function($scope){		
-	
-	rootFolder.img = defaultFolderIcon;
+app.controller('FirstController', function($scope){
 	
 	$scope.currentFolder = rootFolder;
 	$scope.nrOfFolders = 0;
@@ -323,6 +321,12 @@ app.controller('FirstController', function($scope){
 			}
 		}
 		return ret;
+	}
+
+
+	$scope.exportToJson = function(){
+		console.log(JSON.stringify($scope.currentFolder, replacer));
+		return JSON.stringify($scope.currentFolder, replacer);
 	}	
 });
 		
@@ -352,10 +356,6 @@ fileDiv.addEventListener("drop", function (e) {
     for (var i = 0, f; f = files[i]; i++) {
 		var file = new File(f.name, f.type);
 		file.img = scope.fileIcon;
-		file.lastModifiedDate = f.lastModifiedDate;
-		file.size = f.size;
-		file.webkitRelativePath = f.webkitRelativePath;
-		file.$$hashKey = f.$$hashKey;
 		file.data = f;
 		scope.$apply(function () {			
 			scope.currentFolder.add(file);
@@ -377,15 +377,12 @@ function handleFileSelect(evt) {
 	{
 		var file = new File(f.name, f.type);
 		file.img = scope.fileIcon;
-		file.lastModifiedDate = f.lastModifiedDate;
-		file.size = f.size;
-		file.webkitRelativePath = f.webkitRelativePath;
-		file.$$hashKey = f.$$hashKey;
 		file.data = f;
 		scope.$apply(function () {			
 			scope.currentFolder.add(file);
 		});
 	}	
+	console.log(file);
 	showThumbnail();
 }
 
@@ -425,7 +422,26 @@ function showThumbnail(){
 	}
 }
 
-
-var hej = function(){
-	console.log(JSON.stringify(rootFolder, replacer));
+function importJson(jsonObj, curr){
+	var currentFolder = curr;
+	
+	var scope = angular.element($("#ng")).scope();
+	if(jsonObj.children.length > 0){
+		for(var i = 0, obj = jsonObj.children; i < obj.length; i++){
+			if(obj[i].type === 'Folder'){
+				var folder = new Folder(obj[i].name, 'Folder');
+				folder.img = obj[i].img;
+				currentFolder.add(folder);
+				scope.nrOfFolders++;
+				importJson(obj[i], folder);
+			}
+			else{
+				var file = new File(obj[i].name, obj[i].type);
+				file.data = obj[i].data;
+				file.img = obj[i].img;
+				currentFolder.add(file);
+			}				
+		}
+	}
+	return '';
 }

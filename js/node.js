@@ -37,12 +37,10 @@ Folder.prototype.remove = function(node){
 
 
 
+
 function File(name, type){
 	Node.call(this, name, type);
-	this.$$hashKey = null;
-	this.lastModifiedDate = null;
-	this.size = null;
-	this.webkitRelativePath = null;	
+	this.data = null;
 };
 File.prototype = new Node();
 File.prototype.addTo = function(folder){
