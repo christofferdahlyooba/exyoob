@@ -37,17 +37,18 @@ app.controller('FirstController', function($scope){
 	
 	
 	$scope.enter = function(folder){
-		if(folder.type === 'Folder'){
-			$scope.currentFolder = folder;
-			$scope.nrOfFolders = $scope.getNrOfFolders(folder);
-			$scope.dir += ' -> ' + folder.name;
-		}
+		$scope.currentFolder = folder;
+		$scope.nrOfFolders = $scope.getNrOfFolders(folder);
+		$scope.dir += ' -> ' + folder.name;
+		showThumbnail();
+		
 	}
 	$scope.goBack = function(){
 		if($scope.currentFolder.Parent !== null){
 			$scope.currentFolder = $scope.currentFolder.Parent;
 			$scope.nrOfFolders = $scope.getNrOfFolders($scope.currentFolder);
 			$scope.dir = $scope.getFolderPath($scope.currentFolder);
+			showThumbnail()
 		}
 	}
 	$scope.editMode = function(){
@@ -137,12 +138,10 @@ app.controller('FirstController', function($scope){
 		var folders = $scope.getFolders($scope.currentFolder);
 		for(var j = 0; j < folders.length; j++)
 		{
-			//if($scope.currentFolder.children[j].type === 'Folder'){
-				if(folders[j].checked)
-				{
-					folders[j].img = $scope.folderIcon;
-				}
-			//}				
+			if(folders[j].checked)
+			{
+				folders[j].img = $scope.folderIcon;
+			}		
 		}
 	}
 	$scope.fileIconMenu = function(){
@@ -165,19 +164,19 @@ app.controller('FirstController', function($scope){
 		var files = $scope.getFiles($scope.currentFolder);
 		for(var j = 0; j < files.length; j++)
 		{
-			//if($scope.currentFolder.children[j].type !== 'Folder'){
-				if(files[j].checked)
-				{
-					files[j].img = fileIcon;
-				}
-			//}
+			if(files[j].checked)
+			{
+				files[j].img = fileIcon;
+			}
 		}
 	}
 	$scope.deleteFolder = function(folder){
 		$scope.currentFolder.remove(folder);
 		$scope.nrOfFolders = $scope.getNrOfFolders($scope.currentFolder);
 	}
-	//deletefile
+	$scope.deleteFile = function(file){
+		$scope.currentFolder.remove(file);
+	}
 	$scope.changeBg = function(i){
 		$scope.underMenu=false;
 		if(i === 1)
@@ -239,12 +238,17 @@ app.controller('FirstController', function($scope){
 			}
 		}
 	}
-	$scope.clearName = function(index, folder){
-		document.getElementById("folder-"+index).focus();
-		folder.name = '';
+	$scope.clearName = function(index, node){
+		if(node.type === 'Folder'){
+			document.getElementById("folder-"+index).focus();
+			node.name = '';
+		}
+		else{
+			document.getElementById("file-"+index).focus();
+			node.name = '';	
+		}
 	}
-	$scope.showListPreview = function(f)
-	{
+	$scope.showListPreview = function(f){
 		// Only process image files.
 		// if (!f.type.match('image.*')) {
 			// continue;
@@ -254,7 +258,7 @@ app.controller('FirstController', function($scope){
 		//var id = "thumb-"+i;
 		// image.classList.add("")
 		var preview = document.getElementById("preview");
-		image.file = f;
+		image.file = f.data;
 		preview.replaceChild(image,preview.childNodes[0]);
 		//preview.appendChild(image)
 
@@ -264,21 +268,18 @@ app.controller('FirstController', function($scope){
 			aImg.src = e.target.result;
 		  };
 		}(image))
-		var ret = reader.readAsDataURL(f);
+		var ret = reader.readAsDataURL(f.data);
 		var canvas = document.createElement("canvas");
 		ctx = canvas.getContext("2d");
 		image.onload= function(){
-			ctx.drawImage(image,100,100)
+			ctx.drawImage(image,0,0);
 		}
-	}
-	
+	}	
 	$scope.getNrOfFolders = function(folder){
 		var nr = 0;
 		var folders = $scope.getFolders(folder);
 		for(var i = 0; i < folders.length; i++){
-			//if(folder.children[i].type === 'Folder'){
-				nr++;
-			//}
+			nr++;
 		}
 		return nr;
 	}
@@ -322,9 +323,7 @@ app.controller('FirstController', function($scope){
 			}
 		}
 		return ret;
-	}
-	
-	
+	}	
 });
 		
 
@@ -386,19 +385,16 @@ function handleFileSelect(evt) {
 		scope.$apply(function () {			
 			scope.currentFolder.add(file);
 		});
-		console.log(f);
-	}
-	
+	}	
 	showThumbnail();
 }
 
 function showThumbnail(){
 	var files = null;
 	var scope = angular.element($("#ng")).scope();
-	scope.$apply(function(){
-		files = scope.getFiles(scope.currentFolder);
+	
+	files = scope.getFiles(scope.currentFolder);
 		
-	})
 	for (var i = 0, f; f = files[i]; i++) 
 	{		
 		// Only process image files.
@@ -408,22 +404,23 @@ function showThumbnail(){
 		
 		var image = document.createElement("img");
 		var id = "thumb-"+i;
-		// image.classList.add("")
-		var thumbnail = document.getElementById(id);		
-		image.file = f.data;
-		thumbnail.appendChild(image)
+		var thumbnail = document.getElementById(id);
+		if(thumbnail){
+			image.file = f.data;
+			thumbnail.appendChild(image)
 
-		var reader = new FileReader()
-		reader.onload = (function(aImg){
-		  return function(e){
-			aImg.src = e.target.result;
-		  };
-		}(image))
-		var ret = reader.readAsDataURL(f.data);
-		var canvas = document.createElement("canvas");
-		ctx = canvas.getContext("2d");
-		  image.onload= function(){
-		  ctx.drawImage(image,100,100)
+			var reader = new FileReader()
+			reader.onload = (function(aImg){
+			  return function(e){
+				aImg.src = e.target.result;
+			  };
+			}(image))
+			var ret = reader.readAsDataURL(f.data);
+			var canvas = document.createElement("canvas");
+			ctx = canvas.getContext("2d");
+			  image.onload= function(){
+			  ctx.drawImage(image,0,0)
+			}
 		}
 	}
 }
