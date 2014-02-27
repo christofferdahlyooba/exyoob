@@ -6,7 +6,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/bootstrap-switch.css">
-		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" >
+		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/css/base/jquery.ui.all.css" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/css/lightness/jquery-ui-1.10.2.custom.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="css/col.css" media="all">
 		<style>
 		
@@ -95,6 +97,9 @@
 		.gridButton {
 			float:right;
 		}
+		
+		#resizable {padding: 0.5em; }
+        #resizable h3 { text-align: center; margin: 0; }
 		</style>
 	</head>
 	<body id="ng" ng-controller="FirstController">
@@ -142,7 +147,7 @@
 							<input type="image" src="img/backSmall.png" ng-hide="root" ng-click="goBack()"/>   {{dir}}
 							<input class="gridButton" type="image" src="img/list.png" ng-show="allAllowed" ng-click="changeView()"/>
 						</div>
-						<div class="panel-body text-center contentpanel2" ng-style="bgImage">
+						<div class="panel-body text-center contentpanel2" ng-style="bgImage" id="resizable">
 							<!-- ----------------Content Body-------------------------  -->
 							<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add.png" ng-show="notAdded"/>
 							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="folder in currentFolder.folderList">
@@ -405,17 +410,24 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<!-- <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script> -->
+	<!-- <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script> -->
+	<script src="js/jquery-ui.min.js"
+	<script src="js/jquery.ui.touch-punch.js"></script>
 	<script src="js/mockApp2.js"></script>
 	<script src="js/bootstrap-switch.js"></script>
 	<script>
-		//$('#openBtn').click(function(){
+      $(function() {
+    $( "#resizable" ).resizable({
+      maxHeight: 600,
+      maxWidth: 720,
+      minHeight: 0,
+      minWidth: 0
+    });
+  }); 		//$('#openBtn').click(function(){
 		//	$('#myModal').modal({show:true})
 		//});
-		$(function() {
-			$( "#resizable" ).resizable({
-			  maxHeight: 600
-			});
-		});
+		
 		
 		//Toggle button for showing folder names
 		$("[name='showFolderName']").bootstrapSwitch();

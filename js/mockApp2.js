@@ -64,8 +64,6 @@ app.controller('FirstController', function($scope) {
 	
 	
 	$scope.goBack = function() {
-		folders = $scope.currentFolder.folderList;
-		$scope.nrOfFolders = folders.length;
 		if($scope.currentFolder.name !== 'Home')
 		{
 			$scope.currentFolder = $scope.currentFolder.parentFolder;
@@ -75,6 +73,8 @@ app.controller('FirstController', function($scope) {
 		{
 			$scope.currentFolder = $scope.rootFolder;
 		}
+		folders = $scope.currentFolder.folderList;
+		$scope.nrOfFolders = folders.length;
 		console.log("Went back to: ");
 		console.log($scope.currentFolder);
 		// if($scope.currentFolder.fileList !== null)
@@ -441,7 +441,6 @@ app.controller('FirstController', function($scope) {
 			var scope = angular.element($("#ng")).scope();
 			scope.$apply(function(){
 				files = scope.currentFolder.fileList
-				
 			})
 			console.log(files);
 			for (var i = 0, f; f = files[i]; i++) 
