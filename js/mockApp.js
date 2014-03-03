@@ -38,7 +38,6 @@ app.controller('FirstController', function($scope){
 		$scope.currentFolder = folder;
 		$scope.nrOfFolders = $scope.getNrOfFolders(folder);
 		$scope.dir += ' -> ' + folder.name;
-		//showThumbnail();
 		
 	}
 	$scope.goBack = function(){
@@ -46,7 +45,6 @@ app.controller('FirstController', function($scope){
 			$scope.currentFolder = $scope.currentFolder.Parent;
 			$scope.nrOfFolders = $scope.getNrOfFolders($scope.currentFolder);
 			$scope.dir = $scope.getFolderPath($scope.currentFolder);
-			//showThumbnail()
 		}
 	}
 	$scope.editMode = function(){
@@ -248,29 +246,24 @@ app.controller('FirstController', function($scope){
 	}
 	$scope.showListPreview = function(f){
 		// Only process image files.
-		// if (!f.type.match('image.*')) {
-			// continue;
-		// }
+		 if (!f.type.match('image.*')) {
+			 return;
+		 }
 		
-		var image = document.createElement("img");
-		//var id = "thumb-"+i;
-		// image.classList.add("")
 		var preview = document.getElementById("preview");
-		image.file = f.data;
-		preview.replaceChild(image,preview.childNodes[0]);
-		//preview.appendChild(image)
-
-		var reader = new FileReader()
-		reader.onload = (function(aImg){
-		  return function(e){
-			aImg.src = e.target.result;
-		  };
-		}(image))
-		var ret = reader.readAsDataURL(f.data);
-		var canvas = document.createElement("canvas");
-		ctx = canvas.getContext("2d");
-		image.onload= function(){
-			ctx.drawImage(image,0,0);
+		var previewDiv = document.getElementById("previewDiv");
+		var divWidth = previewDiv.offsetWidth;
+		var divHeight = previewDiv.offsetHeight;
+		ctx = preview.getContext("2d");
+		
+		var img = new Image;
+		img.src = f.data;
+		img.onload= function(){			
+			preview.width = divWidth - 20;
+			preview.height = 560;
+			var aspectW = preview.width/img.width;
+			var aspectH = preview.height/img.height;
+			ctx.drawImage(img,0,0, img.width*aspectW,img.height*aspectH);
 		}
 	}	
 	$scope.getNrOfFolders = function(folder){
@@ -374,7 +367,6 @@ fileDiv.addEventListener("drop", function (e) {
 			scope.currentFolder.add(file);
 		});
     }
-    //showThumbnail();
 }, false);
 /*------------------------------------------------------------------
 --------------------ADD FILES FROM COMPUTER-------------------------
@@ -409,35 +401,7 @@ function handleFileSelect(evt) {
 			scope.currentFolder.add(file);
 		});
 	}
-	//showThumbnail();
 }
-
-/*function showThumbnail(){
-	var files = null;
-	var scope = angular.element($("#ng")).scope();
-	
-	files = scope.getFiles(scope.currentFolder);
-	console.log(scope.showThumb);
-	//scope.showThumb = !scope.showThumb;
-	for (var i = 0, f; f = files[i]; i++) 
-	{		
-		// Only process image files.
-		if (!f.type.match('image.*')) {
-			continue;
-		}
-		
-		if(scope.showThumb){
-			//f.img = f.data;
-			scope.$apply();
-		}
-		else{
-			//f.img = scope.fileIcon;
-			scope.$apply();
-		}
-	}
-}*/
-
-
 
 function importJson(jsonObj, curr){
 	var currentFolder = curr;
