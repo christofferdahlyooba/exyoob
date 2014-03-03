@@ -40,7 +40,10 @@ Folder.prototype.remove = function(node){
 
 function File(name, type){
 	Node.call(this, name, type);
+	this.size = null;
 	this.data = null;
+	this.lastModified = null;
+	this.isImg = false;
 };
 File.prototype = new Node();
 File.prototype.addTo = function(folder){

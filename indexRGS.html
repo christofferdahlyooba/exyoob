@@ -83,7 +83,7 @@
 			display: none;
 		}
 		
-		.thumb img
+		.imageThumb
 		{
 			height: 50px;
 			width: 50px;
@@ -160,8 +160,8 @@
 							</div>
 							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="file in getFiles(currentFolder)">
 								<input type="image" src="img/cleaar.png" ng-click="deleteFile(file)" />
-								<div id="{{'thumb-'+$index}}" class="thumb" ng-show="showThumb"></div>
-								<input type="image" ng-src="{{file.img}}" ng-hide="showThumb"/>
+								<input type="image" class="imageThumb" ng-src="{{file.data}}" ng-show="showThumb && file.isImg"/>
+								<input type="image" ng-src="{{file.img}}" ng-hide="showThumb && file.isImg"/>
 								<input type="checkbox" ng-show="editing" ng-model="file.checked"/>
 								<div ng-show="showFont && !editing" ng-style="font">{{file.name}}</div>
 								<span id="tb_cont" ng-show="showFont && editing">

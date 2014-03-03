@@ -38,7 +38,7 @@ app.controller('FirstController', function($scope){
 		$scope.currentFolder = folder;
 		$scope.nrOfFolders = $scope.getNrOfFolders(folder);
 		$scope.dir += ' -> ' + folder.name;
-		showThumbnail();
+		//showThumbnail();
 		
 	}
 	$scope.goBack = function(){
@@ -46,7 +46,7 @@ app.controller('FirstController', function($scope){
 			$scope.currentFolder = $scope.currentFolder.Parent;
 			$scope.nrOfFolders = $scope.getNrOfFolders($scope.currentFolder);
 			$scope.dir = $scope.getFolderPath($scope.currentFolder);
-			showThumbnail()
+			//showThumbnail()
 		}
 	}
 	$scope.editMode = function(){
@@ -323,9 +323,8 @@ app.controller('FirstController', function($scope){
 		return ret;
 	}
 
-
 	$scope.exportToJson = function(){
-		console.log(JSON.stringify($scope.currentFolder, replacer));
+		console.log(JSON.stringify($scope.currentFolder, replacer));		
 		return JSON.stringify($scope.currentFolder, replacer);
 	}	
 });
@@ -356,12 +355,26 @@ fileDiv.addEventListener("drop", function (e) {
     for (var i = 0, f; f = files[i]; i++) {
 		var file = new File(f.name, f.type);
 		file.img = scope.fileIcon;
-		file.data = f;
+		file.size = f.size;
+		file.lastModified = f.lastModifiedDate;
+		var type = f.type.split("/")[0];
+		if(type === 'image'){
+			file.isImg = true;
+		}
+		var reader = new FileReader()
+		reader.onload = (function(file){
+		  return function(e){			
+			file.data = e.target.result;
+			scope.$apply();
+		  };
+		}(file))
+		reader.readAsDataURL(f);
+		
 		scope.$apply(function () {			
 			scope.currentFolder.add(file);
 		});
     }
-    showThumbnail();
+    //showThumbnail();
 }, false);
 /*------------------------------------------------------------------
 --------------------ADD FILES FROM COMPUTER-------------------------
@@ -377,21 +390,35 @@ function handleFileSelect(evt) {
 	{
 		var file = new File(f.name, f.type);
 		file.img = scope.fileIcon;
-		file.data = f;
+		file.size = f.size;
+		file.lastModified = f.lastModifiedDate;
+		var type = f.type.split("/")[0];
+		if(type === 'image'){
+			file.isImg = true;
+		}
+		var reader = new FileReader()
+		reader.onload = (function(file){
+		  return function(e){		
+			file.data = e.target.result;
+			scope.$apply();
+		  };
+		}(file))
+		reader.readAsDataURL(f);
+		
 		scope.$apply(function () {			
 			scope.currentFolder.add(file);
 		});
-	}	
-	console.log(file);
-	showThumbnail();
+	}
+	//showThumbnail();
 }
 
-function showThumbnail(){
+/*function showThumbnail(){
 	var files = null;
 	var scope = angular.element($("#ng")).scope();
 	
 	files = scope.getFiles(scope.currentFolder);
-		
+	console.log(scope.showThumb);
+	//scope.showThumb = !scope.showThumb;
 	for (var i = 0, f; f = files[i]; i++) 
 	{		
 		// Only process image files.
@@ -399,28 +426,18 @@ function showThumbnail(){
 			continue;
 		}
 		
-		var image = document.createElement("img");
-		var id = "thumb-"+i;
-		var thumbnail = document.getElementById(id);
-		if(thumbnail){
-			image.file = f.data;
-			thumbnail.appendChild(image)
-
-			var reader = new FileReader()
-			reader.onload = (function(aImg){
-			  return function(e){
-				aImg.src = e.target.result;
-			  };
-			}(image))
-			var ret = reader.readAsDataURL(f.data);
-			var canvas = document.createElement("canvas");
-			ctx = canvas.getContext("2d");
-			  image.onload= function(){
-			  ctx.drawImage(image,0,0)
-			}
+		if(scope.showThumb){
+			//f.img = f.data;
+			scope.$apply();
+		}
+		else{
+			//f.img = scope.fileIcon;
+			scope.$apply();
 		}
 	}
-}
+}*/
+
+
 
 function importJson(jsonObj, curr){
 	var currentFolder = curr;
@@ -437,8 +454,11 @@ function importJson(jsonObj, curr){
 			}
 			else{
 				var file = new File(obj[i].name, obj[i].type);
-				file.data = obj[i].data;
 				file.img = obj[i].img;
+				file.data = obj[i].data;
+				file.size = obj[i].size;
+				file.lastModified = obj[i].lastModified;
+				file.isImg = obj[i].isImg;
 				currentFolder.add(file);
 			}				
 		}
