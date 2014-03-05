@@ -8,13 +8,13 @@ function Node(name, type){
 
 
 
-function Folder(name, type){
-	Node.call(this, name, type);
+function Folder(name){
+	Node.call(this, name, 'Folder');
 	this.children = [];
 };
 Folder.prototype = new Node();
-Folder.prototype.hasFolders = function(){
-	console.log(this.folders.length);
+Folder.prototype.hasChildren = function(){
+	console.log(this.children.length);
 }
 Folder.prototype.add = function(node){
 	if(node.Parent === this){

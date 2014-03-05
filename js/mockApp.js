@@ -1,6 +1,7 @@
+"use strict";
 var app = angular.module('mockApp', []);
 
-var rootFolder = new Folder('Root', 'Folder');
+var rootFolder = new Folder('Root');
 var defaultFileIcon = 'img/file.png';
 var defaultFolderIcon = 'img/folder.png';
 
@@ -211,10 +212,10 @@ app.controller('FirstController', function($scope){
 	$scope.addFolders = function(){
 		var folder;
 		if($scope.currentFolder.Parent === null){//rootfolder
-			folder = new Folder("Folder"+($scope.nrOfFolders+1), 'Folder');
+			folder = new Folder("Folder"+($scope.nrOfFolders+1));
 		}
 		else{
-			folder = new Folder($scope.currentFolder.name+"_"+($scope.nrOfFolders+1), 'Folder');
+			folder = new Folder($scope.currentFolder.name+"_"+($scope.nrOfFolders+1));
 		}
 		folder.img = $scope.folderIcon;
 		$scope.currentFolder.add(folder);
@@ -254,7 +255,7 @@ app.controller('FirstController', function($scope){
 		var previewDiv = document.getElementById("previewDiv");
 		var divWidth = previewDiv.offsetWidth;
 		var divHeight = previewDiv.offsetHeight;
-		ctx = preview.getContext("2d");
+		var ctx = preview.getContext("2d");
 		
 		var img = new Image;
 		img.src = f.data;
@@ -410,7 +411,7 @@ function importJson(jsonObj, curr){
 	if(jsonObj.children.length > 0){
 		for(var i = 0, obj = jsonObj.children; i < obj.length; i++){
 			if(obj[i].type === 'Folder'){
-				var folder = new Folder(obj[i].name, 'Folder');
+				var folder = new Folder(obj[i].name);
 				folder.img = obj[i].img;
 				currentFolder.add(folder);
 				scope.nrOfFolders++;
