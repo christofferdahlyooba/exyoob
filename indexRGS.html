@@ -9,7 +9,9 @@
 		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/css/base/jquery.ui.all.css" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/css/lightness/jquery-ui-1.10.2.custom.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/row.css" media="all">
 		<link rel="stylesheet" href="css/col.css" media="all">
+		
 		<style>
 		
 		.col-settings {
@@ -147,6 +149,8 @@
 						<div class="panel-body text-center contentpanel2" ng-style="bgImage" id="resizable">
 							<!-- ----------------Content Body-------------------------  -->
 							<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add.png" ng-show="notAdded"/>
+							<!-- --------------------COLUMN---------------------------- -->
+							<div ng-show="cols">
 							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="folder in getFolders(currentFolder)">
 								<input type="image" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
 								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)">
@@ -170,6 +174,34 @@
 							<div ng-class="colStyle">
 								<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="notAdded" id="dnd"/>	
 							</div>
+							</div>
+							<!-- --------------------ROW---------------------------- -->
+							<div ng-hide="cols">
+							<div ng-class="rowStyle" ng-hide="notAdded" ng-repeat="folder in getFolders(currentFolder)">
+								<input type="image" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
+								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)">
+									<input type="checkbox" ng-show="editing" ng-model="folder.checked"/>
+									<div ng-show="showFont && !editing" ng-style="font">{{folder.name}}</div>
+									<span id="tb_cont" ng-show="showFont && editing">
+										<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click='clearName($index, folder)' ><img src="img/cleaar.png"/></span></input>
+									</span>
+								</input>
+							</div>
+							<div ng-class="rowStyle" ng-hide="notAdded" ng-repeat="file in getFiles(currentFolder)">
+								<input type="image" src="img/cleaar.png" ng-click="deleteFile(file)" />
+								<input type="image" class="imageThumb" ng-src="{{file.data}}" ng-show="showThumb && file.isImg"/>
+								<input type="image" ng-src="{{file.img}}" ng-hide="showThumb && file.isImg"/>
+								<input type="checkbox" ng-show="editing" ng-model="file.checked"/>
+								<div ng-show="showFont && !editing" ng-style="font">{{file.name}}</div>
+								<span id="tb_cont" ng-show="showFont && editing">
+									<input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click='clearName($index, file)' ><img src="img/cleaar.png"/></span></input>
+								</span>
+							</div>
+							<div ng-class="rowStyle">
+								<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="notAdded" id="dnd"/>	
+							</div>
+							</div>
+							
 							<!-- ---------------------------------------------------- --->
 						</div>
 					</div>
@@ -195,11 +227,11 @@
 								
 								<p ng-hide="cols">
 								Number of rows:
-									<button type="button" class="btn btn-default" ng-click="minusRow()">-</button>
+									<button type="button" class="btn btn-default" ng-click="changeRow(-1)">-</button>
 									
 									{{nrOfRows}}
 									
-									<button type="button" class="btn btn-default" ng-click="addRow(1)">+</button>
+									<button type="button" class="btn btn-default" ng-click="changeRow(1)">+</button>
 								</p>
 								<p ng-show="cols">
 								Number of cols:
@@ -410,7 +442,7 @@
 	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 	<script src="js/node.js"></script>
-	<script src="js/jquery-ui.min.js"
+	<script src="js/jquery-ui.min.js"></script>
 	<script src="js/jquery.ui.touch-punch.js"></script>
 	<script src="js/mockApp.js"></script>
 	<script src="js/bootstrap-switch.js"></script>

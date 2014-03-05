@@ -11,7 +11,9 @@ app.controller('FirstController', function($scope){
 	$scope.nrOfFolders = 0;
 	$scope.cols = true;
 	$scope.nrOfCols = 3;
+	$scope.nrOfRows = 3;
 	$scope.colStyle = "col span_1_of_"+$scope.nrOfCols;
+	$scope.rowStyle = "rowGrid spanRow_1_of_"+$scope.nrOfRows;
 	$scope.dir = rootFolder.name;
 	$scope.editing = false;
 	$scope.mode = "Edit Mode";
@@ -207,8 +209,20 @@ app.controller('FirstController', function($scope){
 			}
 		}
 	}
-	//addrow
-	//minusrow
+	$scope.changeRow = function(i) {
+		if(i<0){
+			if($scope.nrOfRows > 1){				
+				$scope.nrOfRows --;
+				$scope.rowStyle = "rowGrid spanRow_1_of_"+$scope.nrOfRows;
+			}
+		}
+		else{
+			if($scope.nrOfRows < 12){
+				$scope.nrOfRows++;
+				$scope.rowStyle = "rowGrid spanRow_1_of_"+$scope.nrOfRows;
+			}
+		}
+	}
 	$scope.addFolders = function(){
 		var folder;
 		if($scope.currentFolder.Parent === null){//rootfolder
