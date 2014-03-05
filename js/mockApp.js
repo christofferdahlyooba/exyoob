@@ -465,3 +465,35 @@ function importJson(jsonObj, curr){
 	}
 	return '';
 }
+
+function importDBJson(jsonObj, curr){
+	var currentFolder = curr;
+	
+	var scope = angular.element($("#ng")).scope();
+	if(jsonObj.contents.length > 0){
+		console.log(jsonObj.contents);
+		for(var i = 0, obj = jsonObj.contents; i < obj.length; i++){
+			if(obj[i].is_dir){
+				var folder = new Folder(obj[i].path, 'Folder');
+				folder.img = scope.folderIcon;
+				currentFolder.add(folder);
+				scope.nrOfFolders++;
+				//importJson(obj[i],folder);
+			}
+			else{
+				var file = new File(obj[i].path, obj[i].mime_type);
+				file.img = scope.fileIcon;
+				file.data = null;
+				file.size = obj[i].bytes; 
+				file.lastModified = obj[i].client_mtime;
+				console.log(obj[i].mime_type);
+				var type = obj[i].mime_type.split("/")[0];
+				if(type === 'image'){
+					file.isImg = true;
+				}
+				currentFolder.add(file);
+			}
+		}
+	}
+	return '';
+}
