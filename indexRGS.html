@@ -176,8 +176,10 @@
 							</div>
 							</div>
 							<!-- --------------------ROW---------------------------- -->
-							<div ng-hide="cols">
-							<div ng-class="rowStyle" ng-hide="notAdded" ng-repeat="folder in getFolders(currentFolder)">
+							<div ng-hide="cols" >
+							<ul id="rowStyle">
+							<div ng-hide="notAdded" ng-repeat="folder in getFolders(currentFolder)">
+								<li ng-Class="rowStyleLi">
 								<input type="image" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
 								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)">
 									<input type="checkbox" ng-show="editing" ng-model="folder.checked"/>
@@ -186,8 +188,11 @@
 										<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click='clearName($index, folder)' ><img src="img/cleaar.png"/></span></input>
 									</span>
 								</input>
+								</li>
 							</div>
-							<div ng-class="rowStyle" ng-hide="notAdded" ng-repeat="file in getFiles(currentFolder)">
+							
+							<div ng-hide="notAdded" ng-repeat="file in getFiles(currentFolder)">
+								<li ng-Class="rowStyleLi">
 								<input type="image" src="img/cleaar.png" ng-click="deleteFile(file)" />
 								<input type="image" class="imageThumb" ng-src="{{file.data}}" ng-show="showThumb && file.isImg"/>
 								<input type="image" ng-src="{{file.img}}" ng-hide="showThumb && file.isImg"/>
@@ -196,11 +201,16 @@
 								<span id="tb_cont" ng-show="showFont && editing">
 									<input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click='clearName($index, file)' ><img src="img/cleaar.png"/></span></input>
 								</span>
+								</li>
 							</div>
-							<div ng-class="rowStyle">
+							
+							<div>
+								<li ng-Class="rowStyleLi">
 								<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="notAdded" id="dnd"/>	
+								</li>
 							</div>
 							</div>
+							</ul>
 							
 							<!-- ---------------------------------------------------- --->
 						</div>

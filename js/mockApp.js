@@ -13,7 +13,7 @@ app.controller('FirstController', function($scope){
 	$scope.nrOfCols = 3;
 	$scope.nrOfRows = 3;
 	$scope.colStyle = "col span_1_of_"+$scope.nrOfCols;
-	$scope.rowStyle = "rowGrid spanRow_1_of_"+$scope.nrOfRows;
+	$scope.rowStyleLi = "rowLi"+$scope.nrOfRows;
 	$scope.dir = rootFolder.name;
 	$scope.editing = false;
 	$scope.mode = "Edit Mode";
@@ -213,13 +213,13 @@ app.controller('FirstController', function($scope){
 		if(i<0){
 			if($scope.nrOfRows > 1){				
 				$scope.nrOfRows --;
-				$scope.rowStyle = "rowGrid spanRow_1_of_"+$scope.nrOfRows;
+				$scope.rowStyleLi = "rowLi"+$scope.nrOfRows;
 			}
 		}
 		else{
-			if($scope.nrOfRows < 12){
+			if($scope.nrOfRows < 10){
 				$scope.nrOfRows++;
-				$scope.rowStyle = "rowGrid spanRow_1_of_"+$scope.nrOfRows;
+				$scope.rowStyleLi = "rowLi"+$scope.nrOfRows;
 			}
 		}
 	}

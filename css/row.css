@@ -1,69 +1,43 @@
-/*  GRID ROW SETUP   ==================================================================== */
 
-.rowGrid {
-	display: table;
-	margin: 1% 0 1% 1.6%;
+#rowStyle{
+	height: 560px;  
+	-webkit-column-width: 150px;/*Hur bred är varje kolumn?*/
+    -webkit-column-gap: 30px;/*Hur mycket avstånd mellan columner*/
+    /*-webkit-column-rule: thin solid blue;*/
+	padding: 0;
+	margin: 0;
+}
+#rowStyle:lastChild{
+	margin-bottom: 0px;
 }
 
-.rowGrid:first-child { margin-left: 0; } /* all browsers except IE6 and lower */
-
-
-/*  GRID OF ONE   ============================================================================= */
-.spanRow_1_of_1 {
-	height: 600px;
+.rowLi10{
+	margin-bottom: 0px;
 }
-
-/*  GRID OF TWO   ============================================================================= */
-.spanRow_1_of_2 {
-	height: 300px;
+.rowLi9{
+	margin-bottom: 5px;
 }
-
-/*  GRID OF THREE   ============================================================================= */
-.spanRow_1_of_3 {
-	height: 200px; 
+.rowLi8{
+	margin-bottom: 15px;
 }
-
-/*  GRID OF FOUR   ============================================================================= */
-.spanRow_1_of_4 {
-	height: 150px; 
+.rowLi7{
+	margin-bottom: 25px;
 }
-
-/*  GRID OF FIVE   ============================================================================= */
-.spanRow_1_of_5 {
-  	height: 120px;
+.rowLi6{
+	margin-bottom: 45px;
 }
-
-/*  GRID OF SIX   ============================================================================= */
-.spanRow_1_of_6 {
-  	height:100px;
+.rowLi5{
+	margin-bottom: 70px;
 }
-
-/*  GRID OF SEVEN   ============================================================================= */
-.spanRow_1_of_7 {
-  	height: 86px;
+.rowLi4{
+	margin-bottom: 100px;
 }
-
-/*  GRID OF EIGHT   ============================================================================= */
-.spanRow_1_of_8 {
-	height: 75px; 
+.rowLi3{
+	margin-bottom: 150px;
 }
-
-/*  GRID OF NINE   ============================================================================= */
-.spanRow_1_of_9 {
-	height: 66.6px; 
+.rowLi2{
+	margin-bottom: 420px;
 }
-
-/*  GRID OF TEN   ============================================================================= */
-.spanRow_1_of_10 {
-	height: 60px; 
-}
-
-/*  GRID OF ELEVEN   ============================================================================= */
-.spanRow_1_of_11 {
-	height: 54.54px; 
-}
-
-/*  GRID OF TWELVE   ============================================================================= */
-.spanRow_1_of_12 {
-	height: 50px; 
+.rowLi1{
+	margin-bottom: 500px;
 }
