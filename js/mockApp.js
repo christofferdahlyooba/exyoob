@@ -13,7 +13,8 @@ app.controller('FirstController', function($scope){
 	$scope.nrOfCols = 3;
 	$scope.nrOfRows = 3;
 	$scope.colStyle = "col span_1_of_"+$scope.nrOfCols;
-	$scope.rowStyleLi = "rowLi"+$scope.nrOfRows;
+	//$scope.rowStyleLi = "rowLi"+$scope.nrOfRows;
+	$scope.rowStyleLi = "rowLi";
 	$scope.dir = rootFolder.name;
 	$scope.editing = false;
 	$scope.mode = "Edit Mode";
@@ -209,17 +210,20 @@ app.controller('FirstController', function($scope){
 			}
 		}
 	}
+	$scope.tempArr = [500,420,150,100,70,45,25,15,5,0];
 	$scope.changeRow = function(i) {
 		if(i<0){
 			if($scope.nrOfRows > 1){				
 				$scope.nrOfRows --;
-				$scope.rowStyleLi = "rowLi"+$scope.nrOfRows;
+				//$scope.rowStyleLi = "rowLi"+$scope.nrOfRows;
+				changeRowLiMargins($scope.tempArr[$scope.nrOfRows-1]);
 			}
 		}
 		else{
 			if($scope.nrOfRows < 10){
 				$scope.nrOfRows++;
-				$scope.rowStyleLi = "rowLi"+$scope.nrOfRows;
+				//$scope.rowStyleLi = "rowLi"+$scope.nrOfRows;
+				changeRowLiMargins($scope.tempArr[$scope.nrOfRows-1]);
 			}
 		}
 	}
@@ -443,4 +447,29 @@ function importJson(jsonObj, curr){
 		}
 	}
 	return '';
+}
+function changeRowLiMargins(margin){
+	var rowLi = document.getElementsByClassName("rowLi");
+	var newMargin = ''+margin+'px'
+	for (var i = 0; i<rowLi.length; i++){
+		rowLi[i].style.marginBottom = newMargin;
+	}
+	
+}
+//$scope.tempArr = [500,420,150,100,70,45,25,15,5,0];
+function updateTempArr(size){
+	var scope = angular.element($("#ng")).scope();
+	var arr = [(size - 55*1)*1, (size - 55*2)*0.5, (size - 55*3)*0.33, (size - 55*4)*0.25,
+			(size - 55*5)*0.2, (size - 55*6)*0.1666, (size - 55*7)*0.1428, (size - 55*8)*0.125,
+			(size - 55*9)*0.11, (size - 55*10)*0.0001];
+	scope.tempArr = arr;
+	
+	var rowStyle = document.getElementById("rowStyle");
+	rowStyle.style.height = size+'px';
+	changeRowLiMargins(scope.tempArr[scope.nrOfRows-1]);
+	scope.$apply();
+	
+	//console.log(size);
+	//console.log(arr);
+
 }

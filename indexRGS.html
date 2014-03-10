@@ -464,8 +464,11 @@
 			$( "#resizable" ).resizable({
 			  maxHeight: 600,
 			  maxWidth: 745,
-			  minHeight: 0,
-			  minWidth: 0
+			  minHeight: 10,
+			  minWidth: 10,
+			  resize: function( event, ui ) {
+				updateTempArr(ui.size.height);
+			  }
 			});
 		  }); 
 		
