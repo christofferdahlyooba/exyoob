@@ -1,6 +1,6 @@
 
 #rowStyle{
-	height: 560px;  
+	height: 600px; 
 	-webkit-column-width: 150px;/*Hur bred är varje kolumn?*/
     -webkit-column-gap: 30px;/*Hur mycket avstånd mellan columner*/
     /*-webkit-column-rule: thin solid blue;*/
@@ -14,34 +14,3 @@
 .rowLi{
 	margin-bottom: 150px;
 }
-
-/*.rowLi10{
-	margin-bottom: 0px;
-}
-.rowLi9{
-	margin-bottom: 5px;
-}
-.rowLi8{
-	margin-bottom: 15px;
-}
-.rowLi7{
-	margin-bottom: 25px;
-}
-.rowLi6{
-	margin-bottom: 45px;
-}
-.rowLi5{
-	margin-bottom: 70px;
-}
-.rowLi4{
-	margin-bottom: 100px;
-}
-.rowLi3{
-	margin-bottom: 150px;
-}
-.rowLi2{
-	margin-bottom: 420px;
-}
-.rowLi1{
-	margin-bottom: 500px;
-}*/

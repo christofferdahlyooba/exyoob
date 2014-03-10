@@ -99,6 +99,7 @@
 		.gridButton {
 			float:right;
 		}
+		
 		</style>
 	</head>
 	<body id="ng" ng-controller="FirstController">
@@ -464,10 +465,11 @@
 			$( "#resizable" ).resizable({
 			  maxHeight: 600,
 			  maxWidth: 745,
-			  minHeight: 10,
-			  minWidth: 10,
+			  minHeight: 100,
+			  minWidth: 140,
 			  resize: function( event, ui ) {
-				updateTempArr(ui.size.height);
+				var scope = angular.element($("#ng")).scope()
+				scope.updateHeight(ui.size.height);
 			  }
 			});
 		  }); 
