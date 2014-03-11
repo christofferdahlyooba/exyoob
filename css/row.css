@@ -2,7 +2,7 @@
 #rowStyle{
 	height: 600px; 
 	-webkit-column-width: 150px;/*Hur bred är varje kolumn?*/
-    -webkit-column-gap: 30px;/*Hur mycket avstånd mellan columner*/
+    -webkit-column-gap: 40px;/*Hur mycket avstånd mellan columner*/
     /*-webkit-column-rule: thin solid blue;*/
 	padding: 0;
 	margin: 0;

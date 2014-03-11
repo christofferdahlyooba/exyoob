@@ -14,6 +14,11 @@
 		
 		<style>
 		
+		html {
+			overflow: -moz-scrollbars-vertical; 
+			overflow-y: scroll;
+		}
+		
 		.col-settings {
 			margin-left: 15px;
 			margin-right: 15px;
@@ -484,6 +489,7 @@
 			scope.$apply(function(){
 				scope.showFont = !scope.showFont;
 			});
+			setTimeout(togglePlaceHolders());
 		});
 		
 		//Toggle button for showing thumbnails
@@ -495,7 +501,7 @@
 		  var scope = angular.element($("#ng")).scope();
 			scope.$apply(function(){
 				scope.showThumb = !scope.showThumb;
-			});
+			});		  
 		});
 		
 		

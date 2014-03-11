@@ -29,6 +29,7 @@ app.controller('FirstController', function($scope, $timeout){
 	$scope.allAllowed = true;
 	$scope.gridMode = true;	
 	$scope.showThumb = false;
+	$scope.showFont = false;
 	$scope.folderIcon = defaultFolderIcon;
 	$scope.fileIcon = defaultFileIcon;
 	$scope.bgImage = {'background-image':'url(img/bg.jpg)'};
@@ -350,7 +351,10 @@ app.controller('FirstController', function($scope, $timeout){
 		changeRowLiMargins($scope.calcMargins());
 	}
 	$scope.calcMargins = function calcMargins(){
-		return ($scope.height-60*$scope.nrOfRows)*(1/$scope.nrOfRows);
+		if(!$scope.showFont){
+			return (($scope.height-84*$scope.nrOfRows)*(1/$scope.nrOfRows))+24;
+		}
+		return ($scope.height-84*$scope.nrOfRows)*(1/$scope.nrOfRows);
 	}
 	
 });
@@ -470,5 +474,28 @@ function changeRowLiMargins(margin){
 	for (var i = 0; i<rowLi.length; i++){
 		rowLi[i].style.marginBottom = newMargin;
 	}
+	
+}
+
+function togglePlaceHolders(){
+	var scope = angular.element($("#ng")).scope();
+	var margin = 0;
+	if(!scope.showFont){
+		margin = 24;
+	}
+	if(scope.cols){
+		var colStyle = document.getElementsByClassName(scope.colStyle);	
+		for(var i = 0; i<colStyle.length; i++){
+			colStyle[i].style.marginBottom = margin+'px';
+		}
+	}else{
+		var rowLi = document.getElementsByClassName("rowLi");
+		for(var i = 0; i<rowLi.length; i++){
+			margin = scope.calcMargins();
+			rowLi[i].style.marginBottom = margin+'px';
+		}
+		
+	}
+	
 	
 }
