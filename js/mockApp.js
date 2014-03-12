@@ -42,7 +42,7 @@ app.controller('FirstController', function($scope, $timeout){
 	$scope.enter = function(folder){
 		$scope.currentFolder = folder;
 		$scope.nrOfFolders = $scope.getNrOfFolders(folder);
-		$scope.dir += ' -> ' + folder.name;	
+		$scope.dir = folderPathString(getFolderPath([],$scope.currentFolder));
 		$timeout($scope.updateRowMargins);
 	}
 	
@@ -50,7 +50,7 @@ app.controller('FirstController', function($scope, $timeout){
 		if($scope.currentFolder.Parent !== null){
 			$scope.currentFolder = $scope.currentFolder.Parent;
 			$scope.nrOfFolders = $scope.getNrOfFolders($scope.currentFolder);
-			$scope.dir = $scope.getFolderPath($scope.currentFolder);
+			$scope.dir = folderPathString(getFolderPath([],$scope.currentFolder));
 			$timeout($scope.updateRowMargins);
 		}
 	}
@@ -301,22 +301,7 @@ app.controller('FirstController', function($scope, $timeout){
 			nr++;
 		}
 		return nr;	
-	}
-	$scope.getFolderPath = function(folder){
-		var path = [];
-		var ret = rootFolder.name;
-		if(folder === rootFolder){
-			return ret;
-		}
-		for(var i = 0; i < $scope.getNrOfParents(folder); i++){
-			path.push(folder.name);
-			folder = folder.Parent;
-		}
-		for(var i = path.length-1; 0 <= i; i--){
-			ret += ' -> ' + path[i];
-		}
-		return ret;
-	}
+	}	
 	$scope.getFolders = function(folder){
 		var ret = [];
 		for(var i = 0; i < folder.children.length; i++){
@@ -475,6 +460,26 @@ function changeRowLiMargins(margin){
 		rowLi[i].style.marginBottom = newMargin;
 	}
 	
+}
+
+var getFolderPath = function(path, folder){
+		
+		path.push(folder.name);
+		if(folder.Parent!=null){
+			getFolderPath(path,folder.Parent);
+		}
+		return path;
+}
+var folderPathString = function(path){
+	var ret= '';
+	for(var i = path.length-1; i>=0; i--){
+		if(i!==0){
+			ret += path[i] + ' -> ';
+		}else{		
+			ret += path[i];
+		}
+	}
+	return ret;
 }
 
 function togglePlaceHolders(){

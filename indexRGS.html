@@ -25,29 +25,9 @@
 			width: 30%;
 		}
 		
-		.btn2 {width:50%;}
-		
-		.contentpanel {
-			background-image: url(img/bg.jpg);
-		}
-		
 		.contentpanel2 {
 			height:600px;
 			overflow:auto;
-		}
-		
-		.contentpanel3 {
-			width:300px;
-			overflow:auto;
-		}
-		
-		.listpanel {
-			height:570px;
-			background-color:#00ff00;
-		}
-		
-		.previewList {
-			border:2px solid;
 		}
 		
 		ul
@@ -60,29 +40,6 @@
 			outline:none;
 			border-width:0px;
 			border:none;
-		}
-		
-		#input-group-btn
-		{
-			padding: 0 0 0 0;
-		}
-		
-		#tb_cont {
-			position: relative;
-			width: auto;
-		}
-		#clear_input {
-			width: 12px;
-			height: 12px;
-			display: inline-block;
-			top: 4px;
-			text-align: center;
-			font-size: 10px;
-			border-radius: 10px;
-			-o-border-radius: 10px;
-			-moz-border-radius: 10px;
-			-webkit-border-radius: 10px;
-			cursor: pointer;
 		}
 		
 		.image-upload > input
@@ -103,6 +60,19 @@
 		
 		.gridButton {
 			float:right;
+		}
+		.nameField{
+			display: table;
+			position: relative;
+			margin: auto;
+		}
+		.nameField input{
+			width:100%;			
+		}		
+		.clearName{
+			position: absolute;
+			right : 5px;
+			top: 5px;
 		}
 		
 		</style>
@@ -158,27 +128,29 @@
 							<!-- --------------------COLUMN---------------------------- -->
 							<div ng-show="cols">
 							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="folder in getFolders(currentFolder)">
-								<input type="image" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
-								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)">
-									<input type="checkbox" ng-show="editing" ng-model="folder.checked"/>
-									<div ng-show="showFont && !editing" ng-style="font">{{folder.name}}</div>
-									<span id="tb_cont" ng-show="showFont && editing">
-										<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click='clearName($index, folder)' ><img src="img/cleaar.png"/></span></input>
-									</span>
-								</input>
+								<input type="image" ng-show="editing" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
+								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)"/>
+								<input type="checkbox" ng-show="editing" ng-model="folder.checked"/>
+								<div ng-show="showFont && !editing" ng-style="font">{{folder.name}}</div>
+								<div ng-show="showFont && editing" class="nameField">
+									<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"/>	
+									<img class="clearName"src="img/cleaar.png" ng-click='clearName($index, folder)'/>								
+								</div>								
 							</div>
+							
 							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="file in getFiles(currentFolder)">
-								<input type="image" src="img/cleaar.png" ng-click="deleteFile(file)" />
+								<input type="image" ng-show="editing" src="img/cleaar.png" ng-click="deleteFile(file)" />
 								<input type="image" class="imageThumb" ng-src="{{file.data}}" ng-show="showThumb && file.isImg"/>
 								<input type="image" ng-src="{{file.img}}" ng-hide="showThumb && file.isImg"/>
 								<input type="checkbox" ng-show="editing" ng-model="file.checked"/>
 								<div ng-show="showFont && !editing" ng-style="font">{{file.name}}</div>
-								<span id="tb_cont" ng-show="showFont && editing">
-									<input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click='clearName($index, file)' ><img src="img/cleaar.png"/></span></input>
-								</span>
+								<div ng-show="showFont && editing" class="nameField">
+									<input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"/>
+									<img class="clearName"src="img/cleaar.png" ng-click='clearName($index, file)'/>	
+								</div>
 							</div>
 							<div ng-class="colStyle">
-								<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="notAdded" id="dnd"/>	
+								<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="notAdded" id="dnd"/>
 							</div>
 							</div>
 							<!-- --------------------ROW---------------------------- -->
@@ -186,27 +158,28 @@
 							<ul id="rowStyle">
 							<div ng-hide="notAdded" ng-repeat="folder in getFolders(currentFolder)">
 								<li ng-Class="rowStyleLi">
-								<input type="image" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
-								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)">
+									<input type="image" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
+									<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)"/>
 									<input type="checkbox" ng-show="editing" ng-model="folder.checked"/>
 									<div ng-show="showFont && !editing" ng-style="font">{{folder.name}}</div>
-									<span id="tb_cont" ng-show="showFont && editing">
-										<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click='clearName($index, folder)' ><img src="img/cleaar.png"/></span></input>
-									</span>
-								</input>
+									<div ng-show="showFont && editing" class="nameField">
+										<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"/>	
+										<img class="clearName"src="img/cleaar.png" ng-click='clearName($index, folder)'/>								
+									</div>
 								</li>
 							</div>
 							
 							<div ng-hide="notAdded" ng-repeat="file in getFiles(currentFolder)">
 								<li ng-Class="rowStyleLi">
-								<input type="image" src="img/cleaar.png" ng-click="deleteFile(file)" />
-								<input type="image" class="imageThumb" ng-src="{{file.data}}" ng-show="showThumb && file.isImg"/>
-								<input type="image" ng-src="{{file.img}}" ng-hide="showThumb && file.isImg"/>
-								<input type="checkbox" ng-show="editing" ng-model="file.checked"/>
-								<div ng-show="showFont && !editing" ng-style="font">{{file.name}}</div>
-								<span id="tb_cont" ng-show="showFont && editing">
-									<input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click='clearName($index, file)' ><img src="img/cleaar.png"/></span></input>
-								</span>
+									<input type="image" src="img/cleaar.png" ng-click="deleteFile(file)" />
+									<input type="image" class="imageThumb" ng-src="{{file.data}}" ng-show="showThumb && file.isImg"/>
+									<input type="image" ng-src="{{file.img}}" ng-hide="showThumb && file.isImg"/>
+									<input type="checkbox" ng-show="editing" ng-model="file.checked"/>
+									<div ng-show="showFont && !editing" ng-style="font">{{file.name}}</div>
+									<div ng-show="showFont && editing" class="nameField">
+										<input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"/>
+										<img class="clearName"src="img/cleaar.png" ng-click='clearName($index, file)'/>	
+									</div>
 								</li>
 							</div>
 							
@@ -515,12 +488,6 @@
 			scope.$apply(function(){
 				scope.cols = !scope.cols;
 			});
-		});
-		
-		//Clearing and focusing on text field for folder names
-		$('#clear_input').click(function () {
-			$('#q').focus();
-			$('#q').val('');
 		});
 	</script>
 	<a href='#' ng-click="exportToJson()">test</a>
