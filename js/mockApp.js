@@ -341,6 +341,16 @@ app.controller('FirstController', function($scope, $timeout){
 		}
 		return ($scope.height-84*$scope.nrOfRows)*(1/$scope.nrOfRows);
 	}
+	$scope.changeScrollDir = function(){
+		var contentPanel = document.getElementsByClassName("contentpanel2");
+		if($scope.cols){
+			contentPanel[1].style.overflowY = 'auto';
+			contentPanel[1].style.overflowX = 'hidden';
+		}else{
+			contentPanel[1].style.overflowX = 'auto';
+			contentPanel[1].style.overflowY = 'hidden';
+		}
+	}
 	
 });
 		

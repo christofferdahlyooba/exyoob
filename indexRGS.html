@@ -27,7 +27,10 @@
 		
 		.contentpanel2 {
 			height:600px;
-			overflow:auto;
+			overflow:hidden;
+			overflow-y: auto;
+			overflow-x: hidden;
+			padding: 0;
 		}
 		
 		ul
@@ -122,7 +125,8 @@
 							<input type="image" src="img/backSmall.png" ng-hide="root" ng-click="goBack()"/>   {{dir}}
 							<input class="gridButton" type="image" src="img/list.png" ng-show="allAllowed" ng-click="changeView()"/>
 						</div>
-						<div class="panel-body text-center contentpanel2" ng-style="bgImage" id="resizable">
+						<div id="resizable">
+						<div class="panel-body text-center contentpanel2" ng-style="bgImage">
 							<!-- ----------------Content Body-------------------------  -->
 							<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add.png" ng-show="notAdded"/>
 							<!-- --------------------COLUMN---------------------------- -->
@@ -192,6 +196,7 @@
 							</ul>
 							
 							<!-- ---------------------------------------------------- --->
+						</div>
 						</div>
 					</div>
 				</div>
@@ -442,9 +447,10 @@
 				$(function() {
 			$( "#resizable" ).resizable({
 			  maxHeight: 600,
-			  maxWidth: 745,
+			  maxWidth: 748,
 			  minHeight: 100,
 			  minWidth: 140,
+			  alsoResize: '.contentpanel2',
 			  resize: function( event, ui ) {
 				var scope = angular.element($("#ng")).scope()
 				scope.updateHeight(ui.size.height);
@@ -487,6 +493,7 @@
 			var scope = angular.element($("#ng")).scope();
 			scope.$apply(function(){
 				scope.cols = !scope.cols;
+				scope.changeScrollDir();
 			});
 		});
 	</script>
