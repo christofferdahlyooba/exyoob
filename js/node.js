@@ -55,7 +55,15 @@ File.prototype.removeFrom = function(folder){
 
 var replacer = function(key, value)
 {
-  if (key=="Parent")
+  if (key=="Parent" || key ==='data')
+  {
+      return undefined;
+  }
+  else return value;
+}
+var replacer2 = function(key, value)
+{
+  if (key=="currentFolder")
   {
       return undefined;
   }

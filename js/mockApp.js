@@ -7,250 +7,252 @@ var defaultFolderIcon = 'img/folder.png';
 
 app.controller('FirstController', function($scope, $timeout){
 	
-	$scope.currentFolder = rootFolder;
-	$scope.nrOfFolders = 0;
-	$scope.cols = true;
-	$scope.nrOfCols = 3;
-	$scope.nrOfRows = 3;
-	$scope.colStyle = "col span_1_of_"+$scope.nrOfCols;
-	//$scope.rowStyleLi = "rowLi"+$scope.nrOfRows;
-	$scope.rowStyleLi = "rowLi";
-	$scope.dir = rootFolder.name;
-	$scope.editing = false;
-	$scope.mode = "Edit Mode";
-	$scope.notAdded=true;
-	$scope.underMenu0 = false;
-	$scope.underMenu = false;
-	$scope.underMenu2 = false;
-	$scope.underMenu3 = false;
-	$scope.underMenu4 = false;
-	$scope.underMenu5 = false;
-	$scope.viewsAllowed = "Grid & List";
-	$scope.allAllowed = true;
-	$scope.gridMode = true;	
-	$scope.showThumb = false;
-	$scope.showFont = false;
-	$scope.folderIcon = defaultFolderIcon;
-	$scope.fileIcon = defaultFileIcon;
-	$scope.bgImage = {'background-image':'url(img/bg.jpg)'};
-	$scope.fontSize = 12;
-	$scope.fontText = "Verdana";
-	$scope.fontColor = "black";
-	$scope.font = {'font-size':$scope.fontSize+'pt','font-family':$scope.fontText,'color':$scope.fontColor};
-	$scope.height = 600;
+	$scope.settings = {
+		currentFolder: rootFolder,
+		nrOfFolders: 0,
+		cols: true,
+		nrOfCols: 3,
+		nrOfRows: 3,
+		colStyle: 'col span_1_of_3',
+		rowStyleLi: 'rowLi',
+		dir: rootFolder.name,
+		editing: false,
+		mode: 'Edit Mode',
+		notAdded: true,
+		underMenu0: false,
+		underMenu: false,
+		underMenu2: false,
+		underMenu3: false,
+		underMenu4: false, 
+		underMenu5: false,
+		viewsAllowed: 'Grid & List',
+		allAllowed: true,
+		gridMode: true,
+		showThumb: false,
+		showFont: false,
+		folderIcon: defaultFolderIcon,
+		fileIcon: defaultFileIcon,
+		bgImage: {'background-image':'url(img/bg.jpg)'},
+		fontSize: 12,
+		fontText: 'Verdana',
+		fontColor: 'black',
+		font: {'font-size':'12pt','font-family':"Verdana",'color':"black"},
+		height: 600
+	};
+	
 	
 	$scope.enter = function(folder){
-		$scope.currentFolder = folder;
-		$scope.nrOfFolders = $scope.getNrOfFolders(folder);
-		$scope.dir = folderPathString(getFolderPath([],$scope.currentFolder));
+		$scope.settings.currentFolder = folder;
+		$scope.settings.nrOfFolders = $scope.getNrOfFolders(folder);
+		$scope.settings.dir = folderPathString(getFolderPath($scope.settings.currentFolder));
 		$timeout($scope.updateRowMargins);
 	}
 	
 	$scope.goBack = function(){
-		if($scope.currentFolder.Parent !== null){
-			$scope.currentFolder = $scope.currentFolder.Parent;
-			$scope.nrOfFolders = $scope.getNrOfFolders($scope.currentFolder);
-			$scope.dir = folderPathString(getFolderPath([],$scope.currentFolder));
+		if($scope.settings.currentFolder.Parent !== null){
+			$scope.settings.currentFolder = $scope.settings.currentFolder.Parent;
+			$scope.settings.nrOfFolders = $scope.getNrOfFolders($scope.settings.currentFolder);
+			$scope.settings.dir = folderPathString(getFolderPath($scope.settings.currentFolder));
 			$timeout($scope.updateRowMargins);
 		}
 	}
 	$scope.editMode = function(){
-		$scope.editing = !$scope.editing;
-		if($scope.editing){
-			$scope.mode = "View Mode";
+		$scope.settings.editing = !$scope.settings.editing;
+		if($scope.settings.editing){
+			$scope.settings.mode = "View Mode";
 		}
 		else{
-			$scope.mode = "Edit Mode";
+			$scope.settings.mode = "Edit Mode";
 		}
 	}
 	$scope.add = function() {
-		$scope.notAdded = false; 
-		$scope.editing = true;
+		$scope.settings.notAdded = false; 
+		$scope.settings.editing = true;
 	}
 	$scope.viewMenu = function(){
-		$scope.underMenu0 = true;
+		$scope.settings.underMenu0 = true;
 	}
 	$scope.applyViews = function(){
-		$scope.underMenu0 = false;
-		if($scope.viewsAllowed === 'Grid & List')
+		$scope.settings.underMenu0 = false;
+		if($scope.settings.viewsAllowed === 'Grid & List')
 		{
-			$scope.allAllowed = true;
+			$scope.settings.allAllowed = true;
 		}
-		else if($scope.viewsAllowed === 'Grid')
+		else if($scope.settings.viewsAllowed === 'Grid')
 		{
-			$scope.allAllowed = false;
-			if(!$scope.gridMode)
+			$scope.settings.allAllowed = false;
+			if(!$scope.settings.gridMode)
 			{
 				$scope.changeView();
 			}
 		}
-		else if($scope.viewsAllowed === 'List')
+		else if($scope.settings.viewsAllowed === 'List')
 		{
-			$scope.allAllowed = false;
-			if($scope.gridMode)
+			$scope.settings.allAllowed = false;
+			if($scope.settings.gridMode)
 			{
 				$scope.changeView();
 			}
 		}		
 	}
 	$scope.changeView = function(){
-		$scope.gridMode = !$scope.gridMode;
+		$scope.settings.gridMode = !$scope.settings.gridMode;
 	}
 	$scope.bgMenu = function(){
-		$scope.underMenu = true;
+		$scope.settings.underMenu = true;
 	}	
 	$scope.fontMenu = function(){
-		$scope.underMenu3 = true;
+		$scope.settings.underMenu3 = true;
 	}	
 	$scope.fontColorMenu = function(){
-		$scope.underMenu4 = true;
+		$scope.settings.underMenu4 = true;
 	}
 	$scope.applyFont = function(){
-		$scope.underMenu3 = false;
-		$scope.font = {
-			'font-size':$scope.fontSize+'pt',
-			'font-family':$scope.fontText,
-			'color':$scope.fontColor
+		$scope.settings.underMenu3 = false;
+		$scope.settings.font = {
+			'font-size':$scope.settings.fontSize+'pt',
+			'font-family':$scope.settings.fontText,
+			'color':$scope.settings.fontColor
 		};
 	}
 	$scope.applyFontColor = function(){
-		$scope.underMenu4 = false;
-		$scope.font = {
-			'font-size':$scope.fontSize+'pt',
-			'font-family':$scope.fontText,
-			'color':$scope.fontColor
+		$scope.settings.underMenu4 = false;
+		$scope.settings.font = {
+			'font-size':$scope.settings.fontSize+'pt',
+			'font-family':$scope.settings.fontText,
+			'color':$scope.settings.fontColor
 		};
 	}	
 	$scope.folderIconMenu = function(){
-		$scope.underMenu2 = true;
+		$scope.settings.underMenu2 = true;
 	}
 	$scope.changeFolderIcon = function(i){
-		$scope.underMenu2 = false;
+		$scope.settings.underMenu2 = false;
 		if(i === 1)
 		{
-			$scope.folderIcon = 'img/folder.png';
+			$scope.settings.folderIcon = 'img/folder.png';
 		}
 		else if(i === 2)
 		{
-			$scope.folderIcon = 'img/picFolder.png';
+			$scope.settings.folderIcon = 'img/picFolder.png';
 		}
 		else if(i === 3)
 		{
-			$scope.folderIcon = 'img/musicFolder.png';
+			$scope.settings.folderIcon = 'img/musicFolder.png';
 		}
-		var folders = $scope.getFolders($scope.currentFolder);
+		var folders = $scope.getFolders($scope.settings.currentFolder);
 		for(var j = 0; j < folders.length; j++)
 		{
 			if(folders[j].checked)
 			{
-				folders[j].img = $scope.folderIcon;
+				folders[j].img = $scope.settings.folderIcon;
 			}		
 		}
 	}
 	$scope.fileIconMenu = function(){
-		$scope.underMenu5 = true;
+		$scope.settings.underMenu5 = true;
 	}
 	$scope.changeFileIcon = function(i){
-		$scope.underMenu5 = false;
+		$scope.settings.underMenu5 = false;
 		if(i === 1)
 		{
-			fileIcon = 'img/file.png';
+			$scope.settings.fileIcon = 'img/file.png';
 		}
 		else if(i === 2)
 		{
-			fileIcon = 'img/picFile.png';
+			$scope.settings.fileIcon = 'img/picFile.png';
 		}
 		else if(i === 3)
 		{
-			fileIcon = 'img/pdfFile.jpg';
+			$scope.settings.fileIcon = 'img/pdfFile.jpg';
 		}
-		var files = $scope.getFiles($scope.currentFolder);
+		var files = $scope.getFiles($scope.settings.currentFolder);
 		for(var j = 0; j < files.length; j++)
 		{
 			if(files[j].checked)
 			{
-				files[j].img = fileIcon;
+				files[j].img = $scope.settings.fileIcon;
 			}
 		}
 	}
 	$scope.deleteFolder = function(folder){
-		$scope.currentFolder.remove(folder);
-		$scope.nrOfFolders = $scope.getNrOfFolders($scope.currentFolder);
+		$scope.settings.currentFolder.remove(folder);
+		$scope.settings.nrOfFolders = $scope.getNrOfFolders($scope.settings.currentFolder);
 	}
 	$scope.deleteFile = function(file){
-		$scope.currentFolder.remove(file);
+		$scope.settings.currentFolder.remove(file);
 	}
 	$scope.changeBg = function(i){
-		$scope.underMenu=false;
+		$scope.settings.underMenu=false;
 		if(i === 1)
 		{
-			$scope.bgImage = {'background-image':'url(img/bg.jpg)'};
+			$scope.settings.bgImage = {'background-image':'url(img/bg.jpg)'};
 		}
 		else if(i === 2)
 		{
-			$scope.bgImage = {'background-image':'url(img/sand.jpg)'};
+			$scope.settings.bgImage = {'background-image':'url(img/sand.jpg)'};
 		}
 		else if(i === 3)
 		{
-			$scope.bgImage = {'background-image':'url(img/sunset.jpg)'};
+			$scope.settings.bgImage = {'background-image':'url(img/sunset.jpg)'};
 		}
 		else
 		{
-			$scope.bgImage = {'background-image':'url(img/sky.jpg)'};
+			$scope.settings.bgImage = {'background-image':'url(img/sky.jpg)'};
 		}
 	}
 	$scope.changeCol = function(i) {
 		if(i<0){
-			if($scope.nrOfCols > 1){				
-				$scope.nrOfCols --;
-				$scope.colStyle = "col span_1_of_"+$scope.nrOfCols;
+			if($scope.settings.nrOfCols > 1){				
+				$scope.settings.nrOfCols --;
+				$scope.settings.colStyle = "col span_1_of_"+$scope.settings.nrOfCols;
 			}
 		}
 		else{
-			if($scope.nrOfCols < 12){
-				$scope.nrOfCols++;
-				$scope.colStyle = "col span_1_of_"+$scope.nrOfCols;
+			if($scope.settings.nrOfCols < 12){
+				$scope.settings.nrOfCols++;
+				$scope.settings.colStyle = "col span_1_of_"+$scope.settings.nrOfCols;
 			}
 		}
 	}
 	$scope.changeRow = function(i) {
 		if(i<0){
-			if($scope.nrOfRows > 1){				
-				$scope.nrOfRows --;
+			if($scope.settings.nrOfRows > 1){				
+				$scope.settings.nrOfRows --;
 				changeRowLiMargins($scope.calcMargins());
 			}
 		}
 		else{
-			if($scope.nrOfRows < 10){
-				$scope.nrOfRows++;
+			if($scope.settings.nrOfRows < 10){
+				$scope.settings.nrOfRows++;
 				changeRowLiMargins($scope.calcMargins());
 			}
 		}
 	}
 	$scope.addFolders = function(){
 		var folder;
-		if($scope.currentFolder.Parent === null){//rootfolder
-			folder = new Folder("Folder"+($scope.nrOfFolders+1));
+		if($scope.settings.currentFolder.Parent === null){//rootfolder
+			folder = new Folder("Folder"+($scope.settings.nrOfFolders+1));
 		}
 		else{
-			folder = new Folder($scope.currentFolder.name+"_"+($scope.nrOfFolders+1));
+			folder = new Folder($scope.settings.currentFolder.name+"_"+($scope.settings.nrOfFolders+1));
 		}
-		folder.img = $scope.folderIcon;
-		$scope.currentFolder.add(folder);
-		$scope.nrOfFolders = $scope.getNrOfFolders($scope.currentFolder);
+		folder.img = $scope.settings.folderIcon;
+		$scope.settings.currentFolder.add(folder);
+		$scope.settings.nrOfFolders = $scope.getNrOfFolders($scope.settings.currentFolder);
 		$timeout($scope.updateRowMargins);
 	}
 	//addDBFolder
 	//minusFolder
 	$scope.changeFontSize = function(i){
 		if(i > 0){
-			$scope.fontSize++;
-			$scope.font = {'font-size':$scope.fontSize+'pt','font-family':$scope.fontText,'color':$scope.fontColor};
+			$scope.settings.fontSize++;
+			$scope.settings.font = {'font-size':$scope.settings.fontSize+'pt','font-family':$scope.settings.fontText,'color':$scope.settings.fontColor};
 		}
 		else{
-			if($scope.fontSize > 1){
-				$scope.fontSize--;
-				$scope.font = {'font-size':$scope.fontSize+'pt','font-family':$scope.fontText,'color':$scope.fontColor};
+			if($scope.settings.fontSize > 1){
+				$scope.settings.fontSize--;
+				$scope.settings.font = {'font-size':$scope.settings.fontSize+'pt','font-family':$scope.settings.fontText,'color':$scope.settings.fontColor};
 			}
 		}
 	}
@@ -322,9 +324,16 @@ app.controller('FirstController', function($scope, $timeout){
 	}
 
 	$scope.exportToJson = function(){
-		console.log(JSON.stringify($scope.currentFolder, replacer));		
-		return JSON.stringify($scope.currentFolder, replacer);
+		$scope.exportSettingsToJson();
+		console.log(JSON.stringify($scope.settings.currentFolder, replacer));		
+		//return JSON.stringify($scope.currentFolder, replacer);
 	}
+	
+	$scope.exportSettingsToJson = function(){
+		console.log(JSON.stringify($scope.settings, replacer2));		
+		//return JSON.stringify($scope.currentFolder, replacer);
+	}
+	
 	$scope.updateRowMargins = function updateRowMargins(){
 		var size = $scope.calcMargins();
 		changeRowLiMargins(size);
@@ -336,14 +345,14 @@ app.controller('FirstController', function($scope, $timeout){
 		changeRowLiMargins($scope.calcMargins());
 	}
 	$scope.calcMargins = function calcMargins(){
-		if(!$scope.showFont){
-			return (($scope.height-84*$scope.nrOfRows)*(1/$scope.nrOfRows))+24;
+		if(!$scope.settings.showFont){
+			return (($scope.settings.height-84*$scope.settings.nrOfRows)*(1/$scope.settings.nrOfRows))+24;
 		}
-		return ($scope.height-84*$scope.nrOfRows)*(1/$scope.nrOfRows);
+		return ($scope.settings.height-84*$scope.settings.nrOfRows)*(1/$scope.settings.nrOfRows);
 	}
 	$scope.changeScrollDir = function(){
 		var contentPanel = document.getElementsByClassName("contentpanel2");
-		if($scope.cols){
+		if($scope.settings.cols){
 			contentPanel[1].style.overflowY = 'auto';
 			contentPanel[1].style.overflowX = 'hidden';
 		}else{
@@ -359,52 +368,56 @@ app.controller('FirstController', function($scope, $timeout){
 --------------------DRAG AND DROP-----------------------------------
 --------------------------------------------------------------------*/
 var fileDiv = document.getElementById("dnd");
-fileDiv.addEventListener("dragenter", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-}, false);
+if(fileDiv !== null){
+	fileDiv.addEventListener("dragenter", function (e) {
+		e.stopPropagation();
+		e.preventDefault();
+	}, false);
 
-fileDiv.addEventListener("dragover", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-}, false);
+	fileDiv.addEventListener("dragover", function (e) {
+		e.stopPropagation();
+		e.preventDefault();
+	}, false);
 
-fileDiv.addEventListener("drop", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
+	fileDiv.addEventListener("drop", function (e) {
+		e.stopPropagation();
+		e.preventDefault();
 
-    var dt = e.dataTransfer;
-    var files = dt.files;
+		var dt = e.dataTransfer;
+		var files = dt.files;
 
-	var scope = angular.element($("#ng")).scope();
-    for (var i = 0, f; f = files[i]; i++) {
-		var file = new File(f.name, f.type);
-		file.img = scope.fileIcon;
-		file.size = f.size;
-		file.lastModified = f.lastModifiedDate;
-		var type = f.type.split("/")[0];
-		if(type === 'image'){
-			file.isImg = true;
+		var scope = angular.element($("#ng")).scope();
+		for (var i = 0, f; f = files[i]; i++) {
+			var file = new File(f.name, f.type);
+			file.img = scope.settings.fileIcon;
+			file.size = f.size;
+			file.lastModified = f.lastModifiedDate;
+			var type = f.type.split("/")[0];
+			if(type === 'image'){
+				file.isImg = true;
+			}
+			var reader = new FileReader()
+			reader.onload = (function(file){
+			  return function(e){			
+				file.data = e.target.result;
+				scope.$apply();
+			  };
+			}(file))
+			reader.readAsDataURL(f);
+			
+			scope.$apply(function () {			
+				scope.settings.currentFolder.add(file);
+			});
 		}
-		var reader = new FileReader()
-		reader.onload = (function(file){
-		  return function(e){			
-			file.data = e.target.result;
-			scope.$apply();
-		  };
-		}(file))
-		reader.readAsDataURL(f);
-		
-		scope.$apply(function () {			
-			scope.currentFolder.add(file);
-		});
-    }
-	setTtimeout(scope.updateRowMargins);
-}, false);
+		setTimeout(scope.updateRowMargins);
+	}, false);
+}
 /*------------------------------------------------------------------
 --------------------ADD FILES FROM COMPUTER-------------------------
 --------------------------------------------------------------------*/
-document.getElementById('files').addEventListener('change', handleFileSelect, false);
+if(document.getElementById('files') !== null){
+	document.getElementById('files').addEventListener('change', handleFileSelect, false);
+}
 
 function handleFileSelect(evt) {
 	var files = evt.target.files; // FileList object
@@ -414,7 +427,7 @@ function handleFileSelect(evt) {
 	for (var i = 0, f; f = files[i]; i++) 
 	{
 		var file = new File(f.name, f.type);
-		file.img = scope.fileIcon;
+		file.img = scope.settings.fileIcon;
 		file.size = f.size;
 		file.lastModified = f.lastModifiedDate;
 		var type = f.type.split("/")[0];
@@ -431,13 +444,13 @@ function handleFileSelect(evt) {
 		reader.readAsDataURL(f);
 		
 		scope.$apply(function () {			
-			scope.currentFolder.add(file);
+			scope.settings.currentFolder.add(file);
 		});
 	}
 	setTimeout(scope.updateRowMargins);
 }
 
-function importJson(jsonObj, curr){
+function importJsonFolder(jsonObj, curr){
 	var currentFolder = curr;
 	
 	var scope = angular.element($("#ng")).scope();
@@ -448,7 +461,7 @@ function importJson(jsonObj, curr){
 				folder.img = obj[i].img;
 				currentFolder.add(folder);
 				scope.nrOfFolders++;
-				importJson(obj[i], folder);
+				importJsonFolder(obj[i], folder);
 			}
 			else{
 				var file = new File(obj[i].name, obj[i].type);
@@ -463,6 +476,12 @@ function importJson(jsonObj, curr){
 	}
 	return '';
 }
+
+function importJsonSettings(jsonObj){
+	var scope = angular.element($("#ng")).scope();
+	for (var prop in jsonObj) scope.settings[prop] = jsonObj[prop];
+}
+
 function changeRowLiMargins(margin){
 	var rowLi = document.getElementsByClassName("rowLi");
 	var newMargin = ''+margin+'px'
@@ -472,15 +491,18 @@ function changeRowLiMargins(margin){
 	
 }
 
-var getFolderPath = function(path, folder){
-		
+function getFolderPath(folder, path){
+	if(path === undefined)
+	{
+		path = [];
+	}
 		path.push(folder.name);
 		if(folder.Parent!=null){
-			getFolderPath(path,folder.Parent);
+			getFolderPath(folder.Parent, path);
 		}
 		return path;
 }
-var folderPathString = function(path){
+function folderPathString(path){
 	var ret= '';
 	for(var i = path.length-1; i>=0; i--){
 		if(i!==0){
