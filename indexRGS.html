@@ -9,6 +9,26 @@
 		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/css/base/jquery.ui.all.css" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/css/lightness/jquery-ui-1.10.2.custom.min.css" rel="stylesheet">
+		<!-- In production, only one script (pdf.js) is necessary -->
+		<!-- In production, change the content of PDFJS.workerSrc below -->
+		<script type="text/javascript" src="../pdf.js-master/src/shared/util.js"></script>
+		<script type="text/javascript" src="../pdf.js-master/src/shared/colorspace.js"></script>
+		<script type="text/javascript" src="../pdf.js-master/src/shared/function.js"></script>
+		<script type="text/javascript" src="../pdf.js-master/src/shared/annotation.js"></script>
+		<script type="text/javascript" src="../pdf.js-master/src/display/api.js"></script>
+		<script type="text/javascript" src="../pdf.js-master/src/display/metadata.js"></script>
+		<script type="text/javascript" src="../pdf.js-master/src/display/canvas.js"></script>
+		<script type="text/javascript" src="../pdf.js-master/src/display/pattern_helper.js"></script>
+		<script type="text/javascript" src="../pdf.js-master/src/display/font_loader.js"></script>
+
+		<script type="text/javascript">
+		// Specify the main script used to create a new PDF.JS web worker.
+		// In production, leave this undefined or change it to point to the
+		// combined `pdf.worker.js` file.
+		PDFJS.workerSrc = '../pdf.js-master/src/worker_loader.js';
+		</script>
+		<!--<script type="text/javascript" src="js/hello.js"></script>-->
+		
 		<link rel="stylesheet" href="css/col.css" media="all">
 		<style>
 		
@@ -27,11 +47,13 @@
 		.contentpanel2 {
 			height:600px;
 			overflow:auto;
+			z-index: 0;
 		}
 		
 		.contentpanel3 {
 			width:300px;
 			overflow:auto;
+			
 		}
 		
 		.listpanel {
@@ -90,11 +112,25 @@
 			border: 2px solid #000;
 		}
 		
-		canvas{
-		  border:1px solid red;
+		#previewGrid, #preview
+		{
+			border:1px solid black;
+			margin : auto;
+			display: block;
+			background-color: rgba(217, 217, 217, 0.7);
 		}
 		
 		.gridButton {
+			float:right;
+		}
+
+		#previewGridDiv {
+			position:absolute;
+			z-index: 1;
+		}
+		
+		#previewClose
+		{
 			float:right;
 		}
 		</style>
@@ -128,7 +164,7 @@
 								<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="notAdded"/>
 							</div>
 							<div class="col-md-8" id="previewDiv">
-								<canvas class="text-center" id="preview">
+								<canvas id="preview">
 								</canvas>
 							</div>
 						</div>
@@ -145,8 +181,13 @@
 							<input class="gridButton" type="image" src="img/list.png" ng-show="allAllowed" ng-click="changeView()"/>
 						</div>
 						<div class="panel-body text-center contentpanel2" ng-style="bgImage" id="resizable">
+							<div id="previewGridDiv" ng-show="gridPreview">
+									<input id="previewClose" type="image" src="img/cleaar.png" ng-click="gridPreview = false"/>
+									<canvas  id="previewGrid"></canvas>
+							</div>
 							<!-- ----------------Content Body-------------------------  -->
 							<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add.png" ng-show="notAdded"/>
+							<!-- Folders -->
 							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="folder in getFolders(currentFolder)">
 								<input type="image" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
 								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)">
@@ -157,16 +198,21 @@
 									</span>
 								</input>
 							</div>
+							<!-- Files -->
 							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="file in getFiles(currentFolder)">
+								<!-- <canvas id="{{'pdfcanvas-'+$index}}" style="border:1px solid black;"/> -->
 								<input type="image" src="img/cleaar.png" ng-click="deleteFile(file)" />
-								<input type="image" class="imageThumb" ng-src="{{file.data}}" ng-show="showThumb && file.isImg"/>
-								<input type="image" ng-src="{{file.img}}" ng-hide="showThumb && file.isImg"/>
+								<div ng-click="showGridPreview(file)">
+									<input type="image" class="imageThumb" ng-src="{{file.data}}" ng-show="showThumb && file.isImg"/>
+									<input type="image" ng-src="{{file.img}}" ng-hide="showThumb || (showThumb && file.type == 'application/pdf')"/>
+								</div>
 								<input type="checkbox" ng-show="editing" ng-model="file.checked"/>
 								<div ng-show="showFont && !editing" ng-style="font">{{file.name}}</div>
 								<span id="tb_cont" ng-show="showFont && editing">
 									<input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click='clearName($index, file)' ><img src="img/cleaar.png"/></span></input>
 								</span>
 							</div>
+							
 							<div ng-class="colStyle">
 								<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="notAdded" id="dnd"/>	
 							</div>

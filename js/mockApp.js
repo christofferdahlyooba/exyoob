@@ -33,6 +33,7 @@ app.controller('FirstController', function($scope){
 	$scope.fontText = "Verdana";
 	$scope.fontColor = "black";
 	$scope.font = {'font-size':$scope.fontSize+'pt','font-family':$scope.fontText,'color':$scope.fontColor};
+	$scope.gridPreview = false;
 	
 	
 	$scope.enter = function(folder){
@@ -148,22 +149,22 @@ app.controller('FirstController', function($scope){
 		$scope.underMenu5 = false;
 		if(i === 1)
 		{
-			fileIcon = 'img/file.png';
+			$scope.fileIcon = 'img/file.png';
 		}
 		else if(i === 2)
 		{
-			fileIcon = 'img/picFile.png';
+			$scope.fileIcon = 'img/picFile.png';
 		}
 		else if(i === 3)
 		{
-			fileIcon = 'img/pdfFile.jpg';
+			$scope.fileIcon = 'img/pdfFile.jpg';
 		}
 		var files = $scope.getFiles($scope.currentFolder);
 		for(var j = 0; j < files.length; j++)
 		{
 			if(files[j].checked)
 			{
-				files[j].img = fileIcon;
+				files[j].img = $scope.fileIcon;
 			}
 		}
 	}
@@ -251,22 +252,129 @@ app.controller('FirstController', function($scope){
 			 return;
 		 }
 		
-		var preview = document.getElementById("preview");
+		var canvasFrame = document.getElementById("preview");
 		var previewDiv = document.getElementById("previewDiv");
 		var divWidth = previewDiv.offsetWidth;
 		var divHeight = previewDiv.offsetHeight;
-		var ctx = preview.getContext("2d");
+		var ctx = canvasFrame.getContext("2d");
 		
 		var img = new Image;
 		img.src = f.data;
-		img.onload= function(){			
-			preview.width = divWidth - 20;
-			preview.height = 560;
-			var aspectW = preview.width/img.width;
-			var aspectH = preview.height/img.height;
-			ctx.drawImage(img,0,0, img.width*aspectW,img.height*aspectH);
+		img.onload= function(){		
+			var ratio;
+
+			if(img.width > img.height)
+			{
+				if(img.width > 460)
+				{
+					canvasFrame.width = 460;
+				}
+				else
+				{
+					canvasFrame.width = img.width;
+				}
+				ratio = img.height/img.width;
+				canvasFrame.height = canvasFrame.width*ratio;
+			}	
+			else if(img.height > img.width)
+			{
+				if(img.height > 560)
+				{
+					canvasFrame.height = 560;
+				}
+				else
+				{
+					canvasFrame.height = img.height;
+				}
+				ratio = img.width/img.height;
+				canvasFrame.width = canvasFrame.height*ratio;
+			}
+			else
+			{
+				if(img.width > 460)
+				{
+					canvasFrame.width = 460;
+				}
+				else
+				{
+					canvasFrame.width = img.width;
+				}
+				ratio = img.height/img.width;
+				canvasFrame.height = canvasFrame.width*ratio;
+			}
+			
+			ctx.drawImage(img,0,0,canvasFrame.width,canvasFrame.height);
 		}
-	}	
+	}
+	$scope.showGridPreview = function(f){
+		$scope.gridPreview = true;
+		// Only process image files.
+		 if (!f.type.match('image.*')) {
+			 return;
+		 }
+		
+		var canvasFrame = document.getElementById("previewGrid");
+		var previewDiv = document.getElementById("resizable");
+		var divWidth = previewDiv.offsetWidth;
+		var divHeight = previewDiv.offsetHeight;
+		var divLeft = previewDiv.offsetLeft;
+		console.log("Div W: "+divWidth+ " Div H: "+divHeight);
+		var imgX, imgY;
+		var canvasImgW, canvasImgH;
+
+		var ctx = canvasFrame.getContext("2d");
+		canvasFrame.width = 700;
+		canvasFrame.height = 540;
+		var img = new Image;
+		img.src = f.data;
+		img.onload= function(){			
+			var ratio;
+
+			if(img.width > img.height)
+			{
+				if(img.width > 700)
+				{
+					canvasImgW = 700;
+				}
+				else
+				{
+					canvasImgW = img.width;
+				}
+				ratio = img.height/img.width;
+				canvasImgH = canvasImgW*ratio;
+			}	
+			else if(img.height > img.width)
+			{
+				if(img.height > 540)
+				{
+					canvasImgH = 540;
+				}
+				else
+				{
+					canvasImgH = img.height;
+				}
+				ratio = img.width/img.height;
+				canvasImgW = canvasImgH*ratio;
+			}
+			else
+			{
+				if(img.width > 700)
+				{
+					canvasImgW = 700;
+				}
+				else
+				{
+					canvasImgW = img.width;
+				}
+				ratio = img.height/img.width;
+				canvasImgH = canvasImgW*ratio;
+			}
+			imgX = (canvasFrame.width-canvasImgW)/2;
+			imgY = (canvasFrame.height-canvasImgH)/2;
+			ctx.drawImage(img,imgX,imgY,canvasImgW,canvasImgH);
+		}
+	}
+	
 	$scope.getNrOfFolders = function(folder){
 		var nr = 0;
 		var folders = $scope.getFolders(folder);
@@ -320,7 +428,11 @@ app.controller('FirstController', function($scope){
 	$scope.exportToJson = function(){
 		console.log(JSON.stringify($scope.currentFolder, replacer));		
 		return JSON.stringify($scope.currentFolder, replacer);
-	}	
+	}
+
+	$scope.pdfThumb = function(name){
+		
+	}
 });
 		
 
@@ -430,3 +542,29 @@ function importJson(jsonObj, curr){
 	}
 	return '';
 }
+
+PDFJS.getDocument('UserStories.pdf').then(function(pdf) {
+  // Using promise to fetch the page
+  pdf.getPage(1).then(function(page) {
+    var scale = 0.5;
+    var viewport = page.getViewport(scale);
+    //
+    // Prepare canvas using PDF page dimensions
+    //
+	
+    var canvas = document.getElementById('pdfcanvas-0');
+	console.log(canvas);
+    var context = canvas.getContext('2d');
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+
+    //
+    // Render PDF page into canvas context
+    //
+    var renderContext = {
+      canvasContext: context,
+      viewport: viewport
+    };
+    page.render(renderContext);
+  });
+});
