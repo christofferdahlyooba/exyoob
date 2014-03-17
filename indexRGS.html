@@ -9,28 +9,16 @@
 		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/css/base/jquery.ui.all.css" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/css/lightness/jquery-ui-1.10.2.custom.min.css" rel="stylesheet">
-		<!-- In production, only one script (pdf.js) is necessary -->
-		<!-- In production, change the content of PDFJS.workerSrc below -->
-		<script type="text/javascript" src="../pdf.js-master/src/shared/util.js"></script>
-		<script type="text/javascript" src="../pdf.js-master/src/shared/colorspace.js"></script>
-		<script type="text/javascript" src="../pdf.js-master/src/shared/function.js"></script>
-		<script type="text/javascript" src="../pdf.js-master/src/shared/annotation.js"></script>
-		<script type="text/javascript" src="../pdf.js-master/src/display/api.js"></script>
-		<script type="text/javascript" src="../pdf.js-master/src/display/metadata.js"></script>
-		<script type="text/javascript" src="../pdf.js-master/src/display/canvas.js"></script>
-		<script type="text/javascript" src="../pdf.js-master/src/display/pattern_helper.js"></script>
-		<script type="text/javascript" src="../pdf.js-master/src/display/font_loader.js"></script>
 
-		<script type="text/javascript">
-		// Specify the main script used to create a new PDF.JS web worker.
-		// In production, leave this undefined or change it to point to the
-		// combined `pdf.worker.js` file.
-		PDFJS.workerSrc = '../pdf.js-master/src/worker_loader.js';
-		</script>
-		<!--<script type="text/javascript" src="js/hello.js"></script>-->
-		
+		<link rel="stylesheet" href="css/row.css" media="all">
 		<link rel="stylesheet" href="css/col.css" media="all">
+		
 		<style>
+		
+		html {
+			overflow: -moz-scrollbars-vertical; 
+			overflow-y: scroll;
+		}
 		
 		.col-settings {
 			margin-left: 15px;
@@ -38,31 +26,8 @@
 			width: 30%;
 		}
 		
-		.btn2 {width:50%;}
-		
-		.contentpanel {
-			background-image: url(img/bg.jpg);
-		}
-		
 		.contentpanel2 {
 			height:600px;
-			overflow:auto;
-			z-index: 0;
-		}
-		
-		.contentpanel3 {
-			width:300px;
-			overflow:auto;
-			
-		}
-		
-		.listpanel {
-			height:570px;
-			background-color:#00ff00;
-		}
-		
-		.previewList {
-			border:2px solid;
 		}
 		
 		ul
@@ -75,29 +40,6 @@
 			outline:none;
 			border-width:0px;
 			border:none;
-		}
-		
-		#input-group-btn
-		{
-			padding: 0 0 0 0;
-		}
-		
-		#tb_cont {
-			position: relative;
-			width: auto;
-		}
-		#clear_input {
-			width: 12px;
-			height: 12px;
-			display: inline-block;
-			top: 4px;
-			text-align: center;
-			font-size: 10px;
-			border-radius: 10px;
-			-o-border-radius: 10px;
-			-moz-border-radius: 10px;
-			-webkit-border-radius: 10px;
-			cursor: pointer;
 		}
 		
 		.image-upload > input
@@ -132,6 +74,20 @@
 		#previewClose
 		{
 			float:right;
+		}
+		
+		.nameField{
+			display: table;
+			position: relative;
+			margin: auto;
+		}
+		.nameField input{
+			width:100%;			
+		}		
+		.clearName{
+			position: absolute;
+			right : 5px;
+			top: 5px;
 		}
 		</style>
 	</head>
@@ -180,43 +136,88 @@
 							<input type="image" src="img/backSmall.png" ng-hide="root" ng-click="goBack()"/>   {{dir}}
 							<input class="gridButton" type="image" src="img/list.png" ng-show="allAllowed" ng-click="changeView()"/>
 						</div>
-						<div class="panel-body text-center contentpanel2" ng-style="bgImage" id="resizable">
+
+						<div id="resizable">
+						<div class="panel-body text-center contentpanel2" ng-style="bgImage">
 							<div id="previewGridDiv" ng-show="gridPreview">
 									<input id="previewClose" type="image" src="img/cleaar.png" ng-click="gridPreview = false"/>
 									<canvas  id="previewGrid"></canvas>
 							</div>
 							<!-- ----------------Content Body-------------------------  -->
 							<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add.png" ng-show="notAdded"/>
-							<!-- Folders -->
+							<!-- --------------------COLUMN---------------------------- -->
+							<div ng-show="cols">
 							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="folder in getFolders(currentFolder)">
-								<input type="image" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
-								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)">
-									<input type="checkbox" ng-show="editing" ng-model="folder.checked"/>
-									<div ng-show="showFont && !editing" ng-style="font">{{folder.name}}</div>
-									<span id="tb_cont" ng-show="showFont && editing">
-										<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click='clearName($index, folder)' ><img src="img/cleaar.png"/></span></input>
-									</span>
-								</input>
+								<input type="image" ng-show="editing" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
+								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)"/>
+								<input type="checkbox" ng-show="editing" ng-model="folder.checked"/>
+								<div ng-show="showFont && !editing" ng-style="font">{{folder.name}}</div>
+								<div ng-show="showFont && editing" class="nameField">
+									<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"/>	
+									<img class="clearName"src="img/cleaar.png" ng-click='clearName($index, folder)'/>								
+								</div>								
 							</div>
-							<!-- Files -->
+							<!-- Files -->							
 							<div ng-class="colStyle" ng-hide="notAdded" ng-repeat="file in getFiles(currentFolder)">
-								<!-- <canvas id="{{'pdfcanvas-'+$index}}" style="border:1px solid black;"/> -->
-								<input type="image" src="img/cleaar.png" ng-click="deleteFile(file)" />
+								<input type="image" ng-show="editing" src="img/cleaar.png" ng-click="deleteFile(file)" />
 								<div ng-click="showGridPreview(file)">
 									<input type="image" class="imageThumb" ng-src="{{file.data}}" ng-show="showThumb && file.isImg"/>
-									<input type="image" ng-src="{{file.img}}" ng-hide="showThumb || (showThumb && file.type == 'application/pdf')"/>
+									<input type="image" ng-src="{{file.img}}" ng-hide="showThumb && file.isImg"/>
 								</div>
 								<input type="checkbox" ng-show="editing" ng-model="file.checked"/>
 								<div ng-show="showFont && !editing" ng-style="font">{{file.name}}</div>
-								<span id="tb_cont" ng-show="showFont && editing">
-									<input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"><span id="clear_input" ng-click='clearName($index, file)' ><img src="img/cleaar.png"/></span></input>
-								</span>
+								<div ng-show="showFont && editing" class="nameField">
+									<input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"/>
+									<img class="clearName"src="img/cleaar.png" ng-click='clearName($index, file)'/>	
+								</div>
 							</div>
 							
 							<div ng-class="colStyle">
-								<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="notAdded" id="dnd"/>	
+								<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="notAdded" id="dnd"/>
 							</div>
+							</div>
+							<!-- --------------------ROW---------------------------- -->
+							<div ng-hide="cols" >
+							<ul id="rowStyle">
+							<div ng-hide="notAdded" ng-repeat="folder in getFolders(currentFolder)">
+								<li ng-Class="rowStyleLi">
+									<input type="image" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
+									<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)"/>
+									<input type="checkbox" ng-show="editing" ng-model="folder.checked"/>
+									<div ng-show="showFont && !editing" ng-style="font">{{folder.name}}</div>
+									<div ng-show="showFont && editing" class="nameField">
+										<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"/>	
+										<img class="clearName"src="img/cleaar.png" ng-click='clearName($index, folder)'/>								
+									</div>
+								</li>
+							</div>
+							
+							<div ng-hide="notAdded" ng-repeat="file in getFiles(currentFolder)">
+								<li ng-Class="rowStyleLi">
+									<input type="image" src="img/cleaar.png" ng-click="deleteFile(file)" />
+									<div ng-click="showGridPreview(file)">
+										<input type="image" class="imageThumb" ng-src="{{file.data}}" ng-show="showThumb && file.isImg"/>
+										<input type="image" ng-src="{{file.img}}" ng-hide="showThumb && file.isImg"/>
+									</div>
+									<input type="checkbox" ng-show="editing" ng-model="file.checked"/>
+									<div ng-show="showFont && !editing" ng-style="font">{{file.name}}</div>
+									<div ng-show="showFont && editing" class="nameField">
+										<input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="font" style="background: rgba(5, 5, 5, .2);"/>
+										<img class="clearName"src="img/cleaar.png" ng-click='clearName($index, file)'/>	
+									</div>
+								</li>
+							</div>
+							
+							<div>
+								<li ng-Class="rowStyleLi">
+								<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="notAdded" id="dnd"/>	
+								</li>
+							</div>
+							</div>
+							</ul>
+							
 							<!-- ---------------------------------------------------- --->
+						</div>
 						</div>
 					</div>
 				</div>
@@ -241,11 +242,11 @@
 								
 								<p ng-hide="cols">
 								Number of rows:
-									<button type="button" class="btn btn-default" ng-click="minusRow()">-</button>
+									<button type="button" class="btn btn-default" ng-click="changeRow(-1)">-</button>
 									
 									{{nrOfRows}}
 									
-									<button type="button" class="btn btn-default" ng-click="addRow(1)">+</button>
+									<button type="button" class="btn btn-default" ng-click="changeRow(1)">+</button>
 								</p>
 								<p ng-show="cols">
 								Number of cols:
@@ -453,10 +454,10 @@
 			
 		</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 	<script src="js/node.js"></script>
-	<script src="js/jquery-ui.min.js"
+	<script src="js/jquery-ui.min.js"></script>
 	<script src="js/jquery.ui.touch-punch.js"></script>
 	<script src="js/mockApp.js"></script>
 	<script src="js/bootstrap-switch.js"></script>
@@ -467,9 +468,14 @@
 				$(function() {
 			$( "#resizable" ).resizable({
 			  maxHeight: 600,
-			  maxWidth: 745,
-			  minHeight: 0,
-			  minWidth: 0
+			  maxWidth: 748,
+			  minHeight: 100,
+			  minWidth: 140,
+			  alsoResize: '.contentpanel2',
+			  resize: function( event, ui ) {
+				var scope = angular.element($("#ng")).scope()
+				scope.updateHeight(ui.size.height);
+			  }
 			});
 		  }); 
 		
@@ -483,6 +489,7 @@
 			scope.$apply(function(){
 				scope.showFont = !scope.showFont;
 			});
+			setTimeout(togglePlaceHolders());
 		});
 		
 		//Toggle button for showing thumbnails
@@ -494,7 +501,7 @@
 		  var scope = angular.element($("#ng")).scope();
 			scope.$apply(function(){
 				scope.showThumb = !scope.showThumb;
-			});
+			});		  
 		});
 		
 		
@@ -507,13 +514,8 @@
 			var scope = angular.element($("#ng")).scope();
 			scope.$apply(function(){
 				scope.cols = !scope.cols;
+				scope.changeScrollDir();
 			});
-		});
-		
-		//Clearing and focusing on text field for folder names
-		$('#clear_input').click(function () {
-			$('#q').focus();
-			$('#q').val('');
 		});
 	</script>
 	<a href='#' ng-click="exportToJson()">test</a>

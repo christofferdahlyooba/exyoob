@@ -5,13 +5,16 @@ var rootFolder = new Folder('Root');
 var defaultFileIcon = 'img/file.png';
 var defaultFolderIcon = 'img/folder.png';
 
-app.controller('FirstController', function($scope){
+app.controller('FirstController', function($scope, $timeout){
 	
 	$scope.currentFolder = rootFolder;
 	$scope.nrOfFolders = 0;
 	$scope.cols = true;
 	$scope.nrOfCols = 3;
+	$scope.nrOfRows = 3;
 	$scope.colStyle = "col span_1_of_"+$scope.nrOfCols;
+	//$scope.rowStyleLi = "rowLi"+$scope.nrOfRows;
+	$scope.rowStyleLi = "rowLi";
 	$scope.dir = rootFolder.name;
 	$scope.editing = false;
 	$scope.mode = "Edit Mode";
@@ -26,6 +29,7 @@ app.controller('FirstController', function($scope){
 	$scope.allAllowed = true;
 	$scope.gridMode = true;	
 	$scope.showThumb = false;
+	$scope.showFont = false;
 	$scope.folderIcon = defaultFolderIcon;
 	$scope.fileIcon = defaultFileIcon;
 	$scope.bgImage = {'background-image':'url(img/bg.jpg)'};
@@ -34,19 +38,21 @@ app.controller('FirstController', function($scope){
 	$scope.fontColor = "black";
 	$scope.font = {'font-size':$scope.fontSize+'pt','font-family':$scope.fontText,'color':$scope.fontColor};
 	$scope.gridPreview = false;
-	
+	$scope.height = 600;
 	
 	$scope.enter = function(folder){
 		$scope.currentFolder = folder;
 		$scope.nrOfFolders = $scope.getNrOfFolders(folder);
-		$scope.dir += ' -> ' + folder.name;
-		
+		$scope.dir = folderPathString(getFolderPath([],$scope.currentFolder));
+		$timeout($scope.updateRowMargins);
 	}
+	
 	$scope.goBack = function(){
 		if($scope.currentFolder.Parent !== null){
 			$scope.currentFolder = $scope.currentFolder.Parent;
 			$scope.nrOfFolders = $scope.getNrOfFolders($scope.currentFolder);
-			$scope.dir = $scope.getFolderPath($scope.currentFolder);
+			$scope.dir = folderPathString(getFolderPath([],$scope.currentFolder));
+			$timeout($scope.updateRowMargins);
 		}
 	}
 	$scope.editMode = function(){
@@ -208,8 +214,20 @@ app.controller('FirstController', function($scope){
 			}
 		}
 	}
-	//addrow
-	//minusrow
+	$scope.changeRow = function(i) {
+		if(i<0){
+			if($scope.nrOfRows > 1){				
+				$scope.nrOfRows --;
+				changeRowLiMargins($scope.calcMargins());
+			}
+		}
+		else{
+			if($scope.nrOfRows < 10){
+				$scope.nrOfRows++;
+				changeRowLiMargins($scope.calcMargins());
+			}
+		}
+	}
 	$scope.addFolders = function(){
 		var folder;
 		if($scope.currentFolder.Parent === null){//rootfolder
@@ -221,6 +239,7 @@ app.controller('FirstController', function($scope){
 		folder.img = $scope.folderIcon;
 		$scope.currentFolder.add(folder);
 		$scope.nrOfFolders = $scope.getNrOfFolders($scope.currentFolder);
+		$timeout($scope.updateRowMargins);
 	}
 	//addDBFolder
 	//minusFolder
@@ -390,22 +409,7 @@ app.controller('FirstController', function($scope){
 			nr++;
 		}
 		return nr;	
-	}
-	$scope.getFolderPath = function(folder){
-		var path = [];
-		var ret = rootFolder.name;
-		if(folder === rootFolder){
-			return ret;
-		}
-		for(var i = 0; i < $scope.getNrOfParents(folder); i++){
-			path.push(folder.name);
-			folder = folder.Parent;
-		}
-		for(var i = path.length-1; 0 <= i; i--){
-			ret += ' -> ' + path[i];
-		}
-		return ret;
-	}
+	}	
 	$scope.getFolders = function(folder){
 		var ret = [];
 		for(var i = 0; i < folder.children.length; i++){
@@ -429,9 +433,32 @@ app.controller('FirstController', function($scope){
 		console.log(JSON.stringify($scope.currentFolder, replacer));		
 		return JSON.stringify($scope.currentFolder, replacer);
 	}
-
-	$scope.pdfThumb = function(name){
-		
+	
+	$scope.updateRowMargins = function updateRowMargins(){
+		var size = $scope.calcMargins();
+		changeRowLiMargins(size);
+	}
+	$scope.updateHeight = function(size){
+		var rowStyle = document.getElementById("rowStyle");
+		rowStyle.style.height = size+'px';
+		$scope.height = size;
+		changeRowLiMargins($scope.calcMargins());
+	}
+	$scope.calcMargins = function calcMargins(){
+		if(!$scope.showFont){
+			return (($scope.height-84*$scope.nrOfRows)*(1/$scope.nrOfRows))+24;
+		}
+		return ($scope.height-84*$scope.nrOfRows)*(1/$scope.nrOfRows);
+	}
+	$scope.changeScrollDir = function(){
+		var contentPanel = document.getElementsByClassName("contentpanel2");
+		if($scope.cols){
+			contentPanel[1].style.overflowY = 'auto';
+			contentPanel[1].style.overflowX = 'hidden';
+		}else{
+			contentPanel[1].style.overflowX = 'auto';
+			contentPanel[1].style.overflowY = 'hidden';
+		}
 	}
 });
 		
@@ -480,6 +507,7 @@ fileDiv.addEventListener("drop", function (e) {
 			scope.currentFolder.add(file);
 		});
     }
+	setTtimeout(scope.updateRowMargins);
 }, false);
 /*------------------------------------------------------------------
 --------------------ADD FILES FROM COMPUTER-------------------------
@@ -514,6 +542,7 @@ function handleFileSelect(evt) {
 			scope.currentFolder.add(file);
 		});
 	}
+	setTimeout(scope.updateRowMargins);
 }
 
 function importJson(jsonObj, curr){
@@ -542,29 +571,54 @@ function importJson(jsonObj, curr){
 	}
 	return '';
 }
-
-PDFJS.getDocument('UserStories.pdf').then(function(pdf) {
-  // Using promise to fetch the page
-  pdf.getPage(1).then(function(page) {
-    var scale = 0.5;
-    var viewport = page.getViewport(scale);
-    //
-    // Prepare canvas using PDF page dimensions
-    //
+function changeRowLiMargins(margin){
+	var rowLi = document.getElementsByClassName("rowLi");
+	var newMargin = ''+margin+'px'
+	for (var i = 0; i<rowLi.length; i++){
+		rowLi[i].style.marginBottom = newMargin;
+	}
 	
-    var canvas = document.getElementById('pdfcanvas-0');
-	console.log(canvas);
-    var context = canvas.getContext('2d');
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
+}
 
-    //
-    // Render PDF page into canvas context
-    //
-    var renderContext = {
-      canvasContext: context,
-      viewport: viewport
-    };
-    page.render(renderContext);
-  });
-});
+var getFolderPath = function(path, folder){
+		
+		path.push(folder.name);
+		if(folder.Parent!=null){
+			getFolderPath(path,folder.Parent);
+		}
+		return path;
+}
+var folderPathString = function(path){
+	var ret= '';
+	for(var i = path.length-1; i>=0; i--){
+		if(i!==0){
+			ret += path[i] + ' -> ';
+		}else{		
+			ret += path[i];
+		}
+	}
+	return ret;
+}
+
+function togglePlaceHolders(){
+	var scope = angular.element($("#ng")).scope();
+	var margin = 0;
+	if(!scope.showFont){
+		margin = 24;
+	}
+	if(scope.cols){
+		var colStyle = document.getElementsByClassName(scope.colStyle);	
+		for(var i = 0; i<colStyle.length; i++){
+			colStyle[i].style.marginBottom = margin+'px';
+		}
+	}else{
+		var rowLi = document.getElementsByClassName("rowLi");
+		for(var i = 0; i<rowLi.length; i++){
+			margin = scope.calcMargins();
+			rowLi[i].style.marginBottom = margin+'px';
+		}
+		
+	}
+	
+	
+}
