@@ -35,9 +35,6 @@ Folder.prototype.remove = function(node){
 	node.Parent = null;
 }
 
-
-
-
 function File(name, type){
 	Node.call(this, name, type);
 	this.size = null;
@@ -46,26 +43,3 @@ function File(name, type){
 	this.isImg = false;
 };
 File.prototype = new Node();
-File.prototype.addTo = function(folder){
-	folder.add(this);
-}
-File.prototype.removeFrom = function(folder){
-	folder.remove(this);
-}
-
-var replacer = function(key, value)
-{
-  if (key=="Parent" || key ==='data')
-  {
-      return undefined;
-  }
-  else return value;
-}
-var replacer2 = function(key, value)
-{
-  if (key=="currentFolder")
-  {
-      return undefined;
-  }
-  else return value;
-}

@@ -13,15 +13,13 @@
 	<link rel="stylesheet" href="css/col.css" media="all">
 	<link rel="stylesheet" href="css/style.css" media="all">
 </head>
-<body id="ng" ng-controller="FirstController">
-	<div class="container">
+<body id="ng" ng-controller="CompCtrl">
+	
 		
-		<h1>Create your component</h1>
 		
-		<div class="row">
 			
 			<!--************************************** LIST VIEW ******************************************************************-->
-			<div class="col-md-8" ng-hide="settings.gridMode">
+			<div ng-hide="settings.gridMode">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<input type="image" src="img/backSmall.png" ng-hide="settings.root" ng-click="goBack()"/>   {{settings.dir}}
@@ -29,17 +27,17 @@
 					</div>
 					<div class="panel-body contentpanel2">
 						<div class="col-md-4" >
-							<div ng-hide="settings.notAdded" ng-repeat="folder in getFolders(settings.currentFolder)">
+							<div ng-repeat="folder in getFolders(settings.currentFolder)">
 								<input type="image" src="img/folderList.png" ng-click="enter(folder)">
 									{{folder.name}}
 								</input>
 							</div>
-							<div ng-hide="settings.notAdded" ng-repeat="file in getFiles(settings.currentFolder)">
+							<div ng-repeat="file in getFiles(settings.currentFolder)">
 								<input type="image" src="img/fileList.png" ng-click="showListPreview(file)">
 									{{file.name}}
 								</input>
 							</div>
-							<input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="settings.notAdded"/>
+							
 						</div>
 						<div class="col-md-8" id="previewDiv">
 							<canvas class="text-center" id="preview">
@@ -52,7 +50,7 @@
 			<!--******************************************************************************************************************-->
 			
 			<!--************************************** GRID VIEW *****************************************************************-->
-			<div class="col-md-8" ng-show="settings.gridMode">
+			<div ng-show="settings.gridMode">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<input type="image" src="img/backSmall.png" ng-hide="settings.root" ng-click="goBack()"/>   {{settings.dir}}
@@ -64,61 +62,35 @@
 						
 						<!-- --------------------COLUMN---------------------------- -->
 						<div ng-show="settings.cols">
-						<div ng-class="settings.colStyle" ng-hide="settings.notAdded" ng-repeat="folder in getFolders(settings.currentFolder)">
-							<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
+						<div ng-class="settings.colStyle" ng-repeat="folder in getFolders(settings.currentFolder)">
 							<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)"/>
-							<input type="checkbox" ng-show="settings.editing" ng-model="folder.checked"/>
-							<div ng-show="settings.showFont && !settings.editing" ng-style="settings.font">{{folder.name}}</div>
-							<div ng-show="settings.showFont && settings.editing" class="nameField">
-								<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);"/>	
-								<img class="clearName"src="img/cleaar.png" ng-click='clearName($index, folder)'/>								
-							</div>								
+							<div ng-show="settings.showFont" ng-style="settings.font">{{folder.name}}</div>						
 						</div>
 						
-						<div ng-class="settings.colStyle" ng-hide="settings.notAdded" ng-repeat="file in getFiles(settings.currentFolder)">
-							<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFile(file)" />
+						<div ng-class="settings.colStyle" ng-repeat="file in getFiles(settings.currentFolder)">
 							<input type="image" class="imageThumb" ng-src="{{file.data}}" ng-show="settings.showThumb && file.isImg"/>
 							<input type="image" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg"/>
-							<input type="checkbox" ng-show="settings.editing" ng-model="file.checked"/>
-							<div ng-show="settings.showFont && !settings.editing" ng-style="settings.font">{{file.name}}</div>
-							<div ng-show="settings.showFont && settings.editing" class="nameField">
-								<input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);"/>
-								<img class="clearName"src="img/cleaar.png" ng-click='clearName($index, file)'/>	
-							</div>
+							<div ng-show="settings.showFont" ng-style="settings.font">{{file.name}}</div>
 						</div>
 						</div>
 						<!-- --------------------ROW---------------------------- -->
 						<div ng-hide="settings.cols" >
 						<ul id="rowStyle">
-						<div ng-hide="settings.notAdded" ng-repeat="folder in getFolders(settings.currentFolder)">
-							<li ng-Class="settings.rowStyleLi">
-								<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFolder(folder)" />
+						<div ng-repeat="folder in getFolders(settings.currentFolder)">
+							<li ng-Class="settings.rowStyleLi">								
 								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)"/>
-								<input type="checkbox" ng-show="settings.editing" ng-model="folder.checked"/>
-								<div ng-show="settings.showFont && !settings.editing" ng-style="settings.font">{{folder.name}}</div>
-								<div ng-show="settings.showFont && settings.editing" class="nameField">
-									<input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);"/>	
-									<img class="clearName"src="img/cleaar.png" ng-click='clearName($index, folder)'/>								
-								</div>
+								<div ng-show="settings.showFont" ng-style="settings.font">{{folder.name}}</div>
 							</li>
 						</div>
 						
-						<div ng-hide="settings.notAdded" ng-repeat="file in getFiles(settings.currentFolder)">
+						<div ng-repeat="file in getFiles(settings.currentFolder)">
 							<li ng-Class="settings.rowStyleLi">
-								<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFile(file)" />
 								<input type="image" class="imageThumb" ng-src="{{file.data}}" ng-show="settings.showThumb && file.isImg"/>
 								<input type="image" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg"/>
-								<input type="checkbox" ng-show="settings.editing" ng-model="file.checked"/>
-								<div ng-show="settings.showFont && !settings.editing" ng-style="settings.font">{{file.name}}</div>
-								<div ng-show="settings.showFont && settings.editing" class="nameField">
-									<input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);"/>
-									<img class="clearName"src="img/cleaar.png" ng-click='clearName($index, file)'/>	
-								</div>
+								<div ng-show="settings.showFont" ng-style="settings.font">{{file.name}}</div>
 							</li>
 						</div>
 						
-						<div>
-						</div>
 						</div>
 						</ul>
 						
@@ -127,14 +99,9 @@
 					</div>
 				</div>
 			</div>
-			<!--*********************************************************************************************************-->
-			
-			
-			<!-- ---------------------------- -->
-			<!--***********************************************************************************************************************-->
-		</div>
 		
-	</div>
+		
+	
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
@@ -143,7 +110,5 @@
 <script src="js/jquery.ui.touch-punch.js"></script>
 <script src="js/mockApp.js"></script>
 <script src="js/bootstrap-switch.js"></script>
-
-<a href='#' ng-click="exportToJson()">test</a>
 </body>
 </html>

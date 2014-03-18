@@ -384,6 +384,7 @@
 		  resize: function( event, ui ) {
 			var scope = angular.element($("#ng")).scope()
 			scope.updateHeight(ui.size.height);
+			scope.saveNewSize(ui.size.width, ui.size.height);
 		  }
 		});
 	}); 
