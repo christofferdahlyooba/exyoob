@@ -3,8 +3,8 @@
   <head>
     <title>My_New_App</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+	<script src="https://www.dropbox.com/static/api/dropbox-datastores-1.0-latest.js"></script>
 	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type='text/javascript' src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 	<script src="js/dbApp.js"></script>
@@ -19,24 +19,17 @@
     <h1>My_New_App</h1>
 	<input type="image" src="hej.png" ng-click="sayHello()"></input>
 
-	<!-- <input type="image" src="add.png" data-toggle="modal" href="#addFiles"></input> -->
+	<input type="image" src="add.png" data-toggle="modal" href="#addFiles"></input>
 	<input type="image" src="load.png" ng-click="listDB()"></input>
-	<input type="image" src="show.png" ng-click="showSome()"></input>
-	<input type="image" src="back.png" ng-click="back()"></input>
+	<input type="image" src="delta.png" ng-click="delta()"></input>
+	<input type="image" src="delta2.png" ng-click="delta2()"></input>
+	<input type="image" src="meta.png" ng-click="meta()"></input>
+	<input type="image" src="turl.png" ng-click="print()"></input>
 	<div id="results"></div>
-	
-	<div ng-show="show">
-		<h3>Dropbox</h3>
-		<input type="checkbox" ng-click="selectAll($event)">Select All</input>
-		<ul ng-repeat="dbItem in dbItems">
-			<!-- <input type="checkbox" ng-checked="hashCheck.indexOf(dbitem.$$hashKey) != -1" ng-model="checked[$index]"/> --> 
-			<!-- <input type="checkbox" ng-checked="hashCheck.indexOf('004') != -1" ng-model="checked[$index]"/>  Funkar yao! -->
-			<!-- <input type="checkbox" ng-checked="dbItem.$$hashKey == '004'" ng-model="checked[$index]"/>  Funkar också yao! -->
-			<!-- <input type="checkbox" ng-checked="pathCheck.indexOf(dbItem.path) != -1" ng-model="checked[$index]"/>  -->
-			<input type="checkbox" ng-checked="isSelected(dbItem)" ng-click="updateSelection($event,dbItem)"/> 
-			<li ng-show="dbItem.isFolder"><input type="image" src="img/dbFolder.png" data-dismiss="modal" ng-click="listDBinner(dbItem.name)">{{dbItem.name}}</input></li>
-			<li ng-show="dbItem.isFile"><input type="image" src="img/file.png" data-dismiss="modal">{{dbItem.name}}</input></li>
-		</ul>
+	<ul>
+      <li ng-repeat="file in folder">{{ file.name }}</li>
+    </ul>
+	<div>
 		<input type="image" src="choose.png" ng-click="choose()"></input>
 	</div>
 	
@@ -46,21 +39,20 @@
 		<div class="modal-dialog">
 		  <div class="modal-content">
 			<div class="modal-header">
-			  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
 			  <h4 class="modal-title">ADD</h4>
 			</div>
 			<div class="modal-body">
 				<ul>
 					<li><input type="image" src="img/addFolder.jpg" data-dismiss="modal" ng-click="testClick()">Add Folders</input></li>
 					
-					<li><input type="image" data-toggle="modal" href="#addDropbox" src="img/dropbox.jpg" data-dismiss="modal" ng-click="listDB()">Add from Dropbox</input></li>
+					<li><input type="image" data-toggle="modal" href="#addDropbox" data-dismiss="modal" src="img/dropbox.jpg" ng-click="list('/')">Add from Dropbox</input></li>
 					
 					<li><input type="image" src="img/box_logo.png" data-dismiss="modal" ng-click="testClick2()">Add from Box</input></li>
 
 					<li><input type="image" src="img/drive.png" data-dismiss="modal">Add from Google Drive</input></li>
 					
 					<li><input type="image" src="img/computer.png" data-dismiss="modal">Add from computer</input></li>
-
 				</ul>
 			</div>
 		  </div>
@@ -73,36 +65,21 @@
 		<div class="modal-dialog">
 		  <div class="modal-content">
 			<div class="modal-header">
-			  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
 			  <h4 class="modal-title">ADD FROM DROPBOX</h4>
 			</div>
 			<div class="modal-body">
-				<h2>Heeej</h2>
+				<input type="image" src="img/backSmall.png" ng-click="back()"/> <h2>{{dir}}</h2>
+				<input type="checkbox" ng-click="selectAll($event)">Select All</input>
 				<ul ng-repeat="dbItem in dbItems">
-					
-					<li><input type="image" src="img/dbFolder.png" data-dismiss="modal" ng-click="listDB(dbItem)">{{dbItem}}</input></li>
+					<input type="checkbox" ng-checked="isSelected(dbItem)" ng-click="updateSelection($event,dbItem)"/>
+					<li ng-show="dbItem.is_dir"><input type="image" src="img/dbFolder.png" ng-click="list(dbItem.path)">{{dbItem.name}}</input></li>
+					<li ng-hide="dbItem.is_dir"><input type="image" src="img/file.png">{{dbItem.name}}</input></li>
 				</ul>
+				<input type="image" src="select.png"></input>
 			</div>
 		  </div>
 		</div>
 	</div>
-	<!-- ---------------------------- -->
-	<!--***********************************************************************************************************************-->
-	<!-- First add popup -->
-	<!-- <div class="modal" id="listFiles">
-		<div class="modal-dialog">
-		  <div class="modal-content text-center">
-			<div class="modal-header">
-			  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			  <h4 class="modal-title">ADD FROM DROPBOX</h4>
-			</div>
-			<div class="modal-body">
-				<ul ng-repeat="dbItem in dbItems">
-					<li>{{dbItem}}</li>
-				</ul>
-			</div>
-		  </div>
-		</div>
-	</div> -->
   </body>
 </html>

@@ -1,87 +1,73 @@
 var app = angular.module('dbApp', []);
 
-var testTemp;
-app.controller('DBController', function($scope){		
-	$scope.dbItems;
-	$scope.show = false;
-	$scope.dir = ["/"];
-	$scope.checked = [];
-	$scope.pathCheck = [];
-	$scope.checkedFiles = [];
-	
-	
-	var client = new Dropbox.Client({ key: "ltogrg3uneusbmy" });
-		
-	// client.authDriver(new Dropbox.AuthDriver.Popup({
-		// receiverUrl: "https://dl.dropboxusercontent.com/spa/3w77a15hnchp1ya/My_New_App/public/oauth_receiver.html"}));
-		
-	client.authDriver(new Dropbox.AuthDriver.Redirect({
-	rememberUser: true}));
-
-	//client.authDriver(new Dropbox.AuthDriver.NodeServer(8191));
-
-	client.authenticate(function(error, client) {
-		if (error) {
-		// Replace with a call to your own error-handling code.
-		//
-		// Don't forget to return from the callback, so you don't execute the code
-		// that assumes everything went well.
+/* ******************* CONNECT TO DROPBOX ****************************** */
+var client = new Dropbox.Client({key: 'ltogrg3uneusbmy'});
+client.authenticate(function(error, client) {
+	if (error) {
 		console.log("Feeeeeel fel fel!")
-		return showError(error);
-		}
-
-		// Replace with a call to your own application code.
-		//
-		// The user authorized your app, and everything went well.
-		// client is a Dropbox.Client instance that you can use to make API calls.
-		//console.log("Wooorking yao!");
+		//return showError(error);
+	}
+	else
+	{
 		alert("Dropbox account authorized!");
-	});
+	}
+});
+/* ********************************************************************** */
 
-	//ERROR HANDLING
-	var showError = function(error) {
-		switch (error.status) {
-			case Dropbox.ApiError.INVALID_TOKEN:
-				console.log("Something wrong with auth yao!");
-				// If you're using dropbox.js, the only cause behind this error is that
-				// the user token expired.
-				// Get the user through the authentication flow again.
-				break;
+// var dirToString = function()
+// {
+	// var dirStr = "";
+	// if($scope.dirArr.length > 1)
+	// {
+		// for(var i=0;i<$scope.dirArr.length;i++)
+		// {
+			// dirStr = dirStr+"/"+$scope.dirArr[i];
+		// }
+		// return dirStr;
+	// }
+	// else
+	// {
+		// return "/";
+	// }
+// };
 
-			case Dropbox.ApiError.NOT_FOUND:
-				console.log("File or folder is not in your Dropbox yao!");
-			// The file or folder you tried to access is not in the user's Dropbox.
-			// Handling this error is specific to your application.
-			break;
-
-			case Dropbox.ApiError.OVER_QUOTA:
-			// The user is over their Dropbox quota.
-			// Tell them their Dropbox is full. Refreshing the page won't help.
-				console.log("Your Dropbox is full yao!");
-			break;
-
-			case Dropbox.ApiError.RATE_LIMITED:
-			// Too many API requests. Tell the user to try again later.
-			// Long-term, optimize your code to use fewer API calls.
-				console.log("Too much to handle right now yao!");
-			break;
-
-			case Dropbox.ApiError.NETWORK_ERROR:
-			// An error occurred at the XMLHttpRequest layer.
-			// Most likely, the user's network connection is down.
-			// API calls will not succeed until the user gets back online.
-				console.log("Are you online yao?");
-			break;
-
-			case Dropbox.ApiError.INVALID_PARAM:
-			case Dropbox.ApiError.OAUTH_ERROR:
-			case Dropbox.ApiError.INVALID_METHOD:
-			default:
-			// Caused by a bug in dropbox.js, in your application, or in Dropbox.
-			// Tell the user an error occurred, ask them to refresh the page.
-				console.log("Random error occurred yao!");
+app.factory('getFiles', function($q) {
+	return {
+		getfiles: function (dir) {
+			var deferred = $q.defer();
+			
+			client.readdir(dir, function (error, entries, stat1, stat2) {
+				if (error) deferred.reject(error);
+				else deferred.resolve(stat1);
+			});
+			return deferred.promise;
 		}
-	};
+	}
+});
+
+app.factory('getDelta', function($q) {
+	return {
+		getdelta: function (old) {
+			var deferred = $q.defer();
+			
+			client.delta(old,function (error, changes) {
+				if (error) deferred.reject(error);
+				else deferred.resolve(changes);
+			});
+			return deferred.promise;
+		}
+	}
+});
+
+app.controller('DBController', function($scope,getFiles,getDelta){	
+	$scope.folder;
+	$scope.dir;
+	$scope.pathCheck = [];
+	$scope.dirArr = [];
+	$scope.dbRoot = true;
+	getFiles.getfiles('/').then(function (entries) {
+		$scope.files = entries;
+	});
 	
 	$scope.sayHello = function()
 	{
@@ -94,113 +80,72 @@ app.controller('DBController', function($scope){
 		});
 	};
 	
-	var dirToString = function()
-	{
-		var dirStr = "";
-		if($scope.dir.length > 1)
-		{
-			for(var i=0;i<$scope.dir.length;i++)
+	// $scope.listDB = function()
+	// {
+		// getFiles.getfiles("/").then(function (stat1) {
+			// $scope.folder = stat1._json.contents;
+			// for(var i=0;i<$scope.folder.length;i++)
+			// {
+				// $scope.folder[i].name = $scope.folder[i].path.replace(/\/([^)]+)\//,"");
+				// $scope.folder[i].name = $scope.folder[i].name.replace('/',"");
+				// if($scope.folder[i].is_dir)
+				// {
+					// $scope.test2($scope.folder[i]);
+				// }
+			// }
+		// });
+	// }
+	
+	$scope.test2 = function(folder){
+		getFiles.getfiles(folder.path).then(function (stat1) {
+			folder.contents = stat1._json.contents;
+			for(var i=1;i<folder.contents.length;i++)
 			{
-				dirStr = dirStr+"/"+$scope.dir[i];
-			}
-			//console.log(dirStr);
-			return dirStr;
-		}
-		else
-		{
-			return "/";
-		}
-	};
-
-	var readFiles = function(fileName)
-	{
-		var opt = new Object();
-		opt.binary = true;
-		client.readFile("Camera Uploads/"+fileName,opt, function(error, data) {
-		  if (error) {
-			return showError(error);  // Something went wrong.
-		  }
-			//console.log("En fil yao!")
-			//console.log(data);
-			var img = document.createElement('img');
-			img.src = 'data:image/jpeg;base64,' + btoa(data);
-			document.body.appendChild(img);
-		  //alert(data);  // data has the file's contents
-		});
-	};
-
-	$scope.listDB = function()
-	{	
-		// var tempArr = [];
-		client.readdir(dirToString(), function(error, entries, stat1, stat2) {
-			if (error) {
-				return showError(error);  // Something went wrong.
-			}
-		  
-			$scope.dbItems = stat2;
-			testTemp  = stat1._json;
-			//console.log(testTemp);
-			(function setFolders(curry)
-			{
-				//console.log(curry);
-				for(var i=0,folder = curry.contents;i<folder.length;i++)
+				folder.contents[i].name = folder.contents[i].path.replace(/\/([^)]+)\//,"");
+				folder.contents[i].name = folder.contents[i].name.replace('/',"");
+				if(folder.contents[i].is_dir)
 				{
-					if(folder[i].is_dir)
-					{
-						folder[i].name = folder[i].path.replace(/\/([^)]+)\//,"");
-						folder[i].name = folder[i].name.replace('/',"");
-						//console.log(folder[i].name);
-						var inner = $scope.listDBinner(folder[i].path);
-						console.log(inner);
-						folder[i].contents = inner;
-						setFolders(folder[i]);
-					}
+					setTimeout($scope.test2(folder.contents[i]));
 				}
-			})(testTemp);
-			//console.log(stat2);
-			//console.log(stat1);
-		});
-		alert("Data läst yao!");
-		$scope.show = true;
-		$scope.showSome();
+			}
+		});		
 	};
 	
-	
-	
-	$scope.listDBinner = function(name)
-	{	
-		//$scope.checked = [];
-		$scope.dir.push(name);
-		saveChecked();
-		
-		client.readdir(dirToString(), function(error, entries, stat1, stat2) {
-			if (error) {
-			return showError(error);  // Something went wrong.
+	$scope.list = function(path)
+	{
+		if($scope.dirArr.lastIndexOf(path) === -1)
+		{
+			$scope.dirArr.push(path);
+		}
+		$scope.dir = $scope.dirArr[$scope.dirArr.length-1];
+		$scope.dir = $scope.dir.replace(/\/([^)]+)\//," ");
+		$scope.dir = $scope.dir.replace('/'," ");
+		getFiles.getfiles(path).then(function (stat1) {
+			$scope.dbItems = stat1._json.contents;
+			for(var i=0;i<stat1._json.contents.length;i++)
+			{
+				$scope.dbItems[i].name = $scope.dbItems[i].path.replace(/\/([^)]+)\//,"");
+				$scope.dbItems[i].name = $scope.dbItems[i].name.replace('/',"");
+				// if($scope.pathCheck.indexOf(path) !== -1)
+				// {
+					// $scope.pathCheck.push($scope.dbItems[i].path);
+				// }
 			}
-		  
-			$scope.dbItems = stat1;
-			$scope.show = true;
-			//console.log(stat2);
-			console.log(stat1._json.contents);
-			return(stat1._json.contents);
-			
-		
 		});
-		//console.log($scope.checked);
-		//console.log($scope.dbItems);
-		//return $scope.dbItems._json;
 	};
 	
 	$scope.back = function()
 	{
-		$scope.checked = [];
-		//console.log("Pre"+$scope.dir)
-		$scope.dir.splice($scope.dir.length-1,1);
-		//console.log("Aft"+$scope.dir);
-		$scope.listDB();
-		saveChecked();
+		if($scope.dirArr.length > 1)
+		{
+			$scope.checked = [];
+			$scope.dirArr.pop();
+			$scope.dir = $scope.dirArr[$scope.dirArr.length-1];
+			$scope.list($scope.dirArr[$scope.dirArr.length-1]);
+			saveChecked();
+		}
 	};
-	
+
 	var saveChecked = function()
 	{
 		for(var i=0;i<$scope.checked.length;i++)
@@ -217,37 +162,44 @@ app.controller('DBController', function($scope){
 		}
 		//console.log($scope.pathCheck);
 	};
-	
-	$scope.showSome = function()
-	{
-		//$scope.show = true;
-		//$scope.listDB();
-		//console.log("hej");
-	};
-	
+
 	$scope.updateSelection = function ($event, item) {
         var checkbox = $event.target;
         var action = (checkbox.checked ? 'add' : 'remove');
         updateSelected(action, item);
     };
-	
+
 	var updateSelected = function(action,item)
 	{
-		if(action === 'add' && $scope.pathCheck.indexOf(item.path) === -1)
+		if(action === 'add')
 		{
-			$scope.pathCheck.push(item.path);
+			if( $scope.pathCheck.indexOf(item.path) === -1)
+			{
+				$scope.pathCheck.push(item.path);
+			}
+			getFiles.getfiles(item.path).then(function (stat1) {
+				for(var i=0;i<stat1._json.contents.length;i++)
+				{
+					$scope.pathCheck.push(stat1._json.contents[i].path);
+					if(stat1._json.contents[i].is_dir)
+					{
+						updateSelected('add',stat1._json.contents[i])
+					}
+				}
+			});	
 		}
 		if(action === 'remove' && $scope.pathCheck.indexOf(item.path) !== -1)
 		{
+			item.checked = false;
 			$scope.pathCheck.splice($scope.pathCheck.indexOf(item.path),1);
 		}
 		//console.log($scope.pathCheck);
 	};
-	
+
 	$scope.isSelected = function (item) {
         return $scope.pathCheck.indexOf(item.path) >= 0;
     };
-	
+
 	$scope.selectAll = function ($event) 
 	{
 		var checkbox = $event.target;
@@ -258,10 +210,38 @@ app.controller('DBController', function($scope){
 			updateSelected(action, dbItem);
 		}
     };
-	
-	// $scope.choose = function()
-	// {
-		
-	// }
 });
+
+//ERROR HANDLING
+var showError = function(error) {
+	switch (error.status) {
+		case Dropbox.ApiError.INVALID_TOKEN:
+			console.log("Something wrong with auth yao!");
+			break;
+
+		case Dropbox.ApiError.NOT_FOUND:
+			console.log("File or folder is not in your Dropbox yao!"+error);
+		break;
+
+		case Dropbox.ApiError.OVER_QUOTA:
+			console.log("Your Dropbox is full yao!");
+		break;
+
+		case Dropbox.ApiError.RATE_LIMITED:
+			console.log("Too much to handle right now yao!");
+		break;
+
+		case Dropbox.ApiError.NETWORK_ERROR:
+			console.log("Are you online yao?");
+		break;
+
+		case Dropbox.ApiError.INVALID_PARAM:
+		case Dropbox.ApiError.OAUTH_ERROR:
+		case Dropbox.ApiError.INVALID_METHOD:
+		default:
+			console.log("Random error occurred yao!");
+	}
+};
+
+
 
