@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html ng-app="mockApp">
 <head>
 	<title>ExYoob</title>
@@ -18,109 +18,108 @@
 		}
 	</style>
 </head>
-<body id="ng" ng-controller="CompCtrl">
-	
-		
-		
-			
-			<!--************************************** LIST VIEW ******************************************************************-->
-			<div ng-hide="settings.gridMode">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<input type="image" src="img/backSmall.png" ng-hide="settings.root" ng-click="goBack()"/>   {{settings.dir}}
-						<input class="gridButton" type="image" src="img/grid.jpg" ng-show="settings.allAllowed" ng-click="changeView()"/>
-					</div>
-					<div class="panel-body contentpanel2">
-						<div class="col-md-4" >
-							<div ng-repeat="folder in getFolders(settings.currentFolder)">
-								<input type="image" src="img/folderList.png" ng-click="enter(folder)">
-									{{folder.name}}
-								</input>
-							</div>
-							<div ng-repeat="file in getFiles(settings.currentFolder)">
-								<input type="image" src="img/fileList.png" ng-click="showListPreview(file)">
-									{{file.name}}
-								</input>
-							</div>
-							
-						</div>
-						<div class="col-md-8" id="previewDiv">
-							<canvas id="preview">
-							</canvas>
-						</div>
-					</div>
-					
-				</div>
-			</div>
-			<!--******************************************************************************************************************-->
-			
-			<!--************************************** GRID VIEW *****************************************************************-->
-			<div ng-show="settings.gridMode">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<input type="image" src="img/backSmall.png" ng-hide="settings.root" ng-click="goBack()"/>   {{settings.dir}}
-						<input class="gridButton" type="image" src="img/list.png" ng-show="settings.allAllowed" ng-click="changeView()"/>
-					</div>
-					<div id="resizable">
-					<div class="panel-body text-center contentpanel2" ng-style="settings.bgImage">
-						<div id="previewGridDiv" ng-show="settings.gridPreview">
-							<input id="previewClose" type="image" src="img/cleaar.png" ng-click="settings.gridPreview = false"/>
-							<canvas id="previewGrid"></canvas>
-						</div>
-						<!-- ----------------Content Body-------------------------  -->
-						
-						<!-- --------------------COLUMN---------------------------- -->
-						<div ng-show="settings.cols">
-							<!-- Folders -->
-						<div ng-class="settings.colStyle" ng-repeat="folder in getFolders(settings.currentFolder)">
-							<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)"/>
-							<div ng-show="settings.showFont" ng-style="settings.font">{{folder.name}}</div>						
-						</div>
-							<!-- Files -->
-						<div ng-class="settings.colStyle" ng-repeat="file in getFiles(settings.currentFolder)">
-							<input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.data}}" ng-show="settings.showThumb && file.isImg"/>
-							<input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg"/>
-							<div ng-show="settings.showFont" ng-style="settings.font">{{file.name}}</div>
-						</div>
-						</div>
-						<!-- --------------------ROW---------------------------- -->
-						<div ng-hide="settings.cols" >
-						<ul id="rowStyle">
-						<!-- Folders -->
-						<div ng-repeat="folder in getFolders(settings.currentFolder)">
-							<li ng-Class="settings.rowStyleLi">								
-								<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)"/>
-								<div ng-show="settings.showFont" ng-style="settings.font">{{folder.name}}</div>
-							</li>
-						</div>
-						<!-- Files -->
-						<div ng-repeat="file in getFiles(settings.currentFolder)">
-							<li ng-Class="settings.rowStyleLi">
-								<input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.data}}" ng-show="settings.showThumb && file.isImg"/>
-								<input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg"/>
-								<div ng-show="settings.showFont" ng-style="settings.font">{{file.name}}</div>
-							</li>
-						</div>
-						
-						</div>
-						</ul>
-						
-						<!-- ---------------------------------------------------- --->
-					</div>
-					</div>
-				</div>
-			</div>
-		
-		
-	
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<script src="js/node.js"></script>
-<script src="js/jquery-ui.min.js"></script>
-<script src="js/jquery.ui.touch-punch.js"></script>
-<script src="js/mockApp.js"></script>
-<script src="js/appCtrl.js"></script>
-<script src="js/bootstrap-switch.js"></script>
+<body id="ng" ng-controller="MasterCtrl">
+    <div ng-controller="CompCtrl">
+
+
+
+
+        <!--************************************** LIST VIEW ******************************************************************-->
+        <div ng-hide="settings.gridMode">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <input type="image" src="img/backSmall.png" ng-hide="settings.root" ng-click="goBack()" />   {{settings.dir}}
+                    <input class="gridButton" type="image" src="img/grid.jpg" ng-show="settings.allAllowed" ng-click="changeView()" />
+                </div>
+                <div class="panel-body contentpanel2">
+                    <div class="col-md-4">
+                        <div ng-repeat="folder in getFolders(settings.currentFolder)">
+                            <input type="image" src="img/folderList.png" ng-click="enter(folder)">
+                            {{folder.name}}
+                            </input>
+                        </div>
+                        <div ng-repeat="file in getFiles(settings.currentFolder)">
+                            <input type="image" src="img/fileList.png" ng-click="showListPreview(file)">
+                            {{file.name}}
+                            </input>
+                        </div>
+
+                    </div>
+                    <div class="col-md-8" id="previewDiv">
+                        <canvas id="preview"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--******************************************************************************************************************-->
+        <!--************************************** GRID VIEW *****************************************************************-->
+        <div ng-show="settings.gridMode">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <input type="image" src="img/backSmall.png" ng-hide="settings.root" ng-click="goBack()" />   {{settings.dir}}
+                    <input class="gridButton" type="image" src="img/list.png" ng-show="settings.allAllowed" ng-click="changeView()" />
+                </div>
+                <div id="resizable">
+                    <div class="panel-body text-center contentpanel2" ng-style="settings.bgImage">
+                        <div id="previewGridDiv" ng-show="settings.gridPreview">
+                            <input id="previewClose" type="image" src="img/cleaar.png" ng-click="settings.gridPreview = false" />
+                            <canvas id="previewGrid"></canvas>
+                        </div>
+                        <!-- ----------------Content Body-------------------------  -->
+                        <!-- --------------------COLUMN---------------------------- -->
+                        <div ng-show="settings.cols">
+                            <!-- Folders -->
+                            <div ng-class="settings.colStyle" ng-repeat="folder in getFolders(settings.currentFolder)">
+                                <input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)" />
+                                <div ng-show="settings.showFont" ng-style="settings.font">{{folder.name}}</div>
+                            </div>
+                            <!-- Files -->
+                            <div ng-class="settings.colStyle" ng-repeat="file in getFiles(settings.currentFolder)">
+                                <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.data}}" ng-show="settings.showThumb && file.isImg" />
+                                <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
+                                <div ng-show="settings.showFont" ng-style="settings.font">{{file.name}}</div>
+                            </div>
+                        </div>
+                        <!-- --------------------ROW---------------------------- -->
+                        <div ng-hide="settings.cols">
+                            <ul id="rowStyle">
+                                <!-- Folders -->
+                                <div ng-repeat="folder in getFolders(settings.currentFolder)">
+                                    <li ng-class="settings.rowStyleLi">
+                                        <input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)" />
+                                        <div ng-show="settings.showFont" ng-style="settings.font">{{folder.name}}</div>
+                                    </li>
+                                </div>
+                                <!-- Files -->
+                                <div ng-repeat="file in getFiles(settings.currentFolder)">
+                                    <li ng-class="settings.rowStyleLi">
+                                        <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.data}}" ng-show="settings.showThumb && file.isImg" />
+                                        <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
+                                        <div ng-show="settings.showFont" ng-style="settings.font">{{file.name}}</div>
+                                    </li>
+                                </div>
+
+                        </div>
+                        </ul>
+
+                        <!-- ---------------------------------------------------- --->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+        <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="js/node.js"></script>
+        <script src="js/jquery-ui.min.js"></script>
+        <script src="js/jquery.ui.touch-punch.js"></script>
+        <script src="js/mockApp.js"></script>
+        <script src="js/appCtrl.js"></script>
+        <script src="js/bootstrap-switch.js"></script>
+        </div>
 </body>
 </html>
