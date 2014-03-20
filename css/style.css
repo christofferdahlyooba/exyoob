@@ -1,0 +1,77 @@
+.col-settings {
+	margin-left: 15px;
+	margin-right: 15px;
+	width: 30%;
+}
+
+.contentpanel2 {
+	height:600px;
+	overflow:hidden;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+
+#previewGrid, #preview
+{
+	border: 1px solid black;
+	margin : auto;
+	display: block;
+	background-color: rgba(217, 217, 217, 0.7);
+}
+
+#previewGridDiv {
+	position:absolute;
+	z-index: 1;
+}
+
+#previewClose
+{
+	float:right;
+}
+
+
+ul
+{
+	list-style-type: none;
+}
+
+input
+{
+	outline:none;
+	border-width:0px;
+	border:none;
+}
+
+.image-upload > input
+{
+	display: none;
+}
+
+.imageThumb
+{
+	height: 50px;
+	width: 50px;
+	border: 2px solid #000;
+}
+
+canvas{
+  border:1px solid red;
+}
+
+.gridButton {
+	float:right;
+}
+.nameField{
+	display: table;
+	position: relative;
+	margin: auto;
+}
+.nameField input{
+	width:100%;			
+}		
+.clearName{
+	position: absolute;
+	right : 5px;
+	top: 5px;
+}
