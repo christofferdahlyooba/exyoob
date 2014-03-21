@@ -3,7 +3,7 @@
 angular.module('mockApp').controller('FirstController', function($scope, $timeout){
 	
     /*
-    *
+    * Changes between edit and view mode
     */
     $scope.editMode = function () {
         $scope.settings.editing = !$scope.settings.editing;
@@ -16,7 +16,7 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
     };
 
     /*
-    *
+    * Starting edit mode and hides big plus icon
     */
 	$scope.add = function () {
 	    $scope.settings.notAdded = false;
@@ -24,14 +24,14 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    *   
+    *   Toggle views allowed menu
     */  
 	$scope.viewMenu = function () {
 	    $scope.settings.underMenu0 = true;
 	};
 
     /*
-    *
+    * Changes which view mode is allowed, list, grid or both
     */
 	$scope.applyViews = function () {
 	    $scope.settings.underMenu0 = false;
@@ -53,28 +53,28 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    *
+    * Toggles background menu
     */
 	$scope.bgMenu = function () {
 	    $scope.settings.underMenu = true;
 	};
 
     /*
-    *
+    * Toggles font menu
     */
 	$scope.fontMenu = function () {
 	    $scope.settings.underMenu3 = true;
 	};
 
     /*
-    *
+    * Toggles font color menu
     */
 	$scope.fontColorMenu = function () {
 	    $scope.settings.underMenu4 = true;
 	};
 
     /*
-    *
+    * Changes font
     */
 	$scope.applyFont = function () {
 	    $scope.settings.underMenu3 = false;
@@ -86,7 +86,7 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    *
+    * Changes font color
     */
 	$scope.applyFontColor = function () {
 	    $scope.settings.underMenu4 = false;
@@ -98,14 +98,14 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    *
+    * Toggles folder icon menu
     */
 	$scope.folderIconMenu = function () {
 	    $scope.settings.underMenu2 = true;
 	};
 
     /*
-    *
+    * Changes folder icon
     */
 	$scope.changeFolderIcon = function (i) {
 	    $scope.settings.underMenu2 = false;
@@ -127,14 +127,14 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    *
+    * toggles file icon menu
     */
 	$scope.fileIconMenu = function () {
 	    $scope.settings.underMenu5 = true;
 	};
 
     /*
-    *
+    * changes file icon
     */  
 	$scope.changeFileIcon = function (i) {
 	    $scope.settings.underMenu5 = false;
@@ -156,7 +156,7 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    *
+    * Delete folder and update number of folders
     */
 	$scope.deleteFolder = function (folder) {
 	    $scope.settings.currentFolder.remove(folder);
@@ -164,14 +164,14 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    *
+    * Delete file
     */
 	$scope.deleteFile = function (file) {
 	    $scope.settings.currentFolder.remove(file);
 	};
 
     /*
-    *
+    * Changes background
     */
 	$scope.changeBg = function (i) {
 	    $scope.settings.underMenu = false;
@@ -190,7 +190,7 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    *
+    * Changes number of columns
     */
 	$scope.changeCol = function (i) {
 	    if (i < 0) {
@@ -208,7 +208,7 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    *
+    * Changes number of rows
     */
 	$scope.changeRow = function (i) {
 	    if (i < 0) {
@@ -226,7 +226,7 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    *
+    * Adds a folder in the current folder and updates number of folders.
     */
 	$scope.addFolders = function () {
 	    var folder;
@@ -243,7 +243,7 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    *
+    * Changes font size
     */
 	$scope.changeFontSize = function (i) {
 	    if (i > 0) {
@@ -259,7 +259,7 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    *
+    * Clears the name of a node and focuses the input field
     */
 	$scope.clearName = function (index, node) {
 	    if (node.type === 'Folder') {
@@ -367,9 +367,9 @@ function handleFileSelect(evt) {
 ------------OTHER NON SCOPE FUNCTIONS-----------------------------
 ----------------------------------------------------------------*/
 
-
 /*
-*
+* Adds margin at the bottom of each node so that they dont jump when 
+* toggeling showFolderName
 */
 function togglePlaceHolders(){
 	var scope = angular.element($("#ng")).scope();
@@ -393,7 +393,7 @@ function togglePlaceHolders(){
 }
 
 /*
-*
+* Changes scrollbar visibility depending on scroll direction TODO-Change name
 */
 function changeScrollDir(cols) {
     var contentPanel = document.getElementsByClassName("contentpanel2");
@@ -407,7 +407,7 @@ function changeScrollDir(cols) {
 }
 
 /*
-*
+* Sets scope width and height
 */
 function saveNewSize(w, h) {
     var scope = angular.element($("#ng")).scope();
@@ -420,7 +420,7 @@ function saveNewSize(w, h) {
 -----------EXPORT-------------
 ----------------------------*/
 /*
-*
+* Export the settings to JSON
 */
 function exportSettingsToJson() {
     var scope = angular.element($("#ng")).scope();
@@ -429,7 +429,7 @@ function exportSettingsToJson() {
 }
 
 /*
-*
+* Export the current files and folders to JSON
 */
 function exportToJson() {
     var scope = angular.element($("#ng")).scope();
@@ -439,7 +439,8 @@ function exportToJson() {
 }
 
 /*
-*
+* Removes 'Parent' key from JSON to eliminate infinite JSON
+* Removes 'data' key to save size
 */
 var replacer = function(key, value)
 {
@@ -451,7 +452,7 @@ var replacer = function(key, value)
 }
 
 /*
-*
+* Removes 'currentFolder' key to separate settings and folders
 */
 var replacer2 = function(key, value)
 {

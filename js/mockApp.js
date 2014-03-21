@@ -93,14 +93,14 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
     };
 
     /*
-    * 
+    * Changes between Grid and List view
     */
     $scope.changeView = function () {
         $scope.settings.gridMode = !$scope.settings.gridMode;
     };
 
     /*
-    * 
+    * Show a preview in List mode
     */
     $scope.showListPreview = function (f) {
         // Only process image files.
@@ -155,7 +155,7 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
     };
 
     /*
-    * 
+    * Show a preview in Grid mode
     */
     $scope.showGridPreview = function (f) {
         $scope.settings.gridPreview = true;
@@ -247,7 +247,7 @@ function calcMargins() {
 };
 
 /*
-* 
+* Updates the height of css-element rowStyle
 */
 function updateHeight(size) {
     var rowStyle = document.getElementById("rowStyle");
@@ -256,7 +256,7 @@ function updateHeight(size) {
 };
 
 /*
-*
+* Reverses the path and adds an arrow between foldernames
 */
 function folderPathString(path) {
     var ret = '';
@@ -271,7 +271,7 @@ function folderPathString(path) {
 };
 
 /*
-*
+* Gets the folder name from this to the root folder
 */
 function getFolderPath(folder, path) {
     if (path === undefined) {
@@ -285,7 +285,7 @@ function getFolderPath(folder, path) {
 };
 
 /*
-*
+* Changes margins between each node in row-mode
 */
 function changeRowLiMargins(margin) {
     var rowLi = document.getElementsByClassName("rowLi");
