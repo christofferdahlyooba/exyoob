@@ -386,7 +386,6 @@
                     minWidth: 140,
                     alsoResize: '.contentpanel2',
                     resize: function (event, ui) {
-                        var scope = angular.element($("#ng")).scope();
                         updateHeight(ui.size.height);
                         saveNewSize(ui.size.width, ui.size.height);
                     }
