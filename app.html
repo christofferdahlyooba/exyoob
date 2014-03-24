@@ -28,8 +28,9 @@
         <div ng-hide="settings.gridMode">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <input type="image" src="img/backSmall.png" ng-hide="settings.root" ng-click="goBack()" />   {{settings.dir}}
-                    <input class="gridButton" type="image" src="img/grid.jpg" ng-show="settings.allAllowed" ng-click="changeView()" />
+                    <button ng-hide="settings.root" ng-click="goBack()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                    {{settings.dir}}
+                    <button class="gridButton" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-th-large"></span></button>
                 </div>
                 <div class="panel-body contentpanel2">
                     <div class="col-md-4">
@@ -57,8 +58,9 @@
         <div ng-show="settings.gridMode">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <input type="image" src="img/backSmall.png" ng-hide="settings.root" ng-click="goBack()" />   {{settings.dir}}
-                    <input class="gridButton" type="image" src="img/list.png" ng-show="settings.allAllowed" ng-click="changeView()" />
+                    <button ng-hide="settings.root" ng-click="goBack()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                    {{settings.dir}}
+                    <button class="gridButton" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-list"></span></button>
                 </div>
                 <div id="resizable">
                     <div class="panel-body text-center contentpanel2" ng-style="settings.bgImage">

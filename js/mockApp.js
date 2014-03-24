@@ -21,6 +21,7 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
         editing: false,
         mode: 'Edit Mode',
         notAdded: true,
+        root: true,
         underMenu0: false,
         underMenu: false,
         underMenu2: false,
@@ -52,6 +53,7 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
         $scope.settings.nrOfFolders = getNrOfFolders(folder);
         $scope.settings.dir = folderPathString(getFolderPath($scope.settings.currentFolder));
         $timeout(updateRowMargins);
+        $scope.settings.root = false;
     };
 
     /*
@@ -63,6 +65,9 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
             $scope.settings.nrOfFolders = getNrOfFolders($scope.settings.currentFolder);
             $scope.settings.dir = folderPathString(getFolderPath($scope.settings.currentFolder));
             $timeout(updateRowMargins);
+            if ($scope.settings.currentFolder.Parent === null) {
+                $scope.settings.root = true;
+            }
         }
     };
 
