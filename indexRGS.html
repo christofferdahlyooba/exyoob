@@ -160,9 +160,9 @@
                             Settings
                         </div>
                         <!-- Settings body-->
-                        <div class="panel-body" ng-show="settings.editing">
+                        <div class="panel-body settingsMenu" ng-show="settings.editing">
                             <!-- Standard Settings -->
-                            <div class="firstSetting" ng-hide="settings.underMenu0 || settings.underMenu || settings.underMenu2 || settings.underMenu3 || settings.underMenu4 || settings.underMenu5">
+                            <div class="firstSetting" ng-hide="subMenuOpen()">
                                 Scrolling:
                                 <input type="checkbox" name="scrollingBox" id="scrollingBox" data-on-color="default" data-off-color="default" data-on-text="<span class='glyphicon glyphicon-resize-vertical'></span>" data-off-text="<span class='glyphicon glyphicon-resize-horizontal'></span>">
                                 <p>
@@ -232,6 +232,14 @@
                                     </div>
                                     <!-- ----------- -->
                                     <hr>
+                                    <div class="permissionSettings">
+                                        <p> View Access: <button ng-click="openViewAccessMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
+                                        <!--<p> Share Access: <button ng-click="settings.underMenuShareAccess = true;"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
+                                        <p> Move Access: <button ng-click="settings.underMenuMoveAccess = true;"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
+                                        <p> Download Auto: <button ng-click="settings.underMenuSyncAccess = true;"><span class="glyphicon glyphicon-chevron-right"></span></button></p>-->
+                                    </div>
+
+                                    <hr>
                                 </div>
                             </div>
                             <!-- ----------------------- -->
@@ -299,6 +307,32 @@
                                 </ul>
                             </div>
                             <!-- --------------------- -->
+                            <!-- Permissions  -->
+                            <div class="setViewAccess" ng-show="settings.underMenuViewAccess">
+                                <button ng-click="exitViewAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <h2>View Access</h2>
+                                <ul ng-repeat="person in persons">
+                                    <li><input type="checkbox" ng-model="person.checked" ng-change="addViewAccess({event:{checked:person.checked,person:person}})"/>{{person.name}}</li>
+                                </ul>
+                            </div>
+                            <!--<div class="setShareAccess" ng-show="settings.underMenuShareAccess">
+                                <ul ng-repeat="person in persons">
+                                    <li>{{person.name}}<input type="checkbox" ng-model="person.shareAccess" /></li>
+                                </ul>
+                                <button ng-click="testar()">Save</button>
+                            </div>
+                            <div class="setMoveAccess" ng-show="settings.underMenuMoveAccess">
+                                <ul ng-repeat="person in persons">
+                                    <li>{{person.name}}<input type="checkbox" ng-model="person.moveAccess" /></li>
+                                </ul>
+                                <button ng-click="testar()">Save</button>
+                            </div>
+                            <div class="setSyncAccess" ng-show="settings.underMenuSyncAccess">
+                                <ul ng-repeat="person in persons">
+                                    <li>{{person.name}}<input type="checkbox" ng-model="person.syncAccess" /></li>
+                                </ul>
+                                <button ng-click="testar()">Save</button>
+                            </div>-->
                         </div>
                         <!-- ------------------ -->
                         <div class="panel-footer text-center">

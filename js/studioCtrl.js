@@ -24,6 +24,16 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
+    * Returns true if one submenu is open else false
+    */
+	$scope.subMenuOpen = function () {
+	    return $scope.settings.underMenu0 || $scope.settings.underMenu || $scope.settings.underMenu2
+               || $scope.settings.underMenu3 || $scope.settings.underMenu4 || $scope.settings.underMenu5
+               || $scope.settings.underMenuViewAccess || $scope.settings.underMenuShareAccess
+               || $scope.settings.underMenuMoveAccess || $scope.settings.underMenuSyncAccess;
+	};
+
+    /*
     *   Toggle views allowed menu
     */  
 	$scope.viewMenu = function () {
@@ -271,7 +281,77 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	        node.name = '';
 	    }
 	};
-    	
+    
+    /*
+    * Adds the selected files/folders to the selected users list of files/folders with view access
+    */
+	$scope.addViewAccess = function (evt) {
+	   
+	    var checked = evt['event'].checked;
+	    var person = evt['event'].person;
+
+	    if (checked) {
+	        for (var i = 0, folders = $scope.getCheckedFolders() ; i < folders.length; i++) {
+	            if (person.viewAccess.indexOf(folders[i]) === -1) {
+	                person.viewAccess.push(folders[i]);
+	            }
+	        }
+	        for (var i = 0, files = $scope.getCheckedFiles() ; i < files.length; i++) {
+	            if (person.viewAccess.indexOf(files[i]) === -1) {
+	                person.viewAccess.push(files[i]);
+	            }
+	        }
+	    }
+	    else {
+	        for (var i = 0, folders = $scope.getCheckedFolders() ; i < folders.length; i++) {
+	            if (person.viewAccess.indexOf(folders[i]) !== -1) {
+	                person.viewAccess.splice(i, 1);
+	            }
+	        }
+	        for (var i = 0, files = $scope.getCheckedFiles() ; i < files.length; i++) {
+	            if (person.viewAccess.indexOf(files[i]) !== -1) {
+	                person.viewAccess.splice(i,1);
+	            }
+	        }
+	    }
+    };
+
+    /*
+    * Opens the view Access submenu and selects the correct users
+    */
+	$scope.openViewAccessMenu = function () {
+	    $scope.settings.underMenuViewAccess = true;
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        var m = 0;
+	        for (var k = 0; k < $scope.getCheckedFolders().length; k++) {
+	            if ($scope.persons[i].viewAccess.indexOf($scope.getCheckedFolders()[k]) !== -1) {
+	                m++;
+	            }
+	        }
+	        for (var k = 0; k < $scope.getCheckedFiles().length; k++) {
+	            if ($scope.persons[i].viewAccess.indexOf($scope.getCheckedFiles()[k]) !== -1) {
+	                m++;
+	            }
+	        }
+	        if (m === $scope.getCheckedFolders().length + $scope.getCheckedFiles().length &&
+                    ($scope.getCheckedFolders().length !== 0 || $scope.getCheckedFiles().length !== 0)) {
+	            $scope.persons[i].checked = true;
+	        }
+	    }
+	}
+
+    /*
+    * Closes view access submenu and deselects all users
+    */
+	$scope.exitViewAccessMenu = function () {
+	    $scope.settings.underMenuViewAccess = false;
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        $scope.persons[i].checked = false;
+	    }
+	}
+
 });
 		
 
