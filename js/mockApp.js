@@ -130,34 +130,6 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
     };
 
     /*
-    * Returns all checked folders in current folder
-    */
-    $scope.getCheckedFolders = function () {
-        var folders = $scope.getFolders($scope.settings.currentFolder);
-        var checkedFolders = [];
-        for (var i = 0; i < folders.length; i++) {
-            if (folders[i].checked) {
-                checkedFolders.push(folders[i]);
-            }
-        }
-        return checkedFolders;
-    };
-
-    /*
-    * Returns all checked files in current folder
-    */
-    $scope.getCheckedFiles = function () {
-        var files = $scope.getFiles($scope.settings.currentFolder);
-        var checkedFiles = [];
-        for (var i = 0; i < files.length; i++) {
-            if (files[i].checked) {
-                checkedFiles.push(files[i]);
-            }
-        }
-        return checkedFiles;
-    };
-
-    /*
     * Changes between Grid and List view
     */
     $scope.changeView = function () {
@@ -284,6 +256,48 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
 	
 });
 
+
+/*
+   * Returns all checked folders in current folder
+   */
+function getCheckedFolders() {
+    var scope = angular.element($("#ng")).scope();
+    var folders = scope.getFolders(scope.settings.currentFolder);
+    var checkedFolders = [];
+    for (var i = 0; i < folders.length; i++) {
+        if (folders[i].checked) {
+            checkedFolders.push(folders[i]);
+        }
+    }
+    return checkedFolders;
+};
+
+/*
+* Returns all checked files in current folder
+*/
+function getCheckedFiles() {
+    var scope = angular.element($("#ng")).scope();
+    var files = scope.getFiles(scope.settings.currentFolder);
+    var checkedFiles = [];
+    for (var i = 0; i < files.length; i++) {
+        if (files[i].checked) {
+            checkedFiles.push(files[i]);
+        }
+    }
+    return checkedFiles;
+};
+
+/*
+* Returns all checked files and folders in current folder
+*/
+function getCheckedNodes() {
+    var scope = angular.element($("#ng")).scope();
+    var nodes = [];
+    nodes.push.apply(nodes, getCheckedFolders());
+    nodes.push.apply(nodes, getCheckedFiles());
+
+    return nodes;
+}
 
 /*
 * Updates margins between folders in row-Mode

@@ -282,39 +282,9 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	    }
 	};
     
-    /*
-    * Adds the selected files/folders to the selected users list of files/folders with view access
-    */
-	$scope.addViewAccess = function (evt) {
-	   
-	    var checked = evt['event'].checked;
-	    var person = evt['event'].person;
-
-	    if (checked) {
-	        for (var i = 0, folders = $scope.getCheckedFolders() ; i < folders.length; i++) {
-	            if (person.viewAccess.indexOf(folders[i]) === -1) {
-	                person.viewAccess.push(folders[i]);
-	            }
-	        }
-	        for (var i = 0, files = $scope.getCheckedFiles() ; i < files.length; i++) {
-	            if (person.viewAccess.indexOf(files[i]) === -1) {
-	                person.viewAccess.push(files[i]);
-	            }
-	        }
-	    }
-	    else {
-	        for (var i = 0, folders = $scope.getCheckedFolders() ; i < folders.length; i++) {
-	            if (person.viewAccess.indexOf(folders[i]) !== -1) {
-	                person.viewAccess.splice(i, 1);
-	            }
-	        }
-	        for (var i = 0, files = $scope.getCheckedFiles() ; i < files.length; i++) {
-	            if (person.viewAccess.indexOf(files[i]) !== -1) {
-	                person.viewAccess.splice(i,1);
-	            }
-	        }
-	    }
-    };
+    /*********************************
+    ************PERMISSIONS***********
+    *********************************/
 
     /*
     * Opens the view Access submenu and selects the correct users
@@ -323,34 +293,223 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	    $scope.settings.underMenuViewAccess = true;
 
 	    for (var i = 0; i < $scope.persons.length; i++) {
-	        var m = 0;
-	        for (var k = 0; k < $scope.getCheckedFolders().length; k++) {
-	            if ($scope.persons[i].viewAccess.indexOf($scope.getCheckedFolders()[k]) !== -1) {
-	                m++;
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].viewAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].checked = false;
+	                break;
 	            }
-	        }
-	        for (var k = 0; k < $scope.getCheckedFiles().length; k++) {
-	            if ($scope.persons[i].viewAccess.indexOf($scope.getCheckedFiles()[k]) !== -1) {
-	                m++;
+	            else {
+	                $scope.persons[i].checked = true;
 	            }
-	        }
-	        if (m === $scope.getCheckedFolders().length + $scope.getCheckedFiles().length &&
-                    ($scope.getCheckedFolders().length !== 0 || $scope.getCheckedFiles().length !== 0)) {
-	            $scope.persons[i].checked = true;
 	        }
 	    }
-	}
+	};
 
     /*
-    * Closes view access submenu and deselects all users
+    * Adds the selected files/folders to the selected users list of files/folders with view access
     */
-	$scope.exitViewAccessMenu = function () {
+	$scope.addViewAccess = function (evt) {
+	   
+	    var checked = evt['event'].checked;
+	    var person = evt['event'].person;
+
+	    for (var i = 0, nodes = getCheckedNodes() ; i < nodes.length; i++) {
+	        if (checked) {
+	            if (person.viewAccess.indexOf(nodes[i]) === -1) {
+	                person.viewAccess.push(nodes[i]);
+	            }
+	        }
+	        else {
+	            if (person.viewAccess.indexOf(nodes[i]) !== -1) {
+	                person.viewAccess.splice(i, 1);
+	            }
+	        }
+	    }
+    };
+
+    /*
+    * Opens the share Access submenu and selects the correct users
+    */
+	$scope.openShareAccessMenu = function () {
+	    $scope.settings.underMenuShareAccess = true;
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        if (getCheckedNodes().length < 1) {
+	            $scope.persons[i].noViewAccess = true;
+	            continue;
+	        }
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].viewAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].noViewAccess = true;
+	                break;
+	            }
+	            else {
+	                $scope.persons[i].noViewAccess = false;
+	            }
+	        }
+	    }
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].shareAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].checked = false;
+	                break;
+	            }
+	            else {
+	                $scope.persons[i].checked = true;
+	            }
+	        }
+	    }
+	};
+
+    /*
+    * Adds the selected files/folders to the selected users list of nodes with share access
+    */
+	$scope.addShareAccess = function (evt) {
+	    var checked = evt['event'].checked;
+	    var person = evt['event'].person;
+	    
+	    for (var i = 0, nodes = getCheckedNodes() ; i < nodes.length; i++) {
+	        if (checked) {
+	            if (person.shareAccess.indexOf(nodes[i]) === -1) {
+	                person.shareAccess.push(nodes[i]);
+	            }
+	        }
+	        else {
+	            if (person.shareAccess.indexOf(nodes[i]) !== -1) {
+	                person.shareAccess.splice(i, 1);
+	            }
+	        }
+	    }
+	};
+
+    /*
+    * Opens the move Access submenu and selects the correct users
+    */
+	$scope.openMoveAccessMenu = function () {
+	    $scope.settings.underMenuMoveAccess = true;
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        if (getCheckedNodes().length < 1) {
+	            $scope.persons[i].noViewAccess = true;
+	            continue;
+	        }
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].viewAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].noViewAccess = true;
+	                break;
+	            }
+	            else {
+	                $scope.persons[i].noViewAccess = false;
+	            }
+	        }
+	    }
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].moveAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].checked = false;
+	                break;
+	            }
+	            else {
+	                $scope.persons[i].checked = true;
+	            }
+	        }
+	    }
+	};
+
+    /*
+    * Adds the selected files/folders to the selected users list of nodes with move access
+    */
+	$scope.addMoveAccess = function (evt) {
+	    var checked = evt['event'].checked;
+	    var person = evt['event'].person;
+
+	    for (var i = 0, nodes = getCheckedNodes() ; i < nodes.length; i++) {
+	        if (checked) {
+	            if (person.moveAccess.indexOf(nodes[i]) === -1) {
+	                person.moveAccess.push(nodes[i]);
+	            }
+	        }
+	        else {
+	            if (person.moveAccess.indexOf(nodes[i]) !== -1) {
+	                person.moveAccess.splice(i, 1);
+	            }
+	        }
+	    }
+	};
+    
+    /*
+    * Opens the sync Access submenu and selects the correct users
+    */
+	$scope.openSyncAccessMenu = function () {
+	    $scope.settings.underMenuSyncAccess = true;
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        if (getCheckedNodes().length < 1) {
+	            $scope.persons[i].noViewAccess = true;
+	            continue;
+	        }
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].viewAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].noViewAccess = true;
+	                break;
+	            }
+	            else {
+	                $scope.persons[i].noViewAccess = false;
+	            }
+	        }
+	    }
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].syncAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].checked = false;
+	                break;
+	            }
+	            else {
+	                $scope.persons[i].checked = true;
+	            }
+	        }
+	    }
+	};
+
+    /*
+    * Adds the selected files/folders to the selected users list of nodes with sync access
+    */
+	$scope.addSyncAccess = function (evt) {
+	    var checked = evt['event'].checked;
+	    var person = evt['event'].person;
+
+	    for (var i = 0, nodes = getCheckedNodes() ; i < nodes.length; i++) {
+	        if (checked) {
+	            if (person.syncAccess.indexOf(nodes[i]) === -1) {
+	                person.syncAccess.push(nodes[i]);
+	            }
+	        }
+	        else {
+	            if (person.syncAccess.indexOf(nodes[i]) !== -1) {
+	                person.syncAccess.splice(i, 1);
+	            }
+	        }
+	    }
+	};
+
+    /*
+    * Closes all permissions submenu and deselects all users
+    */
+	$scope.exitAccessMenu = function () {
 	    $scope.settings.underMenuViewAccess = false;
+	    $scope.settings.underMenuShareAccess = false;
+	    $scope.settings.underMenuMoveAccess = false;
+	    $scope.settings.underMenuSyncAccess = false;
 
 	    for (var i = 0; i < $scope.persons.length; i++) {
 	        $scope.persons[i].checked = false;
 	    }
-	}
+	};
+
+	
 
 });
 		
