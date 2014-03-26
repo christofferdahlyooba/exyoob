@@ -49,10 +49,14 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
         width: 748
     };
 
+    /*
+    * Persons in company that can have permissions to files
+    */
     $scope.persons = [
         {
             name: 'Nisse',
             checked: false,
+            noViewAccess: false,
             viewAccess: [],
             shareAccess: [],
             moveAccess: [],
@@ -61,19 +65,21 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
         {
             name: 'Svenne',
             checked: false,
+            noViewAccess: false,
             viewAccess: [],
             shareAccess: [],
             moveAccess: [],
             syncAccess: [],
         },
-         {
-             name: 'Kalle',
-             checked: false,
-             viewAccess: [],
-             shareAccess: [],
-             moveAccess: [],
-             syncAccess: [],
-         },
+        {
+            name: 'Kalle',
+            checked: false,
+            noViewAccess: false,
+            viewAccess: [],
+            shareAccess: [],
+            moveAccess: [],
+            syncAccess: [],
+        },
     ];
         
 

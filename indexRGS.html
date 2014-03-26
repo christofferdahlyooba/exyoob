@@ -312,28 +312,28 @@
                                 <button ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <h2>View Access</h2>
                                 <ul ng-repeat="person in persons">
-                                    <li><input type="checkbox" ng-model="person.checked" ng-change="addViewAccess({event:{checked:person.checked,person:person}})"/>{{person.name}}</li>
+                                    <li><input type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'viewAccess')"/>{{person.name}}</li>
                                 </ul>
                             </div>
                             <div class="setShareAccess" ng-show="settings.underMenuShareAccess">
                                 <button ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <h2>Share Access</h2>
                                 <ul ng-repeat="person in persons">
-                                    <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addShareAccess({event:{checked:person.checked,person:person}})"/>{{person.name}}</li>
+                                    <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'shareAccess')" />{{person.name}}</li>
                                 </ul>
                             </div>
                             <div class="setMoveAccess" ng-show="settings.underMenuMoveAccess">
                                 <button ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <h2>Move Access</h2>
                                 <ul ng-repeat="person in persons">
-                                    <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addMoveAccess({event:{checked:person.checked,person:person}})" />{{person.name}}</li>
+                                    <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'moveAccess')" />{{person.name}}</li>
                                 </ul>
                             </div>
                             <div class="setSyncAccess" ng-show="settings.underMenuSyncAccess">
                                 <button ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <h2>Sync Access</h2>
                                 <ul ng-repeat="person in persons">
-                                    <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addSyncAccess({event:{checked:person.checked,person:person}})" />{{person.name}}</li>
+                                    <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'syncAccess')" />{{person.name}}</li>
                                 </ul>
                             </div>
                         </div>

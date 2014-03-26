@@ -171,6 +171,9 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	$scope.deleteFolder = function (folder) {
 	    $scope.settings.currentFolder.remove(folder);
 	    $scope.settings.nrOfFolders = getNrOfFolders($scope.settings.currentFolder);
+	    if (hasPermissionsSet(folder)) {
+	        removeNodeFromPermission(folder);
+	    }
 	};
 
     /*
@@ -178,6 +181,9 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
     */
 	$scope.deleteFile = function (file) {
 	    $scope.settings.currentFolder.remove(file);
+	    if (hasPermissionsSet(file)) {
+	        removeNodeFromPermission(file);
+	    }
 	};
 
     /*
@@ -306,28 +312,6 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    * Adds the selected files/folders to the selected users list of files/folders with view access
-    */
-	$scope.addViewAccess = function (evt) {
-	   
-	    var checked = evt['event'].checked;
-	    var person = evt['event'].person;
-
-	    for (var i = 0, nodes = getCheckedNodes() ; i < nodes.length; i++) {
-	        if (checked) {
-	            if (person.viewAccess.indexOf(nodes[i]) === -1) {
-	                person.viewAccess.push(nodes[i]);
-	            }
-	        }
-	        else {
-	            if (person.viewAccess.indexOf(nodes[i]) !== -1) {
-	                person.viewAccess.splice(i, 1);
-	            }
-	        }
-	    }
-    };
-
-    /*
     * Opens the share Access submenu and selects the correct users
     */
 	$scope.openShareAccessMenu = function () {
@@ -363,27 +347,6 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    * Adds the selected files/folders to the selected users list of nodes with share access
-    */
-	$scope.addShareAccess = function (evt) {
-	    var checked = evt['event'].checked;
-	    var person = evt['event'].person;
-	    
-	    for (var i = 0, nodes = getCheckedNodes() ; i < nodes.length; i++) {
-	        if (checked) {
-	            if (person.shareAccess.indexOf(nodes[i]) === -1) {
-	                person.shareAccess.push(nodes[i]);
-	            }
-	        }
-	        else {
-	            if (person.shareAccess.indexOf(nodes[i]) !== -1) {
-	                person.shareAccess.splice(i, 1);
-	            }
-	        }
-	    }
-	};
-
-    /*
     * Opens the move Access submenu and selects the correct users
     */
 	$scope.openMoveAccessMenu = function () {
@@ -413,27 +376,6 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	            }
 	            else {
 	                $scope.persons[i].checked = true;
-	            }
-	        }
-	    }
-	};
-
-    /*
-    * Adds the selected files/folders to the selected users list of nodes with move access
-    */
-	$scope.addMoveAccess = function (evt) {
-	    var checked = evt['event'].checked;
-	    var person = evt['event'].person;
-
-	    for (var i = 0, nodes = getCheckedNodes() ; i < nodes.length; i++) {
-	        if (checked) {
-	            if (person.moveAccess.indexOf(nodes[i]) === -1) {
-	                person.moveAccess.push(nodes[i]);
-	            }
-	        }
-	        else {
-	            if (person.moveAccess.indexOf(nodes[i]) !== -1) {
-	                person.moveAccess.splice(i, 1);
 	            }
 	        }
 	    }
@@ -475,21 +417,23 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	};
 
     /*
-    * Adds the selected files/folders to the selected users list of nodes with sync access
+    * Adds all selected files to the selected person and the choosen access (view, share, move or sync)
     */
-	$scope.addSyncAccess = function (evt) {
+	$scope.addAccess = function (evt, access) {
+
 	    var checked = evt['event'].checked;
 	    var person = evt['event'].person;
 
 	    for (var i = 0, nodes = getCheckedNodes() ; i < nodes.length; i++) {
+	        var index = person[access].indexOf(nodes[i]);
 	        if (checked) {
-	            if (person.syncAccess.indexOf(nodes[i]) === -1) {
-	                person.syncAccess.push(nodes[i]);
+	            if (index === -1) {
+	                person[access].push(nodes[i]);
 	            }
 	        }
 	        else {
-	            if (person.syncAccess.indexOf(nodes[i]) !== -1) {
-	                person.syncAccess.splice(i, 1);
+	            if (index !== -1) {
+	                person[access].splice(index, 1);
 	            }
 	        }
 	    }
@@ -509,10 +453,54 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	    }
 	};
 
-	
-
 });
-		
+
+function hasPermissionsSet(node) {
+    return hasAccess(node, 'viewAccess') ||
+        hasAccess(node, 'shareAccess') ||
+        hasAccess(node, 'moveAccess') ||
+        hasAccess(node, 'syncAccess');
+}
+
+function hasAccess(node, access) {
+    var scope = angular.element($("#ng")).scope();
+    
+    for (var i = 0, persons = scope.persons; i < persons.length; i++) {
+        if (persons[i][access].indexOf(node) !== -1) {
+            return true;
+        }
+    }
+    return false;    
+}
+
+function removeNodeFromPermission(node) {
+    var scope = angular.element($("#ng")).scope();
+
+    for (var i = 0, persons = scope.persons; i < persons.length; i++) {
+        var index = persons[i].viewAccess.indexOf(node);
+        if ( index !== -1) {
+            persons[i].viewAccess.splice(index, 1);
+        }
+
+        index = persons[i].shareAccess.indexOf(node);
+        if (index !== -1) {
+            persons[i].shareAccess.splice(index, 1);
+        }
+
+        index = persons[i].moveAccess.indexOf(node);
+        if (index !== -1) {
+            persons[i].moveAccess.splice(index, 1);
+        }
+
+        index = persons[i].syncAccess.indexOf(node);
+        if (index !== -1) {
+            persons[i].syncAccess.splice(index, 1);
+        }
+    }
+}
+
+
+
 
 /*------------------------------------------------------------------
 --------------------DRAG AND DROP-----------------------------------
