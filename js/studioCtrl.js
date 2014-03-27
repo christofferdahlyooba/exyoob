@@ -256,6 +256,7 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 	    $scope.settings.currentFolder.add(folder);
 	    $scope.settings.nrOfFolders = getNrOfFolders($scope.settings.currentFolder);
 	    $timeout(updateRowMargins);
+	    $timeout(togglePlaceHolders);
 	};
 
     /*
@@ -503,6 +504,7 @@ if(fileDiv !== null){
 			});
 		}
 		setTimeout(updateRowMargins);
+		setTimeout(togglePlaceHolders);
 	}, false);
 }
 /*------------------------------------------------------------------
@@ -540,6 +542,7 @@ function handleFileSelect(evt) {
         });
     }
     setTimeout(updateRowMargins);
+    setTimeout(togglePlaceHolders);
 };
 
 
