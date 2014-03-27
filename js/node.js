@@ -8,13 +8,13 @@ function Node(name, type){
 
 
 
-function Folder(name, type){
-	Node.call(this, name, type);
+function Folder(name){
+	Node.call(this, name, 'Folder');
 	this.children = [];
 };
 Folder.prototype = new Node();
-Folder.prototype.hasFolders = function(){
-	console.log(this.folders.length);
+Folder.prototype.hasChildren = function(){
+	console.log(this.children.length);
 }
 Folder.prototype.add = function(node){
 	if(node.Parent === this){
@@ -35,9 +35,6 @@ Folder.prototype.remove = function(node){
 	node.Parent = null;
 }
 
-
-
-
 function File(name, type){
 	Node.call(this, name, type);
 	this.size = null;
@@ -46,18 +43,3 @@ function File(name, type){
 	this.isImg = false;
 };
 File.prototype = new Node();
-File.prototype.addTo = function(folder){
-	folder.add(this);
-}
-File.prototype.removeFrom = function(folder){
-	folder.remove(this);
-}
-
-var replacer = function(key, value)
-{
-  if (key=="Parent")
-  {
-      return undefined;
-  }
-  else return value;
-}
