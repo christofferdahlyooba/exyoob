@@ -51,6 +51,7 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
 
     /*
     * Persons in company that can have permissions to files
+    * Dummy data
     */
     $scope.persons = [
         {
@@ -303,7 +304,7 @@ function getCheckedNodes() {
     nodes.push.apply(nodes, getCheckedFiles());
 
     return nodes;
-}
+};
 
 /*
 * Updates margins between folders in row-Mode

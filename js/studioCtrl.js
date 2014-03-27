@@ -455,51 +455,6 @@ angular.module('mockApp').controller('FirstController', function($scope, $timeou
 
 });
 
-function hasPermissionsSet(node) {
-    return hasAccess(node, 'viewAccess') ||
-        hasAccess(node, 'shareAccess') ||
-        hasAccess(node, 'moveAccess') ||
-        hasAccess(node, 'syncAccess');
-}
-
-function hasAccess(node, access) {
-    var scope = angular.element($("#ng")).scope();
-    
-    for (var i = 0, persons = scope.persons; i < persons.length; i++) {
-        if (persons[i][access].indexOf(node) !== -1) {
-            return true;
-        }
-    }
-    return false;    
-}
-
-function removeNodeFromPermission(node) {
-    var scope = angular.element($("#ng")).scope();
-
-    for (var i = 0, persons = scope.persons; i < persons.length; i++) {
-        var index = persons[i].viewAccess.indexOf(node);
-        if ( index !== -1) {
-            persons[i].viewAccess.splice(index, 1);
-        }
-
-        index = persons[i].shareAccess.indexOf(node);
-        if (index !== -1) {
-            persons[i].shareAccess.splice(index, 1);
-        }
-
-        index = persons[i].moveAccess.indexOf(node);
-        if (index !== -1) {
-            persons[i].moveAccess.splice(index, 1);
-        }
-
-        index = persons[i].syncAccess.indexOf(node);
-        if (index !== -1) {
-            persons[i].syncAccess.splice(index, 1);
-        }
-    }
-}
-
-
 
 
 /*------------------------------------------------------------------
@@ -558,35 +513,34 @@ if(document.getElementById('files') !== null){
 }
 
 function handleFileSelect(evt) {
-	var files = evt.target.files; // FileList object
-	$('#addFiles').modal('hide');
-	
-	var scope = angular.element($("#ng")).scope();
-	for (var i = 0, f; f = files[i]; i++) 
-	{
-		var file = new File(f.name, f.type);
-		file.img = scope.settings.fileIcon;
-		file.size = f.size;
-		file.lastModified = f.lastModifiedDate;
-		var type = f.type.split("/")[0];
-		if(type === 'image'){
-			file.isImg = true;
-		}
-		var reader = new FileReader()
-		reader.onload = (function(file){
-		  return function(e){		
-			file.data = e.target.result;
-			scope.$apply();
-		  };
-		}(file))
-		reader.readAsDataURL(f);
-		
-		scope.$apply(function () {			
-			scope.settings.currentFolder.add(file);
-		});
-	}
-	setTimeout(updateRowMargins);
-}
+    var files = evt.target.files; // FileList object
+    $('#addFiles').modal('hide');
+
+    var scope = angular.element($("#ng")).scope();
+    for (var i = 0, f; f = files[i]; i++) {
+        var file = new File(f.name, f.type);
+        file.img = scope.settings.fileIcon;
+        file.size = f.size;
+        file.lastModified = f.lastModifiedDate;
+        var type = f.type.split("/")[0];
+        if (type === 'image') {
+            file.isImg = true;
+        }
+        var reader = new FileReader()
+        reader.onload = (function (file) {
+            return function (e) {
+                file.data = e.target.result;
+                scope.$apply();
+            };
+        }(file))
+        reader.readAsDataURL(f);
+
+        scope.$apply(function () {
+            scope.settings.currentFolder.add(file);
+        });
+    }
+    setTimeout(updateRowMargins);
+};
 
 
 
@@ -598,26 +552,26 @@ function handleFileSelect(evt) {
 * Adds margin at the bottom of each node so that they dont jump when 
 * toggeling showFolderName
 */
-function togglePlaceHolders(){
-	var scope = angular.element($("#ng")).scope();
-	var margin = 0;
-	if(!scope.settings.showFont){
-		margin = 24;
-	}
-	if(scope.settings.cols){
-		var colStyle = document.getElementsByClassName(scope.settings.colStyle);	
-		for(var i = 0; i<colStyle.length; i++){
-			colStyle[i].style.marginBottom = margin+'px';
-		}
-	}else{
-		var rowLi = document.getElementsByClassName("rowLi");
-		for(var i = 0; i<rowLi.length; i++){
-			margin = calcMargins();
-			rowLi[i].style.marginBottom = margin+'px';
-		}		
-	}
-	scope.$apply();
-}
+function togglePlaceHolders() {
+    var scope = angular.element($("#ng")).scope();
+    var margin = 0;
+    if (!scope.settings.showFont) {
+        margin = 24;
+    }
+    if (scope.settings.cols) {
+        var colStyle = document.getElementsByClassName(scope.settings.colStyle);
+        for (var i = 0; i < colStyle.length; i++) {
+            colStyle[i].style.marginBottom = margin + 'px';
+        }
+    } else {
+        var rowLi = document.getElementsByClassName("rowLi");
+        for (var i = 0; i < rowLi.length; i++) {
+            margin = calcMargins();
+            rowLi[i].style.marginBottom = margin + 'px';
+        }
+    }
+    scope.$apply();
+};
 
 /*
 * Changes scrollbar visibility depending on scroll direction TODO-Change name
@@ -631,7 +585,7 @@ function changeScrollDir(cols) {
         contentPanel[1].style.overflowX = 'auto';
         contentPanel[1].style.overflowY = 'hidden';
     }
-}
+};
 
 /*
 * Sets scope width and height
@@ -640,8 +594,61 @@ function saveNewSize(w, h) {
     var scope = angular.element($("#ng")).scope();
     scope.settings.width = w;
     scope.settings.height = h;
-}
+};
 
+/*
+* Returns true if this node has a permission set, else returns false
+*/
+function hasPermissionsSet(node) {
+    return hasAccess(node, 'viewAccess') ||
+        hasAccess(node, 'shareAccess') ||
+        hasAccess(node, 'moveAccess') ||
+        hasAccess(node, 'syncAccess');
+};
+
+/*
+* Checks of this node is available in the permission list 
+* if it is, return true, else false
+*/
+function hasAccess(node, access) {
+    var scope = angular.element($("#ng")).scope();
+
+    for (var i = 0, persons = scope.persons; i < persons.length; i++) {
+        if (persons[i][access].indexOf(node) !== -1) {
+            return true;
+        }
+    }
+    return false;
+};
+
+/*
+* Removes a file from all permission lists it is currently in
+*/
+function removeNodeFromPermission(node) {
+    var scope = angular.element($("#ng")).scope();
+
+    for (var i = 0, persons = scope.persons; i < persons.length; i++) {
+        var index = persons[i].viewAccess.indexOf(node);
+        if (index !== -1) {
+            persons[i].viewAccess.splice(index, 1);
+        }
+
+        index = persons[i].shareAccess.indexOf(node);
+        if (index !== -1) {
+            persons[i].shareAccess.splice(index, 1);
+        }
+
+        index = persons[i].moveAccess.indexOf(node);
+        if (index !== -1) {
+            persons[i].moveAccess.splice(index, 1);
+        }
+
+        index = persons[i].syncAccess.indexOf(node);
+        if (index !== -1) {
+            persons[i].syncAccess.splice(index, 1);
+        }
+    }
+};
 
 /*----------------------------
 -----------EXPORT-------------
@@ -653,7 +660,7 @@ function exportSettingsToJson() {
     var scope = angular.element($("#ng")).scope();
     console.log(JSON.stringify(scope.settings, replacer2));
     //return JSON.stringify($scope.currentFolder, replacer);
-}
+};
 
 /*
 * Export the current files and folders to JSON
@@ -663,29 +670,25 @@ function exportToJson() {
     exportSettingsToJson();
     console.log(JSON.stringify(scope.settings.currentFolder, replacer));
     //return JSON.stringify($scope.currentFolder, replacer);
-}
+};
 
 /*
 * Removes 'Parent' key from JSON to eliminate infinite JSON
 * Removes 'data' key to save size
 */
-var replacer = function(key, value)
-{
-  if (key=="Parent" || key ==='data')
-  {
-      return undefined;
-  }
-  else return value;
-}
+var replacer = function (key, value) {
+    if (key == "Parent" || key === 'data') {
+        return undefined;
+    }
+    else return value;
+};
 
 /*
 * Removes 'currentFolder' key to separate settings and folders
 */
-var replacer2 = function(key, value)
-{
-  if (key=="currentFolder")
-  {
-      return undefined;
-  }
-  else return value;
-}
+var replacer2 = function (key, value) {
+    if (key == "currentFolder") {
+        return undefined;
+    }
+    else return value;
+};
