@@ -355,7 +355,7 @@
                                 <ul>
                                     <li><input type="image" src="img/addFolder.jpg" data-dismiss="modal" ng-click="add()"/>Add Folders</li>
 
-                                    <li><input type="image" data-toggle="modal" data-target="#addDropbox" src="img/dropbox.jpg" data-dismiss="modal" ng-click="add()"/>Add from Dropbox</li>
+                                    <li><input type="image" data-toggle="modal" data-target="#addDropbox" src="img/dropbox.jpg" data-dismiss="modal" ng-click="list('/')">Add from Dropbox</li>
 
                                     <li><input type="image" src="img/box_logo.png" data-dismiss="modal"/>Add from Box</li>
 
@@ -380,20 +380,22 @@
                 <!-- ------------------------------- -->
                 <div class="modal" id="addDropbox">
                     <div class="modal-dialog">
-                        <div class="modal-content text-center">
+                        <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                 <h4 class="modal-title">ADD FROM DROPBOX</h4>
                             </div>
                             <div class="modal-body">
-							<input type="image" src="img/backSmall.png" ng-click="back()"/> <h2>{{dir}}</h2>
-							<!-- <input type="checkbox" ng-checked="allSelected" ng-click="selectAll($event)">Select All</input> -->
-							<ul ng-repeat="dbItem in dbItems">
-								<input type="checkbox" ng-checked="isSelected(dbItem)" ng-click="updateSelection($event,dbItem)"/>
-								<li ng-show="dbItem.is_dir"><input type="image" src="img/dbFolder.png" ng-click="list(dbItem.path)">{{dbItem.name}}</input></li>
-								<li ng-hide="dbItem.is_dir"><input type="image" src="img/file.png">{{dbItem.name}}</input></li>
-                                </ul>
-							<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="addDB()">Add files</button>
+								<button  ng-click="back()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+								<h2>{{dir}}</h2>
+								<!-- <input type="image" src="img/backSmall.png" ng-click="back()"/>  -->
+								<!-- <input type="checkbox" ng-checked="allSelected" ng-click="selectAll($event)">Select All</input> -->
+								<ul ng-repeat="dbItem in dbItems">
+									<input type="checkbox" ng-checked="isSelected(dbItem)" ng-click="updateSelection($event,dbItem)"/>
+									<li ng-show="dbItem.is_dir"><input type="image" src="img/dbFolder.png" ng-click="list(dbItem.path)">{{dbItem.name}}</input></li>
+									<li ng-hide="dbItem.is_dir"><input type="image" src="img/file.png">{{dbItem.name}}</input></li>
+									</ul>
+								<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="addDB()">Add files</button>
                             </div>
                         </div>
                     </div>
