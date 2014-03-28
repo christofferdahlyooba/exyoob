@@ -28,6 +28,10 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
         underMenu3: false,
         underMenu4: false, 
         underMenu5: false,
+        underMenuViewAccess: false,
+        underMenuShareAccess: false,
+        underMenuMoveAccess: false,
+        underMenuSyncAccess: false,
         viewsAllowed: 'Grid & List',
         allAllowed: true,
         gridMode: true,
@@ -44,6 +48,41 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
         height: 600,
         width: 748
     };
+
+    /*
+    * Persons in company that can have permissions to files
+    * Dummy data
+    */
+    $scope.persons = [
+        {
+            name: 'Nisse',
+            checked: false,
+            noViewAccess: false,
+            viewAccess: [],
+            shareAccess: [],
+            moveAccess: [],
+            syncAccess: [],
+        },
+        {
+            name: 'Svenne',
+            checked: false,
+            noViewAccess: false,
+            viewAccess: [],
+            shareAccess: [],
+            moveAccess: [],
+            syncAccess: [],
+        },
+        {
+            name: 'Kalle',
+            checked: false,
+            noViewAccess: false,
+            viewAccess: [],
+            shareAccess: [],
+            moveAccess: [],
+            syncAccess: [],
+        },
+    ];
+        
 
     /*
     * Enters the selected folder, setting currentFolder and calculating new margins
@@ -224,6 +263,48 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
 	
 });
 
+
+/*
+   * Returns all checked folders in current folder
+   */
+function getCheckedFolders() {
+    var scope = angular.element($("#ng")).scope();
+    var folders = scope.getFolders(scope.settings.currentFolder);
+    var checkedFolders = [];
+    for (var i = 0; i < folders.length; i++) {
+        if (folders[i].checked) {
+            checkedFolders.push(folders[i]);
+        }
+    }
+    return checkedFolders;
+};
+
+/*
+* Returns all checked files in current folder
+*/
+function getCheckedFiles() {
+    var scope = angular.element($("#ng")).scope();
+    var files = scope.getFiles(scope.settings.currentFolder);
+    var checkedFiles = [];
+    for (var i = 0; i < files.length; i++) {
+        if (files[i].checked) {
+            checkedFiles.push(files[i]);
+        }
+    }
+    return checkedFiles;
+};
+
+/*
+* Returns all checked files and folders in current folder
+*/
+function getCheckedNodes() {
+    var scope = angular.element($("#ng")).scope();
+    var nodes = [];
+    nodes.push.apply(nodes, getCheckedFolders());
+    nodes.push.apply(nodes, getCheckedFiles());
+
+    return nodes;
+};
 
 /*
 * Updates margins between folders in row-Mode

@@ -38,16 +38,14 @@
                         <div class="panel-body contentpanel2">
                             <div class="col-md-4">
                                 <div ng-hide="settings.notAdded" ng-repeat="folder in getFolders(settings.currentFolder)">
-                                    <input type="image" src="img/folderList.png" ng-click="enter(folder)">
+                                    <input type="image" src="img/folderList.png" ng-click="enter(folder)"/>
                                     {{folder.name}}
-                                    </input>
                                 </div>
                                 <div ng-hide="settings.notAdded" ng-repeat="file in getFiles(settings.currentFolder)">
-                                    <input type="image" src="img/fileList.png" ng-click="showListPreview(file)">
+                                    <input type="image" src="img/fileList.png" ng-click="showListPreview(file)"/>
                                     {{file.name}}
-                                    </input>
                                 </div>
-                                <input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="settings.notAdded" />
+                                <input data-toggle="modal" data-target="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="settings.notAdded" />
                             </div>
                             <div class="col-md-8" id="previewDiv">
                                 <canvas id="preview"></canvas>
@@ -73,7 +71,7 @@
                                     <canvas id="previewGrid"></canvas>
                                 </div>
                                 <!-- ----------------Content Body-------------------------  -->
-                                <input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add.png" ng-show="settings.notAdded" />
+                                <input data-toggle="modal" data-target="#addFiles" type="image" src="img/bw_add.png" ng-show="settings.notAdded" />
                                 <!-- --------------------COLUMN---------------------------- -->
                                 <div ng-show="settings.cols">
                                     <!-- Folders -->
@@ -103,7 +101,7 @@
                                         </div>
                                     </div>
                                     <div ng-class="settings.colStyle">
-                                        <input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="settings.notAdded" id="dnd" />
+                                        <input data-toggle="modal" data-target="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="settings.notAdded" id="dnd" />
                                     </div>
                                 </div>
                                 <!-- --------------------ROW---------------------------- -->
@@ -141,7 +139,7 @@
 
                                         <div>
                                             <li ng-class="settings.rowStyleLi">
-                                                <input data-toggle="modal" href="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="settings.notAdded" id="dnd" />
+                                                <input data-toggle="modal" data-target="#addFiles" type="image" src="img/bw_add_minimini.png" ng-hide="settings.notAdded" id="dnd" />
                                             </li>
                                         </div>
                                 </div>
@@ -160,9 +158,9 @@
                             Settings
                         </div>
                         <!-- Settings body-->
-                        <div class="panel-body" ng-show="settings.editing">
+                        <div class="panel-body settingsMenu" ng-show="settings.editing">
                             <!-- Standard Settings -->
-                            <div class="firstSetting" ng-hide="settings.underMenu0 || settings.underMenu || settings.underMenu2 || settings.underMenu3 || settings.underMenu4 || settings.underMenu5">
+                            <div class="firstSetting" ng-hide="subMenuOpen()">
                                 Scrolling:
                                 <input type="checkbox" name="scrollingBox" id="scrollingBox" data-on-color="default" data-off-color="default" data-on-text="<span class='glyphicon glyphicon-resize-vertical'></span>" data-off-text="<span class='glyphicon glyphicon-resize-horizontal'></span>">
                                 <p>
@@ -186,7 +184,7 @@
                                     <button type="button" class="btn btn-default" ng-click="changeCol(1)">+</button>
                                 </p>
                                 <hr>
-                                Change background: <input type="image" src="img/bg_mini.jpg" ng-click="bgMenu()"></input>
+                                Change background: <input type="image" src="img/bg_mini.jpg" ng-click="bgMenu()"/>
                                 <hr>
                                 <div class="folderSettings">
                                     <p>
@@ -198,11 +196,11 @@
                                         <button type="button" class="btn btn-default" ng-click="addFolders()">+</button>
                                     </p>
                                     <p>
-                                        Folder icon: <input type="image" src="img/folder.png" ng-click="folderIconMenu()"></input>
+                                        Folder icon: <input type="image" src="img/folder.png" ng-click="folderIconMenu()"/>
                                     </p>
 
                                     <p>
-                                        File icon: <input type="image" src="img/file.png" ng-click="fileIconMenu()"></input>
+                                        File icon: <input type="image" src="img/file.png" ng-click="fileIconMenu()"/>
                                     </p>
 
                                     <p>
@@ -232,6 +230,14 @@
                                     </div>
                                     <!-- ----------- -->
                                     <hr>
+                                    <div class="permissionSettings">
+                                        <p> View Access: <button ng-click="openViewAccessMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
+                                        <p> Share Access: <button ng-click="openShareAccessMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
+                                        <p> Move Access: <button ng-click="openMoveAccessMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
+                                        <p> Download Auto: <button ng-click="openSyncAccessMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
+                                    </div>
+
+                                    <hr>
                                 </div>
                             </div>
                             <!-- ----------------------- -->
@@ -239,9 +245,9 @@
                             <div class="viewsAllowed" ng-show="settings.underMenu0">
                                 <p>Views allowed</p>
                                 <ul>
-                                    <li><input type="radio" ng-model="settings.viewsAllowed" ng-click="applyViews()" value="Grid & List"> Grid & List</input></li>
-                                    <li><input type="radio" ng-model="settings.viewsAllowed" ng-click="applyViews()" value="Grid"> Grid</input></li>
-                                    <li><input type="radio" ng-model="settings.viewsAllowed" ng-click="applyViews()" value="List"> List</input></li>
+                                    <li><input type="radio" ng-model="settings.viewsAllowed" ng-click="applyViews()" value="Grid & List"/> Grid & List</li>
+                                    <li><input type="radio" ng-model="settings.viewsAllowed" ng-click="applyViews()" value="Grid"/> Grid</li>
+                                    <li><input type="radio" ng-model="settings.viewsAllowed" ng-click="applyViews()" value="List"/> List</li>
                                 </ul>
                             </div>
                             <!-- ------------------------------------------- -->
@@ -249,13 +255,13 @@
                             <div class="chooseBg" ng-show="settings.underMenu">
                                 <p>Change background</p>
                                 <ul>
-                                    <li><input type="image" src="img/bg_mini.jpg" ng-click="changeBg(1)">Standard</input></li>
+                                    <li><input type="image" src="img/bg_mini.jpg" ng-click="changeBg(1)"/>Standard</li>
 
-                                    <li><input type="image" src="img/bw_sand.jpg" ng-click="changeBg(2)">Relaxing Sand</input></li>
+                                    <li><input type="image" src="img/bw_sand.jpg" ng-click="changeBg(2)"/>Relaxing Sand</li>
 
-                                    <li><input type="image" src="img/bw_sunset.jpg" ng-click="changeBg(3)">Green Sunset</input></li>
+                                    <li><input type="image" src="img/bw_sunset.jpg" ng-click="changeBg(3)"/>Green Sunset</li>
 
-                                    <li><input type="image" src="img/bw_sky.jpg" ng-click="changeBg(44)">Amazing Sky</input></li>
+                                    <li><input type="image" src="img/bw_sky.jpg" ng-click="changeBg(44)"/>Amazing Sky</li>
                                 </ul>
                             </div>
                             <!-- --------------------- -->
@@ -263,9 +269,9 @@
                             <div class="chooseFolderIcon" ng-show="settings.underMenu2">
                                 <p>Folder icon</p>
                                 <ul>
-                                    <li><input type="image" src="img/folder.png" ng-click="changeFolderIcon(1)">Standard</input></li>
-                                    <li><input type="image" src="img/picFolder.png" ng-click="changeFolderIcon(2)">Picture Folder</input></li>
-                                    <li><input type="image" src="img/musicFolder.png" ng-click="changeFolderIcon(3)">Music Folder</input></li>
+                                    <li><input type="image" src="img/folder.png" ng-click="changeFolderIcon(1)"/>Standard</li>
+                                    <li><input type="image" src="img/picFolder.png" ng-click="changeFolderIcon(2)"/>Picture Folder</li>
+                                    <li><input type="image" src="img/musicFolder.png" ng-click="changeFolderIcon(3)"/>Music Folder</li>
                                 </ul>
                             </div>
                             <!-- --------------------- -->
@@ -273,9 +279,9 @@
                             <div class="chooseFileIcon" ng-show="settings.underMenu5">
                                 <p>File icon</p>
                                 <ul>
-                                    <li><input type="image" src="img/file.png" ng-click="changeFileIcon(1)">Standard</input></li>
-                                    <li><input type="image" src="img/picFile.png" ng-click="changeFileIcon(2)">Picture File</input></li>
-				    <li><input type="image" src="img/pdfFile.png" ng-click="changeFileIcon(3)">PDF File</input></li>
+                                    <li><input type="image" src="img/file.png" ng-click="changeFileIcon(1)"/>Standard</li>
+                                    <li><input type="image" src="img/picFile.png" ng-click="changeFileIcon(2)"/>Picture File</li>
+                                    <li><input type="image" src="img/pdfFile.jpg" ng-click="changeFileIcon(3)"/>PDF File</li>
                                 </ul>
                             </div>
                             <!-- --------------------- -->
@@ -283,9 +289,9 @@
                             <div class="chooseFont" ng-show="settings.underMenu3">
                                 <p>Choose font:</p>
                                 <ul>
-                                    <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Verdana"> Verdana</input></li>
-                                    <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Webdings"> Webdings</input></li>
-                                    <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Arial">Arial</input></li>
+                                    <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Verdana"/> Verdana</li>
+                                    <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Webdings"/> Webdings</li>
+                                    <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Arial"/>Arial</li>
                                 </ul>
                             </div>
                             <!-- --------------------- -->
@@ -293,12 +299,41 @@
                             <div class="chooseFontColor" ng-show="settings.underMenu4">
                                 <p>Choose font color:</p>
                                 <ul>
-                                    <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="blue"> Blue</input></li>
-                                    <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="white"> White</input></li>
-                                    <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="red">Red</input></li>
+                                    <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="blue"/> Blue</li>
+                                    <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="white"/> White</li>
+                                    <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="red"/>Red</li>
                                 </ul>
                             </div>
                             <!-- --------------------- -->
+                            <!-- Permissions  -->
+                            <div class="setViewAccess" ng-show="settings.underMenuViewAccess">
+                                <button ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <h2>View Access</h2>
+                                <ul ng-repeat="person in persons">
+                                    <li><input type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'viewAccess')"/>{{person.name}}</li>
+                                </ul>
+                            </div>
+                            <div class="setShareAccess" ng-show="settings.underMenuShareAccess">
+                                <button ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <h2>Share Access</h2>
+                                <ul ng-repeat="person in persons">
+                                    <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'shareAccess')" />{{person.name}}</li>
+                                </ul>
+                            </div>
+                            <div class="setMoveAccess" ng-show="settings.underMenuMoveAccess">
+                                <button ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <h2>Move Access</h2>
+                                <ul ng-repeat="person in persons">
+                                    <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'moveAccess')" />{{person.name}}</li>
+                                </ul>
+                            </div>
+                            <div class="setSyncAccess" ng-show="settings.underMenuSyncAccess">
+                                <button ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <h2>Sync Access</h2>
+                                <ul ng-repeat="person in persons">
+                                    <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'syncAccess')" />{{person.name}}</li>
+                                </ul>
+                            </div>
                         </div>
                         <!-- ------------------ -->
                         <div class="panel-footer text-center">
@@ -318,13 +353,13 @@
                             </div>
                             <div class="modal-body">
                                 <ul>
-                                    <li><input type="image" src="img/addFolder.jpg" data-dismiss="modal" ng-click="add()">Add Folders</input></li>
+                                    <li><input type="image" src="img/addFolder.jpg" data-dismiss="modal" ng-click="add()"/>Add Folders</li>
 
-			            <li><input type="image" data-toggle="modal" href="#addDropbox" data-dismiss="modal" src="img/dropbox.jpg" ng-click="list('/')">Add from Dropbox</input></li>
+                                    <li><input type="image" data-toggle="modal" data-target="#addDropbox" src="img/dropbox.jpg" data-dismiss="modal" ng-click="add()"/>Add from Dropbox</li>
 
-                                    <li><input type="image" src="img/box_logo.png" data-dismiss="modal">Add from Box</input></li>
+                                    <li><input type="image" src="img/box_logo.png" data-dismiss="modal"/>Add from Box</li>
 
-                                    <li><input type="image" src="img/drive.png" data-dismiss="modal">Add from Google Drive</input></li>
+                                    <li><input type="image" src="img/drive.png" data-dismiss="modal"/>Add from Google Drive</li>
 
                                     <li>
                                         <div class="image-upload">
@@ -333,7 +368,7 @@
                                                 <img src="img/computer.png" />
                                             </label>
 
-                                            <input type="file" multiple id="files" name="files[]" ng-click="add()"> Add from computer </input>
+                                            <input type="file" multiple id="files" name="files[]" ng-click="add()"/> Add from computer
 
                                         </div>
                                     </li>

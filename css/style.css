@@ -4,6 +4,11 @@
 	width: 30%;
 }
 
+.settingsMenu{    
+    height: 545px;
+    overflow-y: auto;
+}
+
 .contentpanel2 {
 	height:600px;
 	overflow:hidden;

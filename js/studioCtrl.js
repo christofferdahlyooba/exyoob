@@ -279,6 +279,16 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	};
 
     /*
+    * Returns true if one submenu is open else false
+    */
+	$scope.subMenuOpen = function () {
+	    return $scope.settings.underMenu0 || $scope.settings.underMenu || $scope.settings.underMenu2
+               || $scope.settings.underMenu3 || $scope.settings.underMenu4 || $scope.settings.underMenu5
+               || $scope.settings.underMenuViewAccess || $scope.settings.underMenuShareAccess
+               || $scope.settings.underMenuMoveAccess || $scope.settings.underMenuSyncAccess;
+	};
+
+    /*
     *   Toggle views allowed menu
     */  
 	$scope.viewMenu = function () {
@@ -416,6 +426,9 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	$scope.deleteFolder = function (folder) {
 	    $scope.settings.currentFolder.remove(folder);
 	    $scope.settings.nrOfFolders = getNrOfFolders($scope.settings.currentFolder);
+	    if (hasPermissionsSet(folder)) {
+	        removeNodeFromPermission(folder);
+	    }
 	};
 
     /*
@@ -423,6 +436,9 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
     */
 	$scope.deleteFile = function (file) {
 	    $scope.settings.currentFolder.remove(file);
+	    if (hasPermissionsSet(file)) {
+	        removeNodeFromPermission(file);
+	    }
 	};
 
     /*
@@ -495,6 +511,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	    $scope.settings.currentFolder.add(folder);
 	    $scope.settings.nrOfFolders = getNrOfFolders($scope.settings.currentFolder);
 	    $timeout(updateRowMargins);
+	    $timeout(togglePlaceHolders);
 	};
 
     /*
@@ -526,9 +543,175 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	        node.name = '';
 	    }
 	};
-    	
+    
+    /*********************************
+    ************PERMISSIONS***********
+    *********************************/
+
+    /*
+    * Opens the view Access submenu and selects the correct users
+    */
+	$scope.openViewAccessMenu = function () {
+	    $scope.settings.underMenuViewAccess = true;
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].viewAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].checked = false;
+	                break;
+	            }
+	            else {
+	                $scope.persons[i].checked = true;
+	            }
+	        }
+	    }
+	};
+
+    /*
+    * Opens the share Access submenu and selects the correct users
+    */
+	$scope.openShareAccessMenu = function () {
+	    $scope.settings.underMenuShareAccess = true;
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        if (getCheckedNodes().length < 1) {
+	            $scope.persons[i].noViewAccess = true;
+	            continue;
+	        }
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].viewAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].noViewAccess = true;
+	                break;
+	            }
+	            else {
+	                $scope.persons[i].noViewAccess = false;
+	            }
+	        }
+	    }
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].shareAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].checked = false;
+	                break;
+	            }
+	            else {
+	                $scope.persons[i].checked = true;
+	            }
+	        }
+	    }
+	};
+
+    /*
+    * Opens the move Access submenu and selects the correct users
+    */
+	$scope.openMoveAccessMenu = function () {
+	    $scope.settings.underMenuMoveAccess = true;
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        if (getCheckedNodes().length < 1) {
+	            $scope.persons[i].noViewAccess = true;
+	            continue;
+	        }
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].viewAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].noViewAccess = true;
+	                break;
+	            }
+	            else {
+	                $scope.persons[i].noViewAccess = false;
+	            }
+	        }
+	    }
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].moveAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].checked = false;
+	                break;
+	            }
+	            else {
+	                $scope.persons[i].checked = true;
+	            }
+	        }
+	    }
+	};
+    
+    /*
+    * Opens the sync Access submenu and selects the correct users
+    */
+	$scope.openSyncAccessMenu = function () {
+	    $scope.settings.underMenuSyncAccess = true;
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        if (getCheckedNodes().length < 1) {
+	            $scope.persons[i].noViewAccess = true;
+	            continue;
+	        }
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].viewAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].noViewAccess = true;
+	                break;
+	            }
+	            else {
+	                $scope.persons[i].noViewAccess = false;
+	            }
+	        }
+	    }
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        for (var k = 0; k < getCheckedNodes().length; k++) {
+	            if ($scope.persons[i].syncAccess.indexOf(getCheckedNodes()[k]) === -1) {
+	                $scope.persons[i].checked = false;
+	                break;
+	            }
+	            else {
+	                $scope.persons[i].checked = true;
+	            }
+	        }
+	    }
+	};
+
+    /*
+    * Adds all selected files to the selected person and the choosen access (view, share, move or sync)
+    */
+	$scope.addAccess = function (evt, access) {
+
+	    var checked = evt['event'].checked;
+	    var person = evt['event'].person;
+
+	    for (var i = 0, nodes = getCheckedNodes() ; i < nodes.length; i++) {
+	        var index = person[access].indexOf(nodes[i]);
+	        if (checked) {
+	            if (index === -1) {
+	                person[access].push(nodes[i]);
+	            }
+	        }
+	        else {
+	            if (index !== -1) {
+	                person[access].splice(index, 1);
+	            }
+	        }
+	    }
+	};
+
+    /*
+    * Closes all permissions submenu and deselects all users
+    */
+	$scope.exitAccessMenu = function () {
+	    $scope.settings.underMenuViewAccess = false;
+	    $scope.settings.underMenuShareAccess = false;
+	    $scope.settings.underMenuMoveAccess = false;
+	    $scope.settings.underMenuSyncAccess = false;
+
+	    for (var i = 0; i < $scope.persons.length; i++) {
+	        $scope.persons[i].checked = false;
+	    }
+	};
+
 });
-		
+
+
 
 /*------------------------------------------------------------------
 --------------------DRAG AND DROP-----------------------------------
@@ -576,6 +759,7 @@ if(fileDiv !== null){
 			});
 		}
 		setTimeout(updateRowMargins);
+		setTimeout(togglePlaceHolders);
 	}, false);
 }
 /*------------------------------------------------------------------
@@ -586,35 +770,35 @@ if(document.getElementById('files') !== null){
 }
 
 function handleFileSelect(evt) {
-	var files = evt.target.files; // FileList object
-	$('#addFiles').modal('hide');
-	
-	var scope = angular.element($("#ng")).scope();
-	for (var i = 0, f; f = files[i]; i++) 
-	{
-		var file = new File(f.name, f.type);
-		file.img = scope.settings.fileIcon;
-		file.size = f.size;
-		file.lastModified = f.lastModifiedDate;
-		var type = f.type.split("/")[0];
-		if(type === 'image'){
-			file.isImg = true;
-		}
-		var reader = new FileReader()
-		reader.onload = (function(file){
-		  return function(e){		
-			file.data = e.target.result;
-			scope.$apply();
-		  };
-		}(file))
-		reader.readAsDataURL(f);
-		
-		scope.$apply(function () {			
-			scope.settings.currentFolder.add(file);
-		});
-	}
-	setTimeout(updateRowMargins);
-}
+    var files = evt.target.files; // FileList object
+    $('#addFiles').modal('hide');
+
+    var scope = angular.element($("#ng")).scope();
+    for (var i = 0, f; f = files[i]; i++) {
+        var file = new File(f.name, f.type);
+        file.img = scope.settings.fileIcon;
+        file.size = f.size;
+        file.lastModified = f.lastModifiedDate;
+        var type = f.type.split("/")[0];
+        if (type === 'image') {
+            file.isImg = true;
+        }
+        var reader = new FileReader()
+        reader.onload = (function (file) {
+            return function (e) {
+                file.data = e.target.result;
+                scope.$apply();
+            };
+        }(file))
+        reader.readAsDataURL(f);
+
+        scope.$apply(function () {
+            scope.settings.currentFolder.add(file);
+        });
+    }
+    setTimeout(updateRowMargins);
+    setTimeout(togglePlaceHolders);
+};
 
 
 
@@ -626,26 +810,26 @@ function handleFileSelect(evt) {
 * Adds margin at the bottom of each node so that they dont jump when 
 * toggeling showFolderName
 */
-function togglePlaceHolders(){
-	var scope = angular.element($("#ng")).scope();
-	var margin = 0;
-	if(!scope.settings.showFont){
-		margin = 24;
-	}
-	if(scope.settings.cols){
-		var colStyle = document.getElementsByClassName(scope.settings.colStyle);	
-		for(var i = 0; i<colStyle.length; i++){
-			colStyle[i].style.marginBottom = margin+'px';
-		}
-	}else{
-		var rowLi = document.getElementsByClassName("rowLi");
-		for(var i = 0; i<rowLi.length; i++){
-			margin = calcMargins();
-			rowLi[i].style.marginBottom = margin+'px';
-		}		
-	}
-	scope.$apply();
-}
+function togglePlaceHolders() {
+    var scope = angular.element($("#ng")).scope();
+    var margin = 0;
+    if (!scope.settings.showFont) {
+        margin = 24;
+    }
+    if (scope.settings.cols) {
+        var colStyle = document.getElementsByClassName(scope.settings.colStyle);
+        for (var i = 0; i < colStyle.length; i++) {
+            colStyle[i].style.marginBottom = margin + 'px';
+        }
+    } else {
+        var rowLi = document.getElementsByClassName("rowLi");
+        for (var i = 0; i < rowLi.length; i++) {
+            margin = calcMargins();
+            rowLi[i].style.marginBottom = margin + 'px';
+        }
+    }
+    scope.$apply();
+};
 
 /*
 * Changes scrollbar visibility depending on scroll direction TODO-Change name
@@ -659,7 +843,7 @@ function changeScrollDir(cols) {
         contentPanel[1].style.overflowX = 'auto';
         contentPanel[1].style.overflowY = 'hidden';
     }
-}
+};
 
 /*
 * Sets scope width and height
@@ -668,8 +852,61 @@ function saveNewSize(w, h) {
     var scope = angular.element($("#ng")).scope();
     scope.settings.width = w;
     scope.settings.height = h;
-}
+};
 
+/*
+* Returns true if this node has a permission set, else returns false
+*/
+function hasPermissionsSet(node) {
+    return hasAccess(node, 'viewAccess') ||
+        hasAccess(node, 'shareAccess') ||
+        hasAccess(node, 'moveAccess') ||
+        hasAccess(node, 'syncAccess');
+};
+
+/*
+* Checks of this node is available in the permission list 
+* if it is, return true, else false
+*/
+function hasAccess(node, access) {
+    var scope = angular.element($("#ng")).scope();
+
+    for (var i = 0, persons = scope.persons; i < persons.length; i++) {
+        if (persons[i][access].indexOf(node) !== -1) {
+            return true;
+        }
+    }
+    return false;
+};
+
+/*
+* Removes a file from all permission lists it is currently in
+*/
+function removeNodeFromPermission(node) {
+    var scope = angular.element($("#ng")).scope();
+
+    for (var i = 0, persons = scope.persons; i < persons.length; i++) {
+        var index = persons[i].viewAccess.indexOf(node);
+        if (index !== -1) {
+            persons[i].viewAccess.splice(index, 1);
+        }
+
+        index = persons[i].shareAccess.indexOf(node);
+        if (index !== -1) {
+            persons[i].shareAccess.splice(index, 1);
+        }
+
+        index = persons[i].moveAccess.indexOf(node);
+        if (index !== -1) {
+            persons[i].moveAccess.splice(index, 1);
+        }
+
+        index = persons[i].syncAccess.indexOf(node);
+        if (index !== -1) {
+            persons[i].syncAccess.splice(index, 1);
+        }
+    }
+};
 
 /*----------------------------
 -----------EXPORT-------------
@@ -681,7 +918,7 @@ function exportSettingsToJson() {
     var scope = angular.element($("#ng")).scope();
     console.log(JSON.stringify(scope.settings, replacer2));
     //return JSON.stringify($scope.currentFolder, replacer);
-}
+};
 
 /*
 * Export the current files and folders to JSON
@@ -691,29 +928,25 @@ function exportToJson() {
     exportSettingsToJson();
     console.log(JSON.stringify(scope.settings.currentFolder, replacer));
     //return JSON.stringify($scope.currentFolder, replacer);
-}
+};
 
 /*
 * Removes 'Parent' key from JSON to eliminate infinite JSON
 * Removes 'data' key to save size
 */
-var replacer = function(key, value)
-{
-  if (key=="Parent" || key ==='data')
-  {
-      return undefined;
-  }
-  else return value;
-}
+var replacer = function (key, value) {
+    if (key == "Parent" || key === 'data') {
+        return undefined;
+    }
+    else return value;
+};
 
 /*
 * Removes 'currentFolder' key to separate settings and folders
 */
-var replacer2 = function(key, value)
-{
-  if (key=="currentFolder")
-  {
-      return undefined;
-  }
-  else return value;
-}
+var replacer2 = function (key, value) {
+    if (key == "currentFolder") {
+        return undefined;
+    }
+    else return value;
+};
