@@ -1,6 +1,261 @@
 "use strict";
 
-angular.module('mockApp').controller('FirstController', function($scope, $timeout){
+/* ******************* CONNECT TO DROPBOX ****************************** */
+var client = new Dropbox.Client({key: 'ltogrg3uneusbmy'});
+client.authenticate(function(error, client) {
+	if (error) {
+		console.log("Feeeeeel fel fel!")
+		//return showError(error);
+	}
+	else
+	{
+		alert("Dropbox account authorized!");
+	}
+});
+/* ********************************************************************** */
+
+angular.module('mockApp').factory('getFiles', function($q) {
+	return {
+		getfiles: function (dir) {
+			var deferred = $q.defer();
+			
+			client.readdir(dir, function (error, entries, stat1, stat2) {
+				if (error) deferred.reject(error);
+				else deferred.resolve(stat1);
+			});
+			return deferred.promise;
+		}
+	}
+});
+
+angular.module('mockApp').controller('FirstController', function($scope,getFiles,$timeout){
+	/*****************************************DROPBOX SHIEEEEEET**************************************/
+	/************************************************************************************************/
+	$scope.folder;
+	$scope.dir;
+	$scope.pathCheck = [];
+	$scope.addCheck = [];
+	$scope.dirArr = [];
+	$scope.dbRoot = true;
+	$scope.save = [];
+	getFiles.getfiles('/').then(function (entries) {
+		$scope.files = entries;
+	});
+	
+	$scope.test2 = function(f,c){
+		getFiles.getfiles(f.path).then(function (stat1) {
+			f.contents = stat1._json.contents;
+			if(!f.is_dir || f.contents.length <= 0)
+			{
+				if(f.is_dir)
+				{
+					var folder = new Folder(f.name);
+					folder.img = "img/dbFolder.png";
+					c.add(folder);
+					$scope.nrOfFolders++;
+				}
+				else
+				{
+					var file = new File(f.name, f.mime_type);
+					file.img = "img/dbFile.png";
+					file.size = f.bytes;
+					c.add(file);
+				}
+			}
+			else if(f.contents.length > 0)
+			{
+				for(var i=0;i<f.contents.length;i++)
+				{
+					f.contents[i].name = f.contents[i].path.replace(/\/([^)]+)\//,"");
+					f.contents[i].name = f.contents[i].name.replace('/',"");
+					if(f.contents[i].is_dir)
+					{
+						var folder = new Folder(f.contents[i].name);
+						folder.img = "img/dbFolder.png";
+						c.add(folder);
+						$scope.nrOfFolders++;
+						setTimeout($scope.test2(f.contents[i],folder));
+					}
+					else
+					{
+						var file = new File(f.contents[i].name, f.contents[i].mime_type);
+						file.img = "img/dbFile.png";
+						file.size = f.contents[i].bytes;
+						c.add(file);
+					}
+				}
+			}
+		});
+		return f;
+	};
+	
+	$scope.addDB = function()
+	{
+		$scope.add();
+		for(var i=0;i<$scope.addCheck.length;i++)
+		{
+			$scope.save.push($scope.test2($scope.addCheck[i],$scope.settings.currentFolder));
+		}
+		$scope.pathCheck = [];
+		$scope.addCheck = [];
+	};
+
+	$scope.list = function(path)
+	{
+		if($scope.dirArr.lastIndexOf(path) === -1)
+		{
+			$scope.dirArr.push(path);
+		}
+		$scope.dir = $scope.dirArr[$scope.dirArr.length-1];
+		$scope.dir = $scope.dir.replace(/\/([^)]+)\//," ");
+		$scope.dir = $scope.dir.replace('/'," ");+
+		getFiles.getfiles(path).then(function (stat1) {
+			$scope.dbItems = stat1._json.contents;
+			for(var i=0;i<stat1._json.contents.length;i++)
+			{
+				$scope.dbItems[i].name = $scope.dbItems[i].path.replace(/\/([^)]+)\//,"");
+				$scope.dbItems[i].name = $scope.dbItems[i].name.replace('/',"");
+			}
+		});
+	};
+	
+	$scope.back = function()
+	{
+		if($scope.dirArr.length > 1)
+		{
+			$scope.checked = [];
+			$scope.dirArr.pop();
+			$scope.dir = $scope.dirArr[$scope.dirArr.length-1];
+			$scope.list($scope.dirArr[$scope.dirArr.length-1]);
+		}
+		$scope.allSelected = false;
+	};
+	
+	var saveChecked = function()
+	{
+		for(var i=0;i<$scope.checked.length;i++)
+		{
+			if($scope.checked[i] && $scope.pathCheck.indexOf($scope.dbItems[i].path) == -1)
+			{
+				$scope.pathCheck.push($scope.dbItems[i].path);
+			}
+			else
+			{
+				$scope.pathCheck.pop()
+			}
+		}
+	};
+	
+	$scope.updateSelection = function ($event, item) {
+        var checkbox = $event.target;
+        var action = (checkbox.checked ? 'add' : 'remove');
+        updateSelected(action, item);
+    };
+
+	var updateSelected = function(action,item)
+	{
+		if(action === 'add')
+		{
+			if( $scope.pathCheck.indexOf(item.path) === -1 && $scope.addCheck.indexOf(item) === -1)
+			{
+				$scope.pathCheck.push(item.path);
+				$scope.addCheck.push(item);
+			}
+			getFiles.getfiles(item.path).then(function (stat1) {
+				if(stat1._json.is_dir)
+				{
+					updateSelectFolder('add',item);
+				}
+			});	
+		}
+		if(action === 'remove')
+		{
+			if( $scope.pathCheck.indexOf(item.path) !== -1)
+			{
+				$scope.pathCheck.splice($scope.pathCheck.indexOf(item.path),1);
+				$scope.addCheck.splice($scope.addCheck.indexOf(item),1);
+			}
+			getFiles.getfiles(item.path).then(function (stat1) {
+				if(stat1._json.is_dir)
+				{
+					updateSelectFolder('remove',item);
+				}
+			});
+		}
+	};
+	
+	var updateSelectFolder = function(action,item)
+	{
+		if(action === 'add')
+		{
+			getFiles.getfiles(item.path).then(function (stat1) {
+				if(stat1._json.is_dir)
+				{
+					for(var i=0;i<stat1._json.contents.length;i++)
+					{
+						stat1._json.contents[i].name = stat1._json.contents[i].path.replace(/\/([^)]+)\//,"");
+						stat1._json.contents[i].name = stat1._json.contents[i].name.replace('/',"");
+						$scope.pathCheck.push(stat1._json.contents[i].path);
+						if(stat1._json.contents[i].is_dir)
+						{
+							updateSelectFolder('add',stat1._json.contents[i]);
+						}
+					}
+				}
+			});
+		}
+		if(action === 'remove')
+		{
+			getFiles.getfiles(item.path).then(function (stat1) {
+				if(stat1._json.is_dir)
+				{
+					for(var i=0;i<stat1._json.contents.length;i++)
+					{
+						$scope.pathCheck.splice($scope.pathCheck.indexOf(stat1._json.contents[i].path),1);
+						if(stat1._json.contents[i].is_dir)
+						{
+							updateSelectFolder('remove',stat1._json.contents[i]);
+						}
+					}
+				}
+			})
+		}
+	};
+	
+	$scope.isSelected = function (item) {
+		for(var i=0;i<$scope.pathCheck.length;i++)
+		{
+			if(item.path === $scope.pathCheck[i])
+			{
+				return true;
+			}
+		}
+		return false;
+    };
+
+	$scope.selectAll = function ($event) 
+	{
+		var checkbox = $event.target;
+		var action = (checkbox.checked ? 'add' : 'remove');
+		if(action === 'add')
+		{
+			$scope.allSelected = true;
+		}
+		else if(action === 'remove')
+		{
+			$scope.allSelected = false;
+		}
+		
+		for (var i = 0; i < $scope.dbItems.length; i++) {
+			console.log($scope.dbItems);
+			console.log(action);
+			var dbItem = $scope.dbItems[i];
+			updateSelected(action, dbItem);
+		}
+    };
+	/************************************************************************************************/
+	/************************************************************************************************/
+	
 	
     /*
     * Changes between edit and view mode

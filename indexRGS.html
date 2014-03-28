@@ -23,7 +23,7 @@
     <div ng-controller="FirstController">
         <div class="container">
 
-            <h1>Create your component</h1>
+			<h1>Create your component</h1>
 
             <div class="row">
 
@@ -275,7 +275,7 @@
                                 <ul>
                                     <li><input type="image" src="img/file.png" ng-click="changeFileIcon(1)">Standard</input></li>
                                     <li><input type="image" src="img/picFile.png" ng-click="changeFileIcon(2)">Picture File</input></li>
-                                    <li><input type="image" src="img/pdfFile.jpg" ng-click="changeFileIcon(3)">PDF File</input></li>
+				    <li><input type="image" src="img/pdfFile.png" ng-click="changeFileIcon(3)">PDF File</input></li>
                                 </ul>
                             </div>
                             <!-- --------------------- -->
@@ -320,7 +320,7 @@
                                 <ul>
                                     <li><input type="image" src="img/addFolder.jpg" data-dismiss="modal" ng-click="add()">Add Folders</input></li>
 
-                                    <li><input type="image" data-toggle="modal" href="#addDropbox" src="img/dropbox.jpg" data-dismiss="modal" ng-click="add()">Add from Dropbox</input></li>
+			            <li><input type="image" data-toggle="modal" href="#addDropbox" data-dismiss="modal" src="img/dropbox.jpg" ng-click="list('/')">Add from Dropbox</input></li>
 
                                     <li><input type="image" src="img/box_logo.png" data-dismiss="modal">Add from Box</input></li>
 
@@ -343,7 +343,6 @@
                     </div>
                 </div>
                 <!-- ------------------------------- -->
-                <!-- Dropbox add popup --><!--TODO-->
                 <div class="modal" id="addDropbox">
                     <div class="modal-dialog">
                         <div class="modal-content text-center">
@@ -352,20 +351,14 @@
                                 <h4 class="modal-title">ADD FROM DROPBOX</h4>
                             </div>
                             <div class="modal-body">
-                                <ul>
-                                    <li><input type="image" src="img/dbFolder.png" data-dismiss="modal" ng-click="addDBFolder('DBFolder1')">DBFolder1</input></li>
-
-                                    <li><input type="image" src="img/dbFolder.png" data-dismiss="modal" ng-click="addDBFolder('DBFolder2')">DBFolder2</input></li>
-
-                                    <li><input type="image" src="img/dbFolder.png" data-dismiss="modal" ng-click="addDBFolder('DBFolder3')">DBFolder3</input></li>
-
-                                    <li><input type="image" src="img/pdf.png" data-dismiss="modal">PDF1</input></li>
-
-                                    <li><input type="image" src="img/pdf.png" data-dismiss="modal">PDF2</input></li>
-
-                                    <li><input type="image" src="img/pdf.png" data-dismiss="modal">PDF3</input></li>
-
+							<input type="image" src="img/backSmall.png" ng-click="back()"/> <h2>{{dir}}</h2>
+							<!-- <input type="checkbox" ng-checked="allSelected" ng-click="selectAll($event)">Select All</input> -->
+							<ul ng-repeat="dbItem in dbItems">
+								<input type="checkbox" ng-checked="isSelected(dbItem)" ng-click="updateSelection($event,dbItem)"/>
+								<li ng-show="dbItem.is_dir"><input type="image" src="img/dbFolder.png" ng-click="list(dbItem.path)">{{dbItem.name}}</input></li>
+								<li ng-hide="dbItem.is_dir"><input type="image" src="img/file.png">{{dbItem.name}}</input></li>
                                 </ul>
+							<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="addDB()">Add files</button>
                             </div>
                         </div>
                     </div>
@@ -375,18 +368,21 @@
             </div>
 
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-        <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-        <script src="js/node.js"></script>
-        <script src="js/jquery-ui.min.js"></script>
-        <script src="js/jquery.ui.touch-punch.js"></script>
-        <script src="js/mockApp.js"></script>
-        <script src="js/studioCtrl.js"></script>
-        <script src="js/bootstrap-switch.js"></script>
+	</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="https://www.dropbox.com/static/api/dropbox-datastores-1.0-latest.js"></script>
+<script src="js/node.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/jquery.ui.touch-punch.js"></script>
+<script src="js/mockApp.js"></script>
+<script src="js/studioCtrl.js"></script>
+<script src="js/bootstrap-switch.js"></script>
         <script src="js/scripts.js"></script>
 
         <a href='#' onclick="exportToJson()">test</a>
     </div>
+<a href='#' onclick="importDBJsonFolder()">import</a>
 </body>
 </html>
