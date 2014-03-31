@@ -45,22 +45,13 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	$scope.test2 = function(f,c){
 		getFiles.getfiles(f.path).then(function (stat1) {
 			f.contents = stat1._json.contents;
-			if(!f.is_dir || f.contents.length <= 0)
+			//Check if f is a file/empty folder or a folder with content
+			if(!f.is_dir)
 			{
-				if(f.is_dir)
-				{
-					var folder = new Folder(f.name);
-					folder.img = "img/dbFolder.png";
-					c.add(folder);
-					$scope.settings.nrOfFolders++;
-				}
-				else
-				{
-					var file = new File(f.name, f.mime_type);
-					file.img = "img/dbFile.png";
-					file.size = f.bytes;
-					c.add(file);
-				}
+				var file = new File(f.name, f.mime_type);
+				file.img = "img/dbFile.png";
+				file.size = f.bytes;
+				c.add(file);
 			}
 			else if(f.contents.length > 0)
 			{
@@ -94,7 +85,19 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 		$scope.add();
 		for(var i=0;i<$scope.addCheck.length;i++)
 		{
-			$scope.save.push($scope.test2($scope.addCheck[i],$scope.settings.currentFolder));
+			if($scope.addCheck[i].is_dir)
+			{
+				var folder = new Folder($scope.addCheck[i].name);
+				folder.img = "img/dbFolder.png";
+				$scope.settings.currentFolder.add(folder);
+				$scope.settings.nrOfFolder++;
+				$scope.save.push(folder);
+			}
+			else
+			{
+				var folder = $scope.settings.currentFolder;
+			}
+			$scope.save.push($scope.test2($scope.addCheck[i],folder));
 		}
 		$scope.pathCheck = [];
 		$scope.addCheck = [];
