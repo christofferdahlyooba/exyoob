@@ -56,7 +56,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 						var folder = new Folder(f.contents[i].name);
 						folder.img = "img/dbFolder.png";
 						c.add(folder);
-						$scope.nrOfFolders++;
+						$scope.settings.nrOfFolders++;
 						setTimeout($scope.test2(f.contents[i],folder));
 					}
 					else
@@ -88,7 +88,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 				var folder = new Folder($scope.addCheck[i].name);
 				folder.img = "img/dbFolder.png";
 				$scope.settings.currentFolder.add(folder);
-				$scope.nrOfFolder++;
+				$scope.settings.nrOfFolder++;
 				$scope.save.push(folder);
 			}
 			else
