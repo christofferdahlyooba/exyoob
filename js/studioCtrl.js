@@ -477,6 +477,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	            $scope.settings.colStyle = "col span_1_of_" + $scope.settings.nrOfCols;
 	        }
 	    }
+		updateFNameSize();
 	};
 
     /*
@@ -519,15 +520,28 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
     * Changes font size
     */
 	$scope.changeFontSize = function (i) {
+		//Increase font size
 	    if (i > 0) {
-	        $scope.settings.fontSize++;
-	        $scope.settings.font = { 'font-size': $scope.settings.fontSize + 'pt', 'font-family': $scope.settings.fontText, 'color': $scope.settings.fontColor };
+			if($scope.settings.fontSize < 30)
+			{
+				$scope.settings.fontSize++;
+				$scope.settings.font = { 'font-size': $scope.settings.fontSize + 'pt', 'font-family': $scope.settings.fontText, 'color': $scope.settings.fontColor };
+			}
+			else
+			{
+				alert("The font size cannot be bigger than 30");
+			}
 	    }
+		//Decrease font size
 	    else {
-	        if ($scope.settings.fontSize > 1) {
+	        if ($scope.settings.fontSize > 6) {
 	            $scope.settings.fontSize--;
 	            $scope.settings.font = { 'font-size': $scope.settings.fontSize + 'pt', 'font-family': $scope.settings.fontText, 'color': $scope.settings.fontColor };
 	        }
+			else
+			{
+				alert("The font size has to be bigger than 6");
+			}
 	    }
 	};
 
@@ -806,6 +820,25 @@ function handleFileSelect(evt) {
 /*----------------------------------------------------------------
 ------------OTHER NON SCOPE FUNCTIONS-----------------------------
 ----------------------------------------------------------------*/
+
+function updateFNameSize() {
+	var scope = angular.element($("#ng")).scope();
+	if(scope.settings.cols)
+	{
+		var cols = scope.settings.nrOfCols;
+		var size = Math.floor(45/cols);
+		console.log(size);
+		var fNameSize = document.getElementsByClassName('divfName');
+		for(var i=0;i<fNameSize.length;i++)
+		{
+			fNameSize[i].style.width = size + 'em';
+		}
+	}
+	else
+	{
+		console.log("heeej heeej!");
+	}
+}
 
 /*
 * Adds margin at the bottom of each node so that they dont jump when 
