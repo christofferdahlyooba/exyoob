@@ -34,6 +34,14 @@ $('#showThumb').on('switchChange', function (e, data) {
     var scope = angular.element($("#ng")).scope();
     scope.$apply(function () {
         scope.settings.showThumb = !scope.settings.showThumb;
+		var curr = scope.settings.currentFolder;
+		for(var i = 0;i<curr.children.length;i++)
+		{	
+			if(curr.children[i].origin === 'Dropbox')
+			{
+				scope.thumbs(curr.children[i]);
+			}
+		}
     });
 });
 

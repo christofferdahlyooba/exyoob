@@ -205,11 +205,11 @@
 
                                     <p>
                                         Show Thumbnails:
-                                        <input type="checkbox" name="showThumb" id="showThumb" data-on-color="default" data-off-color="default">
+                                        <input type="checkbox" name="showThumb" id="showThumb" data-on-color="default" data-off-color="default" onClick="getDBThumbs()">
                                     </p>
                                     <p>
                                         Show Folder names:
-                                        <input type="checkbox" name="showFolderName" id="showFolderName" data-on-color="default" data-off-color="default">
+                                        <input type="checkbox" name="showFolderName" id="showFolderName" data-on-color="default" data-off-color="default" ng-click="getDBThumbs()">
                                     </p>
                                     <!-- FONT SETTINGS -->
                                     <div class="fontSettings" ng-show="settings.showFont">
@@ -421,5 +421,6 @@
         <a href='#' onclick="exportToJson()">test</a>
     </div>
 <a href='#' onclick="importDBJsonFolder()">import</a>
+<a href="#" ng-click="thumbs()">thuuuumb</a>
 </body>
 </html>

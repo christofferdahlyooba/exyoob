@@ -1,19 +1,5 @@
 "use strict";
 
-/* ******************* CONNECT TO DROPBOX ****************************** */
-var client = new Dropbox.Client({key: 'ltogrg3uneusbmy'});
-client.authenticate(function(error, client) {
-	if (error) {
-		console.log("Feeeeeel fel fel!")
-		//return showError(error);
-	}
-	else
-	{
-		alert("Dropbox account authorized!");
-	}
-});
-/* ********************************************************************** */
-
 angular.module('mockApp').factory('getFiles', function($q) {
 	return {
 		getfiles: function (dir) {
@@ -49,8 +35,14 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 			if(!f.is_dir)
 			{
 				var file = new File(f.name, f.mime_type);
+				var type = file.type.split("/")[0];
+				if (type === 'image') {
+					file.isImg = true;
+				}
 				file.img = "img/dbFile.png";
 				file.size = f.bytes;
+				file.origin = "Dropbox";
+				file.path = f.path;
 				c.add(file);
 			}
 			else if(f.contents.length > 0)
@@ -70,8 +62,14 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 					else
 					{
 						var file = new File(f.contents[i].name, f.contents[i].mime_type);
+						var type = file.type.split("/")[0];
+						if (type === 'image') {
+							file.isImg = true;
+						}
 						file.img = "img/dbFile.png";
 						file.size = f.contents[i].bytes;
+						file.origin = "Dropbox";
+						file.path = f.contents[i].path;
 						c.add(file);
 					}
 				}

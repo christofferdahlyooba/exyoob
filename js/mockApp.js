@@ -1,11 +1,69 @@
 "use strict";
 var app = angular.module('mockApp', []);
 
+app.config(function($sceProvider) {
+
+	$sceProvider.enabled(false);
+	// $sceDelegateProvider.resourceUrlWhitelist([
+	// // Allow same origin resource loads.
+	// 'self']);
+});
+
 var rootFolder = new Folder('Root');
 var defaultFileIcon = 'img/file.png';
 var defaultFolderIcon = 'img/folder.png';
 
-app.controller('MasterCtrl', function ($scope, $timeout) {
+/* ******************* CONNECT TO DROPBOX ****************************** */
+var client = new Dropbox.Client({key: 'ltogrg3uneusbmy'});
+client.authenticate(function(error, client) {
+	if (error) {
+		console.log("Feeeeeel fel fel!")
+		//return showError(error);
+	}
+	else
+	{
+		alert("Dropbox account authorized!");
+	}
+});
+/* ********************************************************************** */
+
+app.factory('getFileData', function($q) {
+	return {
+		getfiledata: function (dir) {
+			var deferred = $q.defer();
+			var opt = new Object();
+			opt.binary = true;
+			client.readFile(dir,opt, function (error, data) {
+				if (error)
+				{
+					deferred.reject(error);
+				}
+				else
+				{
+					deferred.resolve(data);
+				} 
+			});
+			return deferred.promise;
+		}
+	}
+});
+
+app.factory('getThumb',function($q) {
+	return {
+		getthumb: function (dir) {
+			var deferred = $q.defer();
+			var opt = new Object();
+			opt.size = "medium";
+			client.readThumbnail(dir,opt,function(error,thumb) {
+				if(error) deferred.reject(error);
+				else deferred.resolve(thumb);
+			});
+			return deferred.promise;
+		}
+	}
+});
+
+app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
     /*
     * All settings variables
     */
@@ -197,6 +255,33 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
             ctx.drawImage(img, 0, 0, canvasFrame.width, canvasFrame.height);
         }
     };
+	$scope.readFiles = function(fileName)
+	{
+		var opt = new Object();
+		opt.binary = true;
+		client.readFile(fileName,opt, function(error, data) {
+		  if (error) {
+			return showError(error);  // Something went wrong.
+		  }
+		  //console.log(data);
+		});
+	};
+	
+	$scope.getDBThumbs = function(path)
+	{
+		console.log(path);
+		getThumb.getthumb(path).then(function (data) {
+			return data;
+			console.log(data);
+		});
+	}
+	
+	$scope.thumbs = function(file)
+	{
+		getThumb.getthumb(file.path).then(function (data) {
+			setTimeout(file.data = 'data:image/jpeg;base64,' + btoa(data));
+		});
+	}
 
     /*
     * Show a preview in Grid mode
@@ -213,7 +298,6 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
         var divWidth = previewDiv.offsetWidth;
         var divHeight = previewDiv.offsetHeight;
         var divLeft = previewDiv.offsetLeft;
-        console.log("Div W: " + divWidth + " Div H: " + divHeight);
         var imgX, imgY;
         var canvasImgW, canvasImgH;
 
@@ -221,7 +305,20 @@ app.controller('MasterCtrl', function ($scope, $timeout) {
         canvasFrame.width = 700;
         canvasFrame.height = 540;
         var img = new Image;
-        img.src = f.data;
+		if(f.origin = "Dropbox")
+		{
+		
+			getFileData.getfiledata(f.path).then(function (data) {
+				setTimeout($scope.dbData = data);
+				img.src = 'data:image/jpeg;base64,' + btoa($scope.dbData);
+			});
+		}
+		else
+		{
+			img.src = f.data;
+		}
+		//console.log(img.src);
+        
         img.onload = function () {
             var ratio;
 
