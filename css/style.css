@@ -81,3 +81,32 @@ canvas{
 	right : 5px;
 	top: 5px;
 }
+
+.folderIcon{
+    display: table;
+	position: relative;
+	margin: auto;
+}
+.folderIcon input{
+	width:100%;			
+}
+.overlap{
+    position: absolute;
+    right: 5px;
+    top: 12px;
+}
+.overlap2{
+    position: absolute;
+    left: 5px;
+    top: 12px;
+}
+.overlap3{
+    position: absolute;
+    left: 5px;
+    top: 27px;
+}
+.overlap4{
+    position: absolute;
+    right: 5px;
+    top: 27px;
+}
