@@ -16,7 +16,19 @@
 		html {
 			overflow: -moz-scrollbars-vertical; 
 			overflow-y: scroll;
-		}		
+		}
+
+		#fName {
+			text-overflow:ellipsis;
+		}
+		
+		.divfName
+		{
+			white-space:nowrap; 
+			width:12em; 
+			overflow:hidden;
+			text-overflow:ellipsis;
+		}
 	</style>
 </head>
 <body id="ng" ng-controller="MasterCtrl">
@@ -86,7 +98,7 @@
                                             <span class="glyphicon glyphicon-download overlap4" ng-show="hasAccess(folder,'syncAccess')"></span>
                                         </div>
                                         <input type="checkbox" ng-show="settings.editing" ng-model="folder.checked" />
-                                        <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font">{{folder.name}}</div>
+                                        <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{folder.name}}</div></div>
                                         <div ng-show="settings.showFont && settings.editing" class="nameField">
                                             <input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);" />
                                             <img class="clearName" src="img/cleaar.png" ng-click='clearName($index, folder)' />
@@ -100,9 +112,9 @@
                                         <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.data}}" ng-show="settings.showThumb && file.isImg" />
                                         <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
                                         <input type="checkbox" ng-show="settings.editing" ng-model="file.checked" />
-                                        <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font">{{file.name}}</div>
+                                        <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{file.name}}</div></div>
                                         <div ng-show="settings.showFont && settings.editing" class="nameField">
-                                            <input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);" />
+                                            <input id="fName" type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);"/>
                                             <img class="clearName" src="img/cleaar.png" ng-click='clearName($index, file)' />
                                         </div>
                                     </div>
@@ -135,7 +147,7 @@
                                                 <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.data}}" ng-show="settings.showThumb && file.isImg" />
                                                 <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
                                                 <input type="checkbox" ng-show="settings.editing" ng-model="file.checked" />
-                                                <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font">{{file.name}}</div>
+                                                <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{file.name}}</div></div>
                                                 <div ng-show="settings.showFont && settings.editing" class="nameField">
                                                     <input type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);" />
                                                     <img class="clearName" src="img/cleaar.png" ng-click='clearName($index, file)' />
@@ -427,6 +439,5 @@
         <a href='#' onclick="exportToJson()">test</a>
     </div>
 <a href='#' onclick="importDBJsonFolder()">import</a>
-<a href="#" ng-click="thumbs()">thuuuumb</a>
 </body>
 </html>

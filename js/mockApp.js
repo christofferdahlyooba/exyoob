@@ -75,6 +75,7 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         nrOfRows: 3,
         colStyle: 'col span_1_of_3',
         rowStyleLi: 'rowLi',
+		fNameSize: '15em',
         dir: rootFolder.name,
         editing: false,
         mode: 'Edit Mode',
@@ -307,11 +308,21 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         var img = new Image;
 		if(f.origin = "Dropbox")
 		{
-		
-			getFileData.getfiledata(f.path).then(function (data) {
-				setTimeout($scope.dbData = data);
-				img.src = 'data:image/jpeg;base64,' + btoa($scope.dbData);
-			});
+			if(f.data === null)
+			{
+				console.log("Nulllllllllll yaoooo!")
+				getFileData.getfiledata(f.path).then(function (data) {
+					//setTimeout($scope.dbData = data);
+					f.data = data;
+					//img.src = 'data:image/jpeg;base64,' + btoa($scope.dbData);
+					img.src = 'data:image/jpeg;base64,' + btoa(f.data);
+				});
+			}
+			else
+			{
+				console.log("Nooot null yaooooo!");
+				img.src = 'data:image/jpeg;base64,' + btoa(f.data);
+			}
 		}
 		else
 		{
