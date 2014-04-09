@@ -274,6 +274,7 @@
                             <!-- ----------------------- -->
                             <!----------------- Views allowed ----------------->
                             <div class="viewsAllowed" ng-show="settings.underMenu0">
+                                <button ng-click="settings.underMenu0 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>Views allowed</p>
                                 <ul>
                                     <li><input type="radio" ng-model="settings.viewsAllowed" ng-click="applyViews()" value="Grid & List"/> Grid & List</li>
@@ -284,6 +285,7 @@
                             <!-- ------------------------------------------- -->
                             <!-- Background settings -->
                             <div class="chooseBg" ng-show="settings.underMenu">
+                                <button ng-click="settings.underMenu = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>Change background</p>
                                 <ul>
                                     <li><input type="image" src="img/bg_mini.jpg" ng-click="changeBg(1)"/>Standard</li>
@@ -298,6 +300,7 @@
                             <!-- --------------------- -->
                             <!-- Folder icon settings -->
                             <div class="chooseFolderIcon" ng-show="settings.underMenu2">
+                                <button ng-click="settings.underMenu2 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>Folder icon</p>
                                 <ul>
                                     <li><input type="image" src="img/folder.png" ng-click="changeFolderIcon(1)"/>Standard</li>
@@ -308,6 +311,7 @@
                             <!-- --------------------- -->
                             <!-- File icon settings -->
                             <div class="chooseFileIcon" ng-show="settings.underMenu5">
+                                <button ng-click="settings.underMenu5 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>File icon</p>
                                 <ul>
                                     <li><input type="image" src="img/file.png" ng-click="changeFileIcon(1)"/>Standard</li>
@@ -318,6 +322,7 @@
                             <!-- --------------------- -->
                             <!-- Font settings -->
                             <div class="chooseFont" ng-show="settings.underMenu3">
+                                <button ng-click="settings.underMenu3 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>Choose font:</p>
                                 <ul>
                                     <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Verdana"/> Verdana</li>
@@ -328,6 +333,7 @@
                             <!-- --------------------- -->
                             <!-- Font color settings -->
                             <div class="chooseFontColor" ng-show="settings.underMenu4">
+                                <button ng-click="settings.underMenu4 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>Choose font color:</p>
                                 <ul>
                                     <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="blue"/> Blue</li>
@@ -417,7 +423,7 @@
                                 <h4 class="modal-title">ADD FROM DROPBOX</h4>
                             </div>
                             <div class="modal-body">
-								<button  ng-click="back()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+								<button  ng-show="dirArr.length > 1" ng-click="back()"><span class="glyphicon glyphicon-chevron-left"></span></button>
 								<h2>{{dir}}</h2>
 								<!-- <input type="image" src="img/backSmall.png" ng-click="back()"/>  -->
 								<!-- <input type="checkbox" ng-checked="allSelected" ng-click="selectAll($event)">Select All</input> -->
