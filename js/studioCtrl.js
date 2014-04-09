@@ -57,7 +57,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 						folder.img = "img/dbFolder.png";
 						c.add(folder);
 						$scope.settings.nrOfFolders++;
-						setTimeout($scope.test2(f.contents[i],folder));
+						setTimeout($scope.test2,0,f.contents[i], folder);
 					}
 					else
 					{
@@ -712,11 +712,24 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	};
 
 	$scope.insertAccess = function (person, node, access) {
-	    for (var i = 0; i < node.children.length; i++) {
-	        $scope.insertAccess(person, node.children[i], access);	        
+	    if (node.type === 'Folder') {
+	        for (var i = 0; i < node.children.length; i++) {
+	            $scope.insertAccess(person, node.children[i], access);
+	        }
 	    }
 	    person[access].push(node);
 	}
+
+    /*
+    * TODO
+    */
+	$scope.removeAccess = function (person, node, access, index) {
+	    var tempNode = person[access][index];
+	    for (var i = 0; i < person[access].length; i++) {
+            
+	    }
+	}
+
     /*
     * Closes all permissions submenu and deselects all users
     */

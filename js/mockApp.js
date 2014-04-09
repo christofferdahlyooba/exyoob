@@ -55,9 +55,10 @@ app.factory('getThumb',function($q) {
 			var opt = new Object();
 			opt.size = "medium";
 			client.readThumbnail(dir,opt,function(error,thumb) {
-				if(error) deferred.reject(error);
-				else deferred.resolve(thumb);
+			    if (error) deferred.reject(error);
+			    else deferred.resolve(thumb);
 			});
+			
 			return deferred.promise;
 		}
 	}
@@ -256,6 +257,7 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
             ctx.drawImage(img, 0, 0, canvasFrame.width, canvasFrame.height);
         }
     };
+
 	$scope.readFiles = function(fileName)
 	{
 		var opt = new Object();
@@ -264,25 +266,18 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
 		  if (error) {
 			return showError(error);  // Something went wrong.
 		  }
-		  //console.log(data);
 		});
 	};
 	
-	$scope.getDBThumbs = function(path)
-	{
-		console.log(path);
-		getThumb.getthumb(path).then(function (data) {
-			return data;
-			console.log(data);
-		});
-	}
-	
-	$scope.thumbs = function(file)
-	{
-		getThumb.getthumb(file.path).then(function (data) {
-			setTimeout(file.data = 'data:image/jpeg;base64,' + btoa(data));
-		});
-	}
+	$scope.thumbs = function (file) {
+	    if (file.type.indexOf('image') !== -1) {
+	        if (file.thumb === null) {
+	            getThumb.getthumb(file.path).then(function (data) {
+	                file.thumb = 'data:image/jpeg;base64,' + btoa(data);
+	            });
+	        }
+	    }
+	};
 
     /*
     * Show a preview in Grid mode
@@ -312,16 +307,14 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
 			{
 				console.log("Nulllllllllll yaoooo!")
 				getFileData.getfiledata(f.path).then(function (data) {
-					//setTimeout($scope.dbData = data);
-					f.data = data;
-					//img.src = 'data:image/jpeg;base64,' + btoa($scope.dbData);
-					img.src = 'data:image/jpeg;base64,' + btoa(f.data);
+				    f.data = 'data:image/jpeg;base64,' + btoa(data);
+				    img.src = f.data;
 				});
 			}
 			else
 			{
 				console.log("Nooot null yaooooo!");
-				img.src = 'data:image/jpeg;base64,' + btoa(f.data);
+				img.src = f.data;
 			}
 		}
 		else

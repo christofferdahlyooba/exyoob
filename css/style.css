@@ -87,9 +87,6 @@ canvas{
 	position: relative;
 	margin: auto;
 }
-.folderIcon input{
-	width:100%;			
-}
 .overlap{
     position: absolute;
     right: 5px;
@@ -109,4 +106,14 @@ canvas{
     position: absolute;
     right: 5px;
     top: 27px;
+}
+.deleteNode{
+    position: absolute;
+    right: 50px;
+    top: 30px;
+}
+.checkBox{
+    position: absolute;
+    left: 50px;
+    top: 30px;
 }

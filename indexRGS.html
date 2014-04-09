@@ -89,16 +89,18 @@
                                     <!-- Folders -->
                                     <div ng-class="settings.colStyle" ng-hide="settings.notAdded" ng-repeat="folder in getFolders(settings.currentFolder)">
                                         <!--<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFolder(folder)" />-->
-                                        <span class="glyphicon glyphicon-remove-circle" ng-show="settings.editing" ng-click="deleteFolder(folder)"></span>
                                         <div class="folderIcon">
+                                            <span class="deleteNode"><span class="glyphicon glyphicon-remove-circle" ng-show="settings.editing" ng-click="deleteFolder(folder)"></span></span>
+
                                             <input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)" />
                                             <span class="glyphicon glyphicon-eye-open overlap" ng-show="hasAccess(folder,'viewAccess')"></span>
                                             <span class="glyphicon glyphicon-share overlap2" ng-show="hasAccess(folder,'shareAccess')"></span>
                                             <span class="glyphicon glyphicon-move overlap3" ng-show="hasAccess(folder,'moveAccess')"></span>
                                             <span class="glyphicon glyphicon-download overlap4" ng-show="hasAccess(folder,'syncAccess')"></span>
+
+                                            <input type="checkbox" ng-show="settings.editing" ng-model="folder.checked" class="checkBox" />
                                         </div>
-                                        <input type="checkbox" ng-show="settings.editing" ng-model="folder.checked" />
-                                        <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{folder.name}}</div></div>
+                                            <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{folder.name}}</div></div>
                                         <div ng-show="settings.showFont && settings.editing" class="nameField">
                                             <input type="text" id="{{'folder-'+$index}}" name="q" ng-model="folder.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);" />
                                             <img class="clearName" src="img/cleaar.png" ng-click='clearName($index, folder)' />
@@ -108,11 +110,22 @@
                                     <!-- Files -->
                                     <div ng-class="settings.colStyle" ng-hide="settings.notAdded" ng-repeat="file in getFiles(settings.currentFolder)">
                                         <!--<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFile(file)" />-->
-                                        <span class="glyphicon glyphicon-remove-circle" ng-show="settings.editing" ng-click="deleteFile(file)"></span>
-                                        <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.data}}" ng-show="settings.showThumb && file.isImg" />
-                                        <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
-                                        <input type="checkbox" ng-show="settings.editing" ng-model="file.checked" />
-                                        <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{file.name}}</div></div>
+                                        <div class="folderIcon">
+                                            <span class="deleteNode"><span class="glyphicon glyphicon-remove-circle" ng-show="settings.editing" ng-click="deleteFile(file)"></span></span>
+                                            <!--<input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg" />
+        <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />-->
+
+                                            <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg" />
+                                            <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
+
+                                            <span class="glyphicon glyphicon-eye-open overlap" ng-show="hasAccess(file,'viewAccess')"></span>
+                                            <span class="glyphicon glyphicon-share overlap2" ng-show="hasAccess(file,'shareAccess')"></span>
+                                            <span class="glyphicon glyphicon-move overlap3" ng-show="hasAccess(file,'moveAccess')"></span>
+                                            <span class="glyphicon glyphicon-download overlap4" ng-show="hasAccess(file,'syncAccess')"></span>
+
+                                            <input type="checkbox" ng-show="settings.editing" ng-model="file.checked" class="checkBox"/>
+                                        </div>
+                                            <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{file.name}}</div></div>
                                         <div ng-show="settings.showFont && settings.editing" class="nameField">
                                             <input id="fName" type="text" id="{{'file-'+$index}}" name="q" ng-model="file.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);"/>
                                             <img class="clearName" src="img/cleaar.png" ng-click='clearName($index, file)' />
@@ -144,7 +157,7 @@
                                             <li ng-class="settings.rowStyleLi">
                                                 <!--<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFile(file)" />-->
                                                 <span class="glyphicon glyphicon-remove-circle" ng-show="settings.editing" ng-click="deleteFile(file)"></span>
-                                                <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.data}}" ng-show="settings.showThumb && file.isImg" />
+                                                <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg" />
                                                 <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
                                                 <input type="checkbox" ng-show="settings.editing" ng-model="file.checked" />
                                                 <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{file.name}}</div></div>
@@ -223,11 +236,11 @@
 
                                     <p>
                                         Show Thumbnails:
-                                        <input type="checkbox" name="showThumb" id="showThumb" data-on-color="default" data-off-color="default" onClick="getDBThumbs()">
+                                        <input type="checkbox" name="showThumb" id="showThumb" data-on-color="default" data-off-color="default">
                                     </p>
                                     <p>
                                         Show Folder names:
-                                        <input type="checkbox" name="showFolderName" id="showFolderName" data-on-color="default" data-off-color="default" ng-click="getDBThumbs()">
+                                        <input type="checkbox" name="showFolderName" id="showFolderName" data-on-color="default" data-off-color="default">
                                     </p>
                                     <!-- FONT SETTINGS -->
                                     <div class="fontSettings" ng-show="settings.showFont">

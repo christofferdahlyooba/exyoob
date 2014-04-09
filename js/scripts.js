@@ -22,7 +22,7 @@ $('#showFolderName').on('switchChange', function (e, data) {
     scope.$apply(function () {
         scope.settings.showFont = !scope.settings.showFont;
     });
-    setTimeout(togglePlaceHolders());
+    setTimeout(togglePlaceHolders);
 });
 
 //Toggle button for showing thumbnails
@@ -34,14 +34,19 @@ $('#showThumb').on('switchChange', function (e, data) {
     var scope = angular.element($("#ng")).scope();
     scope.$apply(function () {
         scope.settings.showThumb = !scope.settings.showThumb;
-		var curr = scope.settings.currentFolder;
-		for(var i = 0;i<curr.children.length;i++)
-		{	
-			if(curr.children[i].origin === 'Dropbox')
-			{
-				scope.thumbs(curr.children[i]);
-			}
-		}
+        var curr = scope.settings.currentFolder;
+        if (scope.settings.showThumb) {
+            for (var i = 0; i < curr.children.length; i++) {
+                if (curr.children[i].origin === 'Dropbox') {
+                    scope.thumbs(curr.children[i]);
+                }
+                else {
+                    if (curr.children[i].type.indexOf('image') !== -1) {
+                        curr.children[i].thumb = curr.children[i].data;
+                    }
+                }
+            }
+        }
     });
 });
 
@@ -57,5 +62,5 @@ $('#scrollingBox').on('switchChange', function (e, data) {
         scope.settings.cols = !scope.settings.cols;
         changeScrollDir(scope.settings.cols);
     });
-    setTimeout(togglePlaceHolders());
+    setTimeout(togglePlaceHolders);
 });
