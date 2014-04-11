@@ -41,5 +41,6 @@ function File(name, type){
 	this.data = null;
 	this.lastModified = null;
 	this.isImg = false;
+	this.thumb = null;
 };
 File.prototype = new Node();

@@ -87,3 +87,39 @@ canvas{
 	right : 5px;
 	top: 5px;
 }
+
+.folderIcon{
+    display: table;
+	position: relative;
+	margin: auto;
+}
+.overlap{
+    position: absolute;
+    right: 5px;
+    top: 12px;
+}
+.overlap2{
+    position: absolute;
+    left: 5px;
+    top: 12px;
+}
+.overlap3{
+    position: absolute;
+    left: 5px;
+    top: 27px;
+}
+.overlap4{
+    position: absolute;
+    right: 5px;
+    top: 27px;
+}
+.deleteNode{
+    position: absolute;
+    right: 50px;
+    top: 30px;
+}
+.checkBox{
+    position: absolute;
+    left: 50px;
+    top: 30px;
+}
