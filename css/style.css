@@ -73,6 +73,12 @@ canvas{
 	position: relative;
 	margin: auto;
 }
+
+.nameField2{
+	position: relative;
+	float: right;
+}
+
 .nameField input{
 	width:100%;			
 }		

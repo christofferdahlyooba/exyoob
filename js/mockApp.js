@@ -96,6 +96,7 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         gridMode: true,
         showThumb: false,
         showFont: false,
+		listPrev: false,
         folderIcon: defaultFolderIcon,
         fileIcon: defaultFileIcon,
         bgImage: {'background-image':'url(img/bg.jpg)'},
@@ -206,10 +207,12 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
     * Show a preview in List mode
     */
     $scope.showListPreview = function (f) {
+		$scope.settings.listPrev = true;
         // Only process image files.
         if (!f.type.match('image.*')) {
             return;
         }
+		console.log(f);
 
         var canvasFrame = document.getElementById("preview");
         var previewDiv = document.getElementById("previewDiv");
@@ -218,7 +221,27 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         var ctx = canvasFrame.getContext("2d");
 
         var img = new Image;
-        img.src = f.data;
+        if(f.origin === "Dropbox")
+		{
+			if(f.data === null)
+			{
+				getFileData.getfiledata(f.path).then(function (data) {
+					//setTimeout($scope.dbData = data);
+					f.data = data;
+					//img.src = 'data:image/jpeg;base64,' + btoa($scope.dbData);
+					img.src = 'data:image/jpeg;base64,' + btoa(f.data);
+				});
+			}
+			else
+			{
+				img.src = 'data:image/jpeg;base64,' + btoa(f.data);
+			}
+		}
+		else
+		{
+			img.src = f.data;
+		}
+		
         img.onload = function () {
             var ratio;
 
@@ -306,11 +329,10 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         canvasFrame.width = 700;
         canvasFrame.height = 540;
         var img = new Image;
-		if(f.origin = "Dropbox")
+		if(f.origin === "Dropbox")
 		{
 			if(f.data === null)
 			{
-				console.log("Nulllllllllll yaoooo!")
 				getFileData.getfiledata(f.path).then(function (data) {
 					//setTimeout($scope.dbData = data);
 					f.data = data;
@@ -320,7 +342,6 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
 			}
 			else
 			{
-				console.log("Nooot null yaooooo!");
 				img.src = 'data:image/jpeg;base64,' + btoa(f.data);
 			}
 		}
@@ -328,7 +349,6 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
 		{
 			img.src = f.data;
 		}
-		//console.log(img.src);
         
         img.onload = function () {
             var ratio;

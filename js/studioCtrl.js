@@ -827,7 +827,6 @@ function updateFNameSize() {
 	{
 		var cols = scope.settings.nrOfCols;
 		var size = Math.floor(45/cols);
-		console.log(size);
 		var fNameSize = document.getElementsByClassName('divfName');
 		for(var i=0;i<fNameSize.length;i++)
 		{
