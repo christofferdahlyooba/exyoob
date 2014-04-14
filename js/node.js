@@ -14,7 +14,10 @@ function Folder(name){
 };
 Folder.prototype = new Node();
 Folder.prototype.hasChildren = function(){
-	console.log(this.children.length);
+	if (this.children.length > 0) {
+		return true;
+	}
+	return false;
 }
 Folder.prototype.add = function(node){
 	if(node.Parent === this){
