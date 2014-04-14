@@ -22,7 +22,7 @@ client.authenticate(function(error, client) {
 	}
 	else
 	{
-		alert("Dropbox account authorized!");
+		console.log("Dropbox account authorized!");
 	}
 });
 /* ********************************************************************** */
@@ -222,22 +222,17 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         var ctx = canvasFrame.getContext("2d");
 
         var img = new Image;
-        if(f.origin === "Dropbox")
-		{
-			if(f.data === null)
-			{
-				getFileData.getfiledata(f.path).then(function (data) {
-					//setTimeout($scope.dbData = data);
-					f.data = data;
-					//img.src = 'data:image/jpeg;base64,' + btoa($scope.dbData);
-					img.src = 'data:image/jpeg;base64,' + btoa(f.data);
-				});
-			}
-			else
-			{
-				img.src = 'data:image/jpeg;base64,' + btoa(f.data);
-			}
-		}
+        if (f.origin === "Dropbox") {
+        	if (f.data === null) {
+        		getFileData.getfiledata(f.path).then(function (data) {
+        			f.data = 'data:image/jpeg;base64,' + btoa(data);
+        			img.src = f.data;
+        		});
+        	}
+        	else {
+        		img.src = f.data;
+        	}
+        }
 		else
 		{
 			img.src = f.data;
@@ -324,16 +319,17 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         canvasFrame.width = 700;
         canvasFrame.height = 540;
         var img = new Image;
-		if(f.origin === "Dropbox")
-		{
-			if(f.data === null)
-			{
-				getFileData.getfiledata(f.path).then(function (data) {
-				    f.data = 'data:image/jpeg;base64,' + btoa(data);
-				    img.src = f.data;
-				});
-			}
-		}
+        if (f.origin === "Dropbox") {
+        	if (f.data === null) {
+        		getFileData.getfiledata(f.path).then(function (data) {
+        			f.data = 'data:image/jpeg;base64,' + btoa(data);
+        			img.src = f.data;
+        		});
+        	}
+        	else {
+        		img.src = f.data;
+        	}
+        }
 		else
 		{
 			img.src = f.data;
