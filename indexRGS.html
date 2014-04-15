@@ -86,9 +86,9 @@
                 <div class="col-md-8" ng-hide="settings.gridMode">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <button ng-hide="settings.root" ng-click="goBack()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+							<button class="btn btn-default btn-xs" ng-hide="settings.root" ng-click="goBack()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                             {{settings.dir}}
-                            <button class="gridButton" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-th-large"></span></button>
+							<button class="gridButton btn btn-default btn-xs" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-list"></span></button>
                         </div>
                         <div class="panel-body contentpanel2">
                             <div class="col-md-4">
@@ -165,7 +165,7 @@
                             {{settings.dir}}
                             <button class="gridButton btn btn-default btn-xs" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-list"></span></button>
                         </div>
-                        <div id="resizable">
+                        <div id="resizable" class="draggable">
                             <div class="panel-body text-center contentpanel2" ng-style="settings.bgImage">
                                 <div id="previewGridDiv" ng-show="settings.gridPreview">
                                     <!--<input id="previewClose" type="image" src="img/cleaar.png" ng-click="settings.gridPreview = false" />-->
@@ -306,7 +306,7 @@
                                     <button type="button" class="btn btn-default" ng-click="changeCol(1)">+</button>
                                 </p>
                                 <hr>
-                                Change background: <input type="image" src="img/bg_mini.jpg" ng-click="bgMenu()"/>
+                                Change background: <input type="image" ng-src="{{settings.bgMini}}" ng-click="bgMenu()"/>
                                 <hr>
                                 <div class="folderSettings">
                                     <p>
@@ -376,7 +376,7 @@
                             <!-- ------------------------------------------- -->
                             <!-- Background settings -->
                             <div class="chooseBg" ng-show="settings.underMenu">
-                                <button ng-click="settings.underMenu = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <button class="btn btn-default btn-xs" ng-click="settings.underMenu = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>Change background</p>
                                 <ul>
                                     <li><input type="image" src="img/bg_mini.jpg" ng-click="changeBg(1)"/>Standard</li>
@@ -385,13 +385,15 @@
 
                                     <li><input type="image" src="img/bw_sunset.jpg" ng-click="changeBg(3)"/>Green Sunset</li>
 
-                                    <li><input type="image" src="img/bw_sky.jpg" ng-click="changeBg(44)"/>Amazing Sky</li>
+                                    <li><input type="image" src="img/bw_sky.jpg" ng-click="changeBg(4)"/>Amazing Sky</li>
+									
+									<li><input type="image" src="img/bw_none.jpg" ng-click="changeBg(44)"/>None</li>
                                 </ul>
                             </div>
                             <!-- --------------------- -->
                             <!-- Folder icon settings -->
                             <div class="chooseFolderIcon" ng-show="settings.underMenu2">
-                                <button ng-click="settings.underMenu2 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <button class="btn btn-default btn-xs" ng-click="settings.underMenu2 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>Folder icon</p>
                                 <ul>
                                     <li><input type="image" src="img/folder.png" ng-click="changeFolderIcon(1)"/>Standard</li>
@@ -402,7 +404,7 @@
                             <!-- --------------------- -->
                             <!-- File icon settings -->
                             <div class="chooseFileIcon" ng-show="settings.underMenu5">
-                                <button ng-click="settings.underMenu5 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <button class="btn btn-default btn-xs" ng-click="settings.underMenu5 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>File icon</p>
                                 <ul>
                                     <li><input type="image" src="img/file.png" ng-click="changeFileIcon(1)"/>Standard</li>
@@ -413,50 +415,50 @@
                             <!-- --------------------- -->
                             <!-- Font settings -->
                             <div class="chooseFont" ng-show="settings.underMenu3">
-                                <button ng-click="settings.underMenu3 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <button class="btn btn-default btn-xs" ng-click="settings.underMenu3 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>Choose font:</p>
                                 <ul>
                                     <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Verdana"/> Verdana</li>
                                     <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Webdings"/> Webdings</li>
-                                    <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Arial"/>Arial</li>
+                                    <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Arial"/> Arial</li>
                                 </ul>
                             </div>
                             <!-- --------------------- -->
                             <!-- Font color settings -->
                             <div class="chooseFontColor" ng-show="settings.underMenu4">
-                                <button ng-click="settings.underMenu4 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <button class="btn btn-default btn-xs" ng-click="settings.underMenu4 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>Choose font color:</p>
                                 <ul>
                                     <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="blue"/> Blue</li>
                                     <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="white"/> White</li>
-                                    <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="red"/>Red</li>
+                                    <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="red"/> Red</li>
                                 </ul>
                             </div>
                             <!-- --------------------- -->
                             <!-- Permissions  -->
                             <div class="setViewAccess" ng-show="settings.underMenuViewAccess">
-                                <button ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <button class="btn btn-default btn-xs" ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <h2>View Access</h2>
                                 <ul ng-repeat="person in persons">
                                     <li><input type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'viewAccess')"/>{{person.name}}</li>
                                 </ul>
                             </div>
                             <div class="setShareAccess" ng-show="settings.underMenuShareAccess">
-                                <button ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <button class="btn btn-default btn-xs" ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <h2>Share Access</h2>
                                 <ul ng-repeat="person in persons">
                                     <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'shareAccess')" />{{person.name}}</li>
                                 </ul>
                             </div>
                             <div class="setMoveAccess" ng-show="settings.underMenuMoveAccess">
-                                <button ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <button class="btn btn-default btn-xs" ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <h2>Move Access</h2>
                                 <ul ng-repeat="person in persons">
                                     <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'moveAccess')" />{{person.name}}</li>
                                 </ul>
                             </div>
                             <div class="setSyncAccess" ng-show="settings.underMenuSyncAccess">
-                                <button ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <button class="btn btn-default btn-xs" ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <h2>Sync Access</h2>
                                 <ul ng-repeat="person in persons">
                                     <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'syncAccess')" />{{person.name}}</li>
@@ -514,11 +516,7 @@
                                 <h4 class="modal-title">ADD FROM DROPBOX</h4>
                             </div>
                             <div class="modal-body">
-<<<<<<< HEAD
-								<button  class="btn btn-default btn-sm" ng-click="back()"><span class="glyphicon glyphicon-chevron-left"></span></button>
-=======
-								<button  ng-show="dirArr.length > 1" ng-click="back()"><span class="glyphicon glyphicon-chevron-left"></span></button>
->>>>>>> 63a9b85e4133507b77daa4d2672c9777ae5a8eeb
+								<button  class="btn btn-default btn-sm" ng-show="dirArr.length > 1" ng-click="back()"><span class="glyphicon glyphicon-chevron-left"></span></button>
 								<h2>{{dir}}</h2>
 								<!-- <input type="image" src="img/backSmall.png" ng-click="back()"/>  -->
 								<!-- <input type="checkbox" ng-checked="allSelected" ng-click="selectAll($event)">Select All</input> -->

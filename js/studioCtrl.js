@@ -43,6 +43,10 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 				file.size = f.bytes;
 				file.origin = "Dropbox";
 				file.path = f.path;
+				if($scope.settings.showThumb)
+				{
+					$scope.thumbs(file);
+				}
 				c.add(file);
 			}
 			else if(f.contents.length > 0)
@@ -70,6 +74,10 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 						file.size = f.contents[i].bytes;
 						file.origin = "Dropbox";
 						file.path = f.contents[i].path;
+						if($scope.settings.showThumb)
+						{
+							$scope.thumbs(file);
+						}
 						c.add(file);
 					}
 				}
@@ -96,6 +104,10 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 				var folder = $scope.settings.currentFolder;
 			}
 			$scope.save.push($scope.test2($scope.addCheck[i],folder));
+		}
+		if($scope.settings.showThumb)
+		{
+			getThumbs($scope.settings.currentFolder);
 		}
 		$scope.pathCheck = [];
 		$scope.addCheck = [];
@@ -277,6 +289,10 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	$scope.add = function () {
 	    $scope.settings.notAdded = false;
 	    $scope.settings.editing = true;
+		if($scope.settings.showThumb)
+		{
+			getThumbs($scope.settings.currentFolder);
+		}
 	};
 
     /*
@@ -344,6 +360,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
     */
 	$scope.applyFont = function () {
 	    $scope.settings.underMenu3 = false;
+		console.log($scope.settings.fontText);
 	    $scope.settings.font = {
 	        'font-size': $scope.settings.fontSize + 'pt',
 	        'font-family': $scope.settings.fontText,
@@ -449,16 +466,24 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	    $scope.settings.underMenu = false;
 	    if (i === 1) {
 	        $scope.settings.bgImage = { 'background-image': 'url(img/bg.jpg)' };
+			$scope.settings.bgMini = "img/bg_mini.jpg";
 	    }
 	    else if (i === 2) {
 	        $scope.settings.bgImage = { 'background-image': 'url(img/sand.jpg)' };
+			$scope.settings.bgMini = "img/bw_sand.jpg";
 	    }
 	    else if (i === 3) {
 	        $scope.settings.bgImage = { 'background-image': 'url(img/sunset.jpg)' };
+			$scope.settings.bgMini = "img/bw_sunset.jpg";
 	    }
-	    else {
+	    else if (i === 4) {
 	        $scope.settings.bgImage = { 'background-image': 'url(img/sky.jpg)' };
+			$scope.settings.bgMini = "img/bw_sky.jpg";
 	    }
+		else {
+			$scope.settings.bgImage = "";
+			$scope.settings.bgMini = "img/bw_none.jpg";
+		}
 	};
 
     /*
@@ -826,6 +851,10 @@ function handleFileSelect(evt) {
         reader.onload = (function (file) {
             return function (e) {
                 file.data = e.target.result;
+				if(scope.settings.showThumb)
+				{
+					file.thumb = file.data;
+				}
                 scope.$apply();
             };
         }(file))
@@ -837,6 +866,7 @@ function handleFileSelect(evt) {
     }
     setTimeout(updateRowMargins);
     setTimeout(togglePlaceHolders);
+	
 };
 
 

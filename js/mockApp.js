@@ -101,6 +101,7 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         folderIcon: defaultFolderIcon,
         fileIcon: defaultFileIcon,
         bgImage: {'background-image':'url(img/bg.jpg)'},
+		bgMini: "img/bg_mini.jpg",
         fontSize: 12,
         fontText: 'Verdana',
         fontColor: 'black',
@@ -154,6 +155,10 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         $scope.settings.dir = folderPathString(getFolderPath($scope.settings.currentFolder));
         $timeout(updateRowMargins);
         $scope.settings.root = false;
+		if($scope.settings.showThumb)
+		{
+			getThumbs($scope.settings.currentFolder);
+		}
     };
 
     /*
@@ -169,6 +174,10 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
                 $scope.settings.root = true;
             }
         }
+		if(showThumb)
+		{
+			getThumbs($scope.settings.currentFolder);
+		}
     };
 
     /*
