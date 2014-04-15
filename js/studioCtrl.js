@@ -749,10 +749,13 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
     * TODO
     */
 	$scope.removeAccess = function (person, node, access, index) {
-	    var tempNode = person[access][index];
-	    for (var i = 0; i < person[access].length; i++) {
-            
-	    }
+		if (node.type === 'Folder') {
+			if (node.hasChildren) {
+				for (var i = 0; i < node.children.length; i++) {
+					
+				}
+			}
+		}
 	}
 
     /*
