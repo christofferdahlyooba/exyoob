@@ -174,7 +174,7 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
                 $scope.settings.root = true;
             }
         }
-		if(showThumb)
+		if($scope.settings.showThumb)
 		{
 			getThumbs($scope.settings.currentFolder);
 		}
@@ -502,4 +502,18 @@ function changeRowLiMargins(margin) {
         rowLi[i].style.marginBottom = newMargin;
     }
 
+};
+
+function getThumbs(curr) {
+	var scope = angular.element($("#ng")).scope();
+	for (var i = 0; i < curr.children.length; i++) {
+		if (curr.children[i].origin === 'Dropbox') {
+			scope.thumbs(curr.children[i]);
+		}
+		else {
+			if (curr.children[i].type.indexOf('image') !== -1) {
+				curr.children[i].thumb = curr.children[i].data;
+			}
+		}
+	}
 };

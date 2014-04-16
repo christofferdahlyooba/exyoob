@@ -51,20 +51,7 @@ $('#showThumb').on('switchChange', function (e, data) {
     });
 });
 
-var getThumbs = function(curr)
-{
-	var scope = angular.element($("#ng")).scope();
-	for (var i = 0; i < curr.children.length; i++) {
-		if (curr.children[i].origin === 'Dropbox') {
-			scope.thumbs(curr.children[i]);
-		}
-		else {
-			if (curr.children[i].type.indexOf('image') !== -1) {
-				curr.children[i].thumb = curr.children[i].data;
-			}
-		}
-	}
-}
+
 
 
 //Toggle button for horizontal or vertical scrolling

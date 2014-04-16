@@ -28,9 +28,9 @@
         <div ng-hide="settings.gridMode">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <button ng-hide="settings.root" ng-click="goBack()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+					<button class="btn btn-default btn-xs" ng-hide="settings.root" ng-click="goBack()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                     {{settings.dir}}
-                    <button class="gridButton" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-th-large"></span></button>
+					<button class="gridButton btn btn-default btn-xs" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-th-large"></span></button>
                 </div>
                 <div class="panel-body contentpanel2">
                     <div class="col-md-4">
@@ -47,7 +47,10 @@
 
                     </div>
                     <div class="col-md-8" id="previewDiv">
-                        <canvas id="preview"></canvas>
+						<div ng-show="settings.listPrev">
+							<span id="previewClose" class="glyphicon glyphicon-remove-circle" ng-click="settings.listPrev = false"></span>
+							<canvas id="preview"></canvas>
+						</div>
                     </div>
                 </div>
 
@@ -58,14 +61,14 @@
         <div ng-show="settings.gridMode">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <button ng-hide="settings.root" ng-click="goBack()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+					<button class="btn btn-default btn-xs" ng-hide="settings.root" ng-click="goBack()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                     {{settings.dir}}
-                    <button class="gridButton" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-list"></span></button>
+					<button class="gridButton btn btn-default btn-xs" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-list"></span></button>
                 </div>
                 <div id="resizable">
                     <div class="panel-body text-center contentpanel2" ng-style="settings.bgImage">
                         <div id="previewGridDiv" ng-show="settings.gridPreview">
-                            <input id="previewClose" type="image" src="img/cleaar.png" ng-click="settings.gridPreview = false" />
+							<span id="previewClose" class="glyphicon glyphicon-remove-circle" ng-click="settings.gridPreview = false"></span>
                             <canvas id="previewGrid"></canvas>
                         </div>
                         <!-- ----------------Content Body-------------------------  -->
@@ -78,7 +81,7 @@
                             </div>
                             <!-- Files -->
                             <div ng-class="settings.colStyle" ng-repeat="file in getFiles(settings.currentFolder)">
-                                <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.data}}" ng-show="settings.showThumb && file.isImg" />
+                                <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg" />
                                 <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
                                 <div ng-show="settings.showFont" ng-style="settings.font">{{file.name}}</div>
                             </div>
@@ -96,7 +99,7 @@
                                 <!-- Files -->
                                 <div ng-repeat="file in getFiles(settings.currentFolder)">
                                     <li ng-class="settings.rowStyleLi">
-                                        <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.data}}" ng-show="settings.showThumb && file.isImg" />
+                                        <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg" />
                                         <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
                                         <div ng-show="settings.showFont" ng-style="settings.font">{{file.name}}</div>
                                     </li>
@@ -113,9 +116,10 @@
 
 
 
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
         <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		<script src="https://www.dropbox.com/static/api/dropbox-datastores-1.0-latest.js"></script>
         <script src="js/node.js"></script>
         <script src="js/jquery-ui.min.js"></script>
         <script src="js/jquery.ui.touch-punch.js"></script>
