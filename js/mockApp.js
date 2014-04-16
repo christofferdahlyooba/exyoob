@@ -98,6 +98,7 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         showThumb: false,
         showFont: true,
 		listPrev: false,
+		fontTextInput: false,
         folderIcon: defaultFolderIcon,
         fileIcon: defaultFileIcon,
         bgImage: {'background-image':'url(img/bg.jpg)'},

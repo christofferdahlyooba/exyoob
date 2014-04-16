@@ -388,6 +388,26 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	        'color': $scope.settings.fontColor
 	    };
 	};
+	
+	/*
+    * Changes font size
+    */
+	$scope.applyFontSize = function () {
+	    
+		if($scope.settings.fontSize > 5 && $scope.settings.fontSize <= 30)
+		{
+			$scope.settings.font = {
+				'font-size': $scope.settings.fontSize + 'pt',
+				'font-family': $scope.settings.fontText,
+				'color': $scope.settings.fontColor
+			}
+			$scope.fontTextInput = false;
+		}
+		else
+		{
+			alert("Font size must be between 6 and 30");
+		}
+	};
 
     /*
     * Toggles folder icon menu
@@ -578,6 +598,11 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 			}
 	    }
 	};
+	
+	$scope.testing = function()
+	{
+		$scope.fontTextInput = true;
+	}
 
     /*
     * Clears the name of a node and focuses the input field

@@ -49,6 +49,12 @@ input
 	border:none;
 }
 
+.inputFontSize
+{
+	border: 1px solid gray; 
+	width: 25px;
+}
+
 .image-upload > input
 {
 	display: none;

@@ -338,7 +338,8 @@
                                         Font size:
                                         <button type="button" class="btn btn-default" ng-click="changeFontSize(-1)">-</button>
 
-                                        {{settings.fontSize}}
+                                        <span ng-click="testing()" ng-show="!fontTextInput">{{settings.fontSize}}</span>
+										<input class="inputFontSize" ng-model="settings.fontSize" type="text" ng-show="fontTextInput" ng-blur="applyFontSize()"></input>
 
                                         <button type="button" class="btn btn-default" ng-click="changeFontSize(1)">+</button>
 
