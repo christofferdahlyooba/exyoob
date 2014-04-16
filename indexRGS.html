@@ -310,8 +310,8 @@
                                 <hr>
                                 <div class="folderSettings">
                                     <p>
-                                        Number of folders:<!-- TODO -->
-                                        <button type="button" class="btn btn-default" ng-click="minusFolder()">-</button>
+                                        Number of folders:<!-- TODO
+                                        <button type="button" class="btn btn-default" ng-click="minusFolder()">-</button> -->
 
                                         {{settings.nrOfFolders}}
 
@@ -368,9 +368,9 @@
                                 <button ng-click="settings.underMenu0 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>Views allowed</p>
                                 <ul>
-                                    <li><input type="radio" ng-model="settings.viewsAllowed" ng-click="applyViews()" value="Grid & List"/> Grid & List</li>
-                                    <li><input type="radio" ng-model="settings.viewsAllowed" ng-click="applyViews()" value="Grid"/> Grid</li>
-                                    <li><input type="radio" ng-model="settings.viewsAllowed" ng-click="applyViews()" value="List"/> List</li>
+                                    <li><input type="radio" ng-model="settings.viewsAllowed" ng-change="applyViews()" value="Grid & List"/> Grid & List</li>
+                                    <li><input type="radio" ng-model="settings.viewsAllowed" ng-change="applyViews()" value="Grid"/> Grid</li>
+                                    <li><input type="radio" ng-model="settings.viewsAllowed" ng-change="applyViews()" value="List"/> List</li>
                                 </ul>
                             </div>
                             <!-- ------------------------------------------- -->
@@ -418,9 +418,9 @@
                                 <button class="btn btn-default btn-xs" ng-click="settings.underMenu3 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>Choose font:</p>
                                 <ul>
-                                    <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Verdana"/> Verdana</li>
-                                    <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Webdings"/> Webdings</li>
-                                    <li><input type="radio" ng-model="settings.fontText" ng-click="applyFont()" value="Arial"/> Arial</li>
+                                    <li><input type="radio" ng-model="settings.fontText" ng-change="applyFont()" value="Verdana"/> Verdana</li>
+                                    <li><input type="radio" ng-model="settings.fontText" ng-change="applyFont()" value="Webdings"/> Webdings</li>
+                                    <li><input type="radio" ng-model="settings.fontText" ng-change="applyFont()" value="Arial"/> Arial</li>
                                 </ul>
                             </div>
                             <!-- --------------------- -->
@@ -429,9 +429,9 @@
                                 <button class="btn btn-default btn-xs" ng-click="settings.underMenu4 = false;"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <p>Choose font color:</p>
                                 <ul>
-                                    <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="blue"/> Blue</li>
-                                    <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="white"/> White</li>
-                                    <li><input type="radio" ng-model="settings.fontColor" ng-click="applyFontColor()" value="red"/> Red</li>
+                                    <li><input type="radio" ng-model="settings.fontColor" ng-change="applyFontColor()" value="blue"/> Blue</li>
+                                    <li><input type="radio" ng-model="settings.fontColor" ng-change="applyFontColor()" value="white"/> White</li>
+                                    <li><input type="radio" ng-model="settings.fontColor" ng-change="applyFontColor()" value="red"/> Red</li>
                                 </ul>
                             </div>
                             <!-- --------------------- -->

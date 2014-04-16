@@ -96,7 +96,7 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         allAllowed: true,
         gridMode: true,
         showThumb: false,
-        showFont: false,
+        showFont: true,
 		listPrev: false,
         folderIcon: defaultFolderIcon,
         fileIcon: defaultFileIcon,
