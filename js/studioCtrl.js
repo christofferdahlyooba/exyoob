@@ -89,6 +89,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	$scope.addDB = function()
 	{
 		$scope.add();
+		$scope.allSelected = false;
 		for(var i=0;i<$scope.addCheck.length;i++)
 		{
 			if($scope.addCheck[i].is_dir)
@@ -111,6 +112,8 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 		}
 		$scope.pathCheck = [];
 		$scope.addCheck = [];
+		$scope.dir = "";
+		$scope.dirArr = [];
 	};
 
 	$scope.list = function(path)
@@ -130,6 +133,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 				$scope.dbItems[i].name = $scope.dbItems[i].name.replace('/',"");
 			}
 		});
+		console.log($scope.dir);
 	};
 	
 	$scope.back = function()
@@ -143,6 +147,13 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 		}
 		$scope.allSelected = false;
 	};
+	
+	$scope.closeDB = function()
+	{
+		$scope.allSelected = false;
+		$scope.dir = "";
+		$scope.dirArr = [];
+	}
 	
 	var saveChecked = function()
 	{
@@ -260,8 +271,6 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 		}
 		
 		for (var i = 0; i < $scope.dbItems.length; i++) {
-			console.log($scope.dbItems);
-			console.log(action);
 			var dbItem = $scope.dbItems[i];
 			updateSelected(action, dbItem);
 		}

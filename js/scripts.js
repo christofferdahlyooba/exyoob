@@ -13,7 +13,8 @@
 });
 
 //Toggle button for showing folder names
-$("[name='showFolderName']").bootstrapSwitch();
+//$("[name='showFolderName']").bootstrapSwitch();
+$("[name='showFolderName']").bootstrapSwitch('state', true, true);
 
 $('#showFolderName').on('switchChange', function (e, data) {
     var $element = $(data.el),

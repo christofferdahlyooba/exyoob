@@ -512,14 +512,13 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeDB()">×</button>
                                 <h4 class="modal-title">ADD FROM DROPBOX</h4>
                             </div>
                             <div class="modal-body">
 								<button  class="btn btn-default btn-sm" ng-show="dirArr.length > 1" ng-click="back()"><span class="glyphicon glyphicon-chevron-left"></span></button>
 								<h2>{{dir}}</h2>
-								<!-- <input type="image" src="img/backSmall.png" ng-click="back()"/>  -->
-								<!-- <input type="checkbox" ng-checked="allSelected" ng-click="selectAll($event)">Select All</input> -->
+								<input type="checkbox" ng-checked="allSelected" ng-click="selectAll($event)">Select All</input>
 								<ul ng-repeat="dbItem in dbItems">
 									<input type="checkbox" ng-checked="isSelected(dbItem)" ng-click="updateSelection($event,dbItem)"/>
 									<li ng-show="dbItem.is_dir"><input type="image" src="img/dbFolder.png" ng-click="list(dbItem.path)">{{dbItem.name}}</input></li>
