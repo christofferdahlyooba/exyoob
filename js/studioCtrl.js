@@ -86,6 +86,23 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 		return f;
 	};
 	
+	$scope.loopFolders = function(f)
+	{
+		if(f.type === 'Folder')
+		for(var i=0;i<f.children.length;i++)
+		{
+			f.children[i].checked = false;
+			if(f.type === 'Folder')
+			{
+				$scope.loopFolders(f.children[i]);
+			}
+		}
+		else
+		{
+			f.checked = false;
+		}
+	}
+	
 	$scope.addDB = function()
 	{
 		$scope.add();
@@ -490,6 +507,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	
 	$scope.deselect = function()
 	{
+		$scope.loopFolders($scope.settings.currentFolder);
 		var files = $scope.getFiles($scope.settings.currentFolder);
 		for(var i = 0; i < files.length; i++)
 		{
