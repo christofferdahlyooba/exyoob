@@ -303,6 +303,15 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 			getThumbs($scope.settings.currentFolder);
 		}
 	};
+	
+	/*
+    * Starting edit mode and hides big plus icon
+    */
+	$scope.addFirstFolder = function () {
+	    $scope.settings.notAdded = false;
+	    $scope.settings.editing = true;
+		$scope.addFolders();
+	};
 
     /*
     * Returns true if one submenu is open else false
@@ -421,6 +430,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
     */
 	$scope.changeFolderIcon = function (i) {
 	    $scope.settings.underMenu2 = false;
+		var noCheck = true;
 	    if (i === 1) {
 	        $scope.settings.folderIcon = 'img/folder.png';
 	    }
@@ -434,8 +444,13 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	    for (var j = 0; j < folders.length; j++) {
 	        if (folders[j].checked) {
 	            folders[j].img = $scope.settings.folderIcon;
+				noCheck = false;
 	        }
 	    }
+		if(noCheck)
+		{
+			alert("No folders checked!")
+		}
 	};
 
     /*
@@ -450,6 +465,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
     */  
 	$scope.changeFileIcon = function (i) {
 	    $scope.settings.underMenu5 = false;
+		var noCheck = true;
 	    if (i === 1) {
 	        $scope.settings.fileIcon = 'img/file.png';
 	    }
@@ -463,9 +479,28 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	    for (var j = 0; j < files.length; j++) {
 	        if (files[j].checked) {
 	            files[j].img = $scope.settings.fileIcon;
+				noCheck = false;
 	        }
 	    }
+		if(noCheck)
+		{
+			alert("No files checked!");
+		}
 	};
+	
+	$scope.deselect = function()
+	{
+		var files = $scope.getFiles($scope.settings.currentFolder);
+		for(var i = 0; i < files.length; i++)
+		{
+			files[i].checked = false;
+		}
+		var folders = $scope.getFolders($scope.settings.currentFolder);
+		for(var j = 0; j < folders.length; j++)
+		{
+			folders[j].checked = false;
+		}
+	}
 
     /*
     * Delete folder and update number of folders
@@ -753,6 +788,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 
 	    var checked = evt['event'].checked;
 	    var person = evt['event'].person;
+		var noCheck = true;
 
 	    for (var i = 0, nodes = getCheckedNodes() ; i < nodes.length; i++) {
 	        var index = person[access].indexOf(nodes[i]);
@@ -761,6 +797,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	                $scope.insertAccess(person, nodes[i], access);
 	                //person[access].push(nodes[i]);
 	            }
+				noCheck = false;
 	        }
 	        else {
 	            if (index !== -1) {
@@ -768,6 +805,10 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	            }
 	        }
 	    }
+		if(noCheck)
+		{
+			alert("No files/folders are checked!")
+		}
 	};
 
 	$scope.insertAccess = function (person, node, access) {
