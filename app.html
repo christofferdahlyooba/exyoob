@@ -66,7 +66,7 @@
 					<button class="gridButton btn btn-default btn-xs" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-list"></span></button>
 					<button class="gridButton btn btn-default btn-xs" ng-hide="isSelectMode" ng-click="selectMode()"><span class="glyphicon glyphicon-ok-circle">Select</span></button>
 					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode" ng-click="selectMode()"><span class=" glyphicon glyphicon-ban-circle">Cancel</span></button>
-					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode" ng-click="share()"><span class=" glyphicon glyphicon-share">Share</span></button>
+					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode" ng-click="share(settings.rootF)"><span class=" glyphicon glyphicon-share">Share</span></button>
                 </div>
                 <div id="resizable">
                     <div class="panel-body text-center contentpanel2" ng-style="settings.bgImage">
@@ -78,7 +78,7 @@
                         <!-- --------------------COLUMN---------------------------- -->
                         <div ng-show="settings.cols">
                             <!-- Folders -->
-							<div ng-class="settings.colStyle" ng-repeat="folder in getFolders(settings.currentFolder)">
+							<div ng-class="settings.colStyle" ng-repeat="folder in getFolders(settings.currentFolder) | filter:filterAccess('viewAccess')">
 								<div class="folderIcon">
 									<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)" />
 									<input type="checkbox" ng-show="isSelectMode" ng-model="folder.checked" class="checkBox" />
