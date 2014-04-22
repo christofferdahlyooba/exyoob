@@ -307,7 +307,7 @@
                                     <button type="button" class="btn btn-default" ng-click="changeCol(1)">+</button>
                                 </p>
                                 <hr>
-                                Change background: <input type="image" ng-src="{{settings.bgMini}}" ng-click="bgMenu()"/>
+                                Change background: <input type="image" class="bgMini" ng-src="{{settings.bgMini}}" ng-click="bgMenu()"/>
                                 <hr>
                                 <div class="folderSettings">
                                     <p>
@@ -390,6 +390,12 @@
                                     <li><input type="image" src="img/bw_sky.jpg" ng-click="changeBg(4)"/>Amazing Sky</li>
 									
 									<li><input type="image" src="img/bw_none.jpg" ng-click="changeBg(44)"/>None</li>
+									<div class="image-upload">
+										<label for="bgFile">
+													Upload your own
+										</label>
+										<input type="file" id="bgFile" name="bgFile[]"/>
+									</div>
                                 </ul>
                             </div>
                             <!-- --------------------- -->

@@ -945,6 +945,7 @@ if(document.getElementById('files') !== null){
 }
 
 function handleFileSelect(evt) {
+	console.log("Amen hallå där!")
     var files = evt.target.files; // FileList object
     $('#addFiles').modal('hide');
 
@@ -978,6 +979,27 @@ function handleFileSelect(evt) {
     setTimeout(updateRowMargins);
     setTimeout(togglePlaceHolders);
 	
+};
+
+if(document.getElementById('bgFile') !== null){
+	document.getElementById('bgFile').addEventListener('change', handleBGFileSelect, false);
+}
+
+function handleBGFileSelect(evt) {
+    var file = evt.target.files[0]; // FileList object
+	var scope = angular.element($("#ng")).scope();
+	
+	var reader = new FileReader()
+	reader.onload = (function (file) {
+		return function (e) {
+			file.data = e.target.result;
+			scope.settings.bgImage = {'background-image':'url('+file.data+')'}
+			scope.settings.bgMini = file.data;
+			scope.settings.underMenu = false;
+			scope.$apply();
+		};
+	}(file))
+	reader.readAsDataURL(file);
 };
 
 

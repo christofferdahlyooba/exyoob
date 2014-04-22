@@ -60,6 +60,12 @@ input
 	display: none;
 }
 
+.bgMini 
+{
+	width: 50px;
+	height: 28px;
+}
+
 .imageThumb
 {
 	height: 50px;
