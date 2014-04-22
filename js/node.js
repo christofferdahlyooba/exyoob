@@ -1,9 +1,12 @@
-function Node(name, type){
+uniqueID = 0;
+
+function Node(name, type) {
 	this.name = name;
 	this.type = type;
 	this.Parent = null;
 	this.img = null;
 	this.checked = false;
+	this.id = uniqueID++;
 }
 
 

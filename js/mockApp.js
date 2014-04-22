@@ -384,6 +384,10 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
             ctx.drawImage(img, imgX, imgY, canvasImgW, canvasImgH);
         }
     };
+
+    $scope.hasAccess = function (node, name) {
+    	return hasAccess(node, name);
+    }
 	
 });
 
@@ -518,4 +522,23 @@ function getThumbs(curr) {
 			}
 		}
 	}
+};
+
+/*
+* Checks of this node is available in the permission list 
+* if it is, return true, else false
+*/
+function hasAccess(node, access) {
+	var scope = angular.element($("#ng")).scope();
+
+	for (var i = 0, persons = scope.persons; i < persons.length; i++) {
+		//if (persons[i][access].indexOf(node) !== -1) {
+		//	return true;
+		//}
+		for (var j = 0; j<persons[i][access].length; j++)
+		if (persons[i][access][j].id === node.id) {
+			return true;
+		}
+	}
+	return false;
 };

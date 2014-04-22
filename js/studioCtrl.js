@@ -882,9 +882,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	    }
 	};
 
-	$scope.hasAccess = function (node, name) {
-	    return hasAccess(node, name);
-	}
+	
 
 });
 
@@ -1064,20 +1062,7 @@ function hasPermissionsSet(node) {
         hasAccess(node, 'syncAccess');
 };
 
-/*
-* Checks of this node is available in the permission list 
-* if it is, return true, else false
-*/
-function hasAccess(node, access) {
-    var scope = angular.element($("#ng")).scope();
 
-    for (var i = 0, persons = scope.persons; i < persons.length; i++) {
-        if (persons[i][access].indexOf(node) !== -1) {
-            return true;
-        }
-    }
-    return false;
-};
 
 /*
 * Removes a file from all permission lists it is currently in
@@ -1126,9 +1111,15 @@ function exportSettingsToJson() {
 function exportToJson() {
     var scope = angular.element($("#ng")).scope();
     exportSettingsToJson();
+    exportPeopleToJson();
     console.log(JSON.stringify(scope.settings.currentFolder, replacer));
     //return JSON.stringify($scope.currentFolder, replacer);
 };
+
+function exportPeopleToJson() {
+	var scope = angular.element($("#ng")).scope();
+	console.log(JSON.stringify(scope.persons, replacer));
+}
 
 /*
 * Removes 'Parent' key from JSON to eliminate infinite JSON

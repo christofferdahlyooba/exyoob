@@ -62,8 +62,11 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
 					<button class="btn btn-default btn-xs" ng-hide="settings.root" ng-click="goBack()"><span class="glyphicon glyphicon-chevron-left"></span></button>
-                    {{settings.dir}}
+                    {{settings.dir}}					
 					<button class="gridButton btn btn-default btn-xs" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-list"></span></button>
+					<button class="gridButton btn btn-default btn-xs" ng-hide="isSelectMode" ng-click="selectMode()"><span class="glyphicon glyphicon-ok-circle">Select</span></button>
+					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode" ng-click="selectMode()"><span class=" glyphicon glyphicon-ban-circle">Cancel</span></button>
+					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode" ng-click="share()"><span class=" glyphicon glyphicon-share">Share</span></button>
                 </div>
                 <div id="resizable">
                     <div class="panel-body text-center contentpanel2" ng-style="settings.bgImage">
@@ -75,14 +78,21 @@
                         <!-- --------------------COLUMN---------------------------- -->
                         <div ng-show="settings.cols">
                             <!-- Folders -->
-                            <div ng-class="settings.colStyle" ng-repeat="folder in getFolders(settings.currentFolder)">
-                                <input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)" />
-                                <div ng-show="settings.showFont" ng-style="settings.font">{{folder.name}}</div>
-                            </div>
+							<div ng-class="settings.colStyle" ng-repeat="folder in getFolders(settings.currentFolder)">
+								<div class="folderIcon">
+									<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)" />
+									<input type="checkbox" ng-show="isSelectMode" ng-model="folder.checked" class="checkBox" />
+								</div>
+								<div ng-show="settings.showFont" ng-style="settings.font">{{folder.name}}</div>
+								
+							</div>
                             <!-- Files -->
                             <div ng-class="settings.colStyle" ng-repeat="file in getFiles(settings.currentFolder)">
-                                <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg" />
-                                <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
+								<div class="folderIcon">
+									<input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg" />
+									<input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
+									<input type="checkbox" ng-show="isSelectMode" ng-model="file.checked" class="checkBox" />
+								</div>
                                 <div ng-show="settings.showFont" ng-style="settings.font">{{file.name}}</div>
                             </div>
                         </div>
