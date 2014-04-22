@@ -441,13 +441,30 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	$scope.folderIconMenu = function () {
 	    $scope.settings.underMenu2 = true;
 	};
+	
+	$scope.folderCheck = function () {
+		var folders = $scope.getFolders($scope.settings.currentFolder);
+	    for (var i = 0; i < folders.length; i++) {
+	        if (folders[i].checked) {
+				$scope.settings.noCheck = false;
+	        }
+	    }
+	}
+	
+	$scope.fileCheck = function () {
+		var files = $scope.getFiles($scope.settings.currentFolder);
+	    for (var i = 0; i < files.length; i++) {
+	        if (files[i].checked) {
+				$scope.settings.noCheck = false;
+	        }
+	    }
+	}
 
     /*
     * Changes folder icon
     */
 	$scope.changeFolderIcon = function (i) {
 	    $scope.settings.underMenu2 = false;
-		var noCheck = true;
 	    if (i === 1) {
 	        $scope.settings.folderIcon = 'img/folder.png';
 	    }
@@ -461,10 +478,10 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	    for (var j = 0; j < folders.length; j++) {
 	        if (folders[j].checked) {
 	            folders[j].img = $scope.settings.folderIcon;
-				noCheck = false;
+				$scope.settings.noCheck = false;
 	        }
 	    }
-		if(noCheck)
+		if($scope.settings.noCheck)
 		{
 			alert("No folders checked!")
 		}
@@ -482,7 +499,6 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
     */  
 	$scope.changeFileIcon = function (i) {
 	    $scope.settings.underMenu5 = false;
-		var noCheck = true;
 	    if (i === 1) {
 	        $scope.settings.fileIcon = 'img/file.png';
 	    }
@@ -496,10 +512,10 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	    for (var j = 0; j < files.length; j++) {
 	        if (files[j].checked) {
 	            files[j].img = $scope.settings.fileIcon;
-				noCheck = false;
+				$scope.settings.noCheck = false;
 	        }
 	    }
-		if(noCheck)
+		if($scope.settings.noCheck)
 		{
 			alert("No files checked!");
 		}
@@ -518,6 +534,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 		{
 			folders[j].checked = false;
 		}
+		$scope.settings.noCheck = true;
 	}
 
     /*
