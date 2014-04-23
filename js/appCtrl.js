@@ -41,9 +41,14 @@ angular.module('mockApp').controller('CompCtrl', function($scope, $timeout){
 				$scope.share(node.children[i]);
 
 				if (node.children[i].checked) {
-					//Make share call here TODO
-					//or save to array or smt
-					console.log(node.children[i].name + ' shared');
+					if (hasAccess(node.children[i], 'shareAccess')) {
+						//Make share call here TODO
+						//or save to array or smt
+						console.log(node.children[i].name + ' shared');
+					}
+					else {
+						console.log('You don\'t have permission to share '+ node.children[i].name);
+					}
 				}
 			}
 		}
