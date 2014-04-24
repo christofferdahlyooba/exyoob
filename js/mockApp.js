@@ -93,6 +93,7 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         underMenuShareAccess: false,
         underMenuMoveAccess: false,
         underMenuSyncAccess: false,
+		inFavFolder: false,
         viewsAllowed: 'Grid & List',
         allAllowed: true,
         gridMode: true,
@@ -162,6 +163,10 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
 		{
 			getThumbs($scope.settings.currentFolder);
 		}
+		if(folder.name === 'Favorites')
+		{
+			$scope.settings.inFavFolder = true;
+		}
     };
 
     /*
@@ -181,7 +186,46 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
 		{
 			getThumbs($scope.settings.currentFolder);
 		}
+		$scope.settings.inFavFolder = false;
     };
+	
+	$scope.uncheckFolders = function(f)
+	{
+		if(f.type === 'Folder')
+		{
+			for(var i=0;i<f.children.length;i++)
+			{
+				f.children[i].checked = false;
+				if(f.type === 'Folder')
+				{
+					$scope.uncheckFolders(f.children[i]);
+				}
+			}
+		}
+		else
+		{
+			f.checked = false;
+		}
+	}
+	
+	$scope.checkFolders = function(f)
+	{
+		if(f.type === 'Folder')
+		{
+			for(var i=0;i<f.children.length;i++)
+			{
+				f.children[i].checked = true;
+				if(f.type === 'Folder')
+				{
+					$scope.checkFolders(f.children[i]);
+				}
+			}
+		}
+		else
+		{
+			f.checked = true;
+		}
+	}
 
     /*
     * Returns all folders in this folder

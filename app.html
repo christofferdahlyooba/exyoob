@@ -66,9 +66,11 @@
 					<button class="btn btn-default btn-xs" ng-hide="settings.root" ng-click="goBack()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                     {{settings.dir}}					
 					<button class="gridButton btn btn-default btn-xs" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-list"></span></button>
-					<button class="gridButton btn btn-default btn-xs" ng-hide="isSelectMode" ng-click="selectMode()"><span class="glyphicon glyphicon-ok-circle">Select</span></button>
-					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode" ng-click="selectMode()"><span class=" glyphicon glyphicon-ban-circle">Cancel</span></button>
-					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode" ng-click="share(settings.rootF)"><span class=" glyphicon glyphicon-share">Share</span></button>
+					<button class="gridButton btn btn-default btn-xs" ng-hide="isSelectMode" ng-click="selectMode()"><span class="glyphicon glyphicon-ok-circle"></span> Select</button>
+					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode" ng-click="selectMode()"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</button>
+					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode && !settings.inFavFolder" ng-click="favorite()"><span class="glyphicon glyphicon-star-empty"></span> Favorite</button>
+					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode && settings.inFavFolder" ng-click="unFavorite()"><span class="glyphicon glyphicon-remove"></span> Unfavorite</button>
+					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode" ng-click="share(settings.rootF)"><span class=" glyphicon glyphicon-share"></span> Share</button>
                 </div>
                 <div id="resizable">
                     <div class="panel-body text-center contentpanel2" ng-style="settings.bgImage">
