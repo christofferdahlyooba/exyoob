@@ -107,22 +107,42 @@ canvas{
 }
 .overlap{
     position: absolute;
-    right: 5px;
+    right: 10%;
     top: 12px;
 }
 .overlap2{
     position: absolute;
-    left: 5px;
+    left: 15%;
     top: 12px;
 }
 .overlap3{
     position: absolute;
-    left: 5px;
+    left: 15%;
     top: 27px;
 }
 .overlap4{
     position: absolute;
-    right: 5px;
+    right: 10%;
+    top: 27px;
+}
+.overlap1{
+    position: absolute;
+    right: 25%;
+    top: 12px;
+}
+.overlap21{
+    position: absolute;
+    left: 30%;
+    top: 12px;
+}
+.overlap31{
+    position: absolute;
+    left: 30%;
+    top: 27px;
+}
+.overlap41{
+    position: absolute;
+    right: 25%;
     top: 27px;
 }
 .deleteNode{

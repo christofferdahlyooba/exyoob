@@ -53,6 +53,13 @@ angular.module('mockApp').controller('CompCtrl', function($scope, $timeout){
 			}
 		}
 	}
+	$scope.sync = function(node){
+		var answer = confirm('Do you want to sync ' + node.name + '?');
+		if (answer) {
+			var user = 0;
+			$scope.persons[user]['syncAccess'].push(node);
+		}
+	}
 });
 
 /*

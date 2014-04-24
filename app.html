@@ -83,7 +83,7 @@
 							<div ng-class="settings.colStyle" ng-repeat="folder in getFolders(settings.currentFolder) | filter:filterAccess('viewAccess')">
 								<div class="folderIcon">
 									<input type="image" ng-show="hasAccess(folder, 'syncAccess')" ng-src="{{folder.img}}" ng-click="enter(folder)" />
-									<input type="image" ng-hide="hasAccess(folder, 'syncAccess')" style="opacity:0.3;" ng-src="{{folder.img}}" ng-click="alert('Not synced yet')" />
+									<input type="image" ng-hide="hasAccess(folder, 'syncAccess')" style="opacity:0.3;" ng-src="{{folder.img}}" ng-click="sync(folder)" />
 									<input type="checkbox" ng-show="isSelectMode" ng-model="folder.checked" class="checkBox" />
 								</div>
 								<div ng-show="settings.showFont" ng-style="settings.font">{{folder.name}}</div>
@@ -94,8 +94,8 @@
 								<div class="folderIcon">
 									<input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg && hasAccess(file, 'syncAccess')" />
 									<input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg || !hasAccess(file, 'syncAccess')" />
-									<input type="image" style="opacity:0.3;" ng-click="alert('Not synced yet')" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg && !hasAccess(file, 'syncAccess')" />
-									<input type="image" style="opacity:0.3;" ng-click="alert('Not synced yet')" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg || hasAccess(file, 'syncAccess')" />
+									<!--<input type="image" style="opacity:0.3;" ng-click="sync(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg && !hasAccess(file, 'syncAccess')" />-->
+									<input type="image" style="opacity:0.3;" ng-click="sync(file)" ng-src="{{file.img}}" ng-hide="hasAccess(file, 'syncAccess')" />
 									<input type="checkbox" ng-show="isSelectMode" ng-model="file.checked" class="checkBox" />
 								</div>
                                 <div ng-show="settings.showFont" ng-style="settings.font">{{file.name}}</div>
@@ -108,7 +108,7 @@
 								<div ng-repeat="folder in getFolders(settings.currentFolder) | filter:filterAccess('viewAccess')">
 									<li ng-class="settings.rowStyleLi">
 										<input type="image" ng-show="hasAccess(folder, 'syncAccess')" ng-src="{{folder.img}}" ng-click="enter(folder)" />
-										<input type="image" ng-hide="hasAccess(folder, 'syncAccess')" style="opacity:0.3;" ng-src="{{folder.img}}" ng-click="alert('Not synced yet')" />
+										<input type="image" ng-hide="hasAccess(folder, 'syncAccess')" style="opacity:0.3;" ng-src="{{folder.img}}" ng-click="sync(folder)" />
 										<input type="checkbox" ng-show="isSelectMode" ng-model="folder.checked" class="checkBox" />
 										<div ng-show="settings.showFont" ng-style="settings.font">{{folder.name}}</div>
 									</li>
@@ -118,8 +118,8 @@
 									<li ng-class="settings.rowStyleLi">
 										<input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg && hasAccess(file, 'syncAccess')" />
 										<input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg || !hasAccess(file, 'syncAccess')" />
-										<input type="image" style="opacity:0.3;" ng-click="alert('Not synced yet')" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg && !hasAccess(file, 'syncAccess')" />
-										<input type="image" style="opacity:0.3;" ng-click="alert('Not synced yet')" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg || hasAccess(file, 'syncAccess')" />
+										<input type="image" style="opacity:0.3;" ng-click="sync(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg && !hasAccess(file, 'syncAccess')" />
+										<input type="image" style="opacity:0.3;" ng-click="sync(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg || hasAccess(file, 'syncAccess')" />
 										<input type="checkbox" ng-show="isSelectMode" ng-model="file.checked" class="checkBox" />
 										<div ng-show="settings.showFont" ng-style="settings.font">{{file.name}}</div>
 									</li>
