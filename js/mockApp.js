@@ -69,8 +69,8 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
     * All settings variables
     */
     $scope.settings = {
-        currentFolder: rootFolder,
-		rootF: rootFolder,
+    	currentFolder: rootFolder,
+    	rootF: rootFolder, 
         nrOfFolders: 0,
         cols: true,
         nrOfCols: 3,

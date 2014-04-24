@@ -32,6 +32,7 @@ angular.module('mockApp').controller('CompCtrl', function($scope, $timeout){
 		//Add favorite folder
 		if(!$scope.favAdded)
 		{
+			console.log($scope.settings.rootF);
 			$scope.favFolder = new Folder("Favorites");
 			$scope.favFolder.img = 'img/favFolder.png'
 			$scope.favAdded = true;
@@ -82,6 +83,38 @@ angular.module('mockApp').controller('CompCtrl', function($scope, $timeout){
 				if(cur.children[i].type === 'Folder')
 				{
 					addFavFolders(cur.children[i]);
+				}
+			}
+		}
+	}
+	$scope.filterAccess = function (access) {
+		return function (node) {
+			var scope = angular.element($("#ng")).scope();
+
+			for (var i = 0, persons = scope.persons; i < persons.length; i++) {
+				
+				for (var j = 0; j < persons[i][access].length; j++)
+					if (persons[i][access][j].id === node.id) {
+						return true;
+					}
+			}
+			if(node.name === 'Favorites')
+			{
+				return true;
+			}
+			return false;
+		}
+	}
+	$scope.share = function (node) {
+		if (node.type === 'Folder') {
+			for (var i = 0; i < node.children.length; i++) {
+
+				$scope.share(node.children[i]);
+
+				if (node.children[i].checked) {
+					//Make share call here TODO
+					//or save to array or smt
+					console.log(node.children[i].name + ' shared');
 				}
 			}
 		}
