@@ -86,23 +86,6 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 		return f;
 	};
 	
-	$scope.loopFolders = function(f)
-	{
-		if(f.type === 'Folder')
-		for(var i=0;i<f.children.length;i++)
-		{
-			f.children[i].checked = false;
-			if(f.type === 'Folder')
-			{
-				$scope.loopFolders(f.children[i]);
-			}
-		}
-		else
-		{
-			f.checked = false;
-		}
-	}
-	
 	$scope.addDB = function()
 	{
 		$scope.add();
@@ -523,7 +506,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	
 	$scope.deselect = function()
 	{
-		$scope.loopFolders($scope.settings.currentFolder);
+		$scope.uncheckFolders($scope.settings.currentFolder);
 		var files = $scope.getFiles($scope.settings.currentFolder);
 		for(var i = 0; i < files.length; i++)
 		{
@@ -945,7 +928,6 @@ if(document.getElementById('files') !== null){
 }
 
 function handleFileSelect(evt) {
-	console.log("Amen hallå där!")
     var files = evt.target.files; // FileList object
     $('#addFiles').modal('hide');
 
@@ -981,6 +963,9 @@ function handleFileSelect(evt) {
 	
 };
 
+/*------------------------------------------------------------------
+--------------------   ADD BG FROM COMPUTER   ----------------------
+--------------------------------------------------------------------*/
 if(document.getElementById('bgFile') !== null){
 	document.getElementById('bgFile').addEventListener('change', handleBGFileSelect, false);
 }
@@ -995,6 +980,54 @@ function handleBGFileSelect(evt) {
 			file.data = e.target.result;
 			scope.settings.bgImage = {'background-image':'url('+file.data+')'}
 			scope.settings.bgMini = file.data;
+			scope.settings.underMenu = false;
+			scope.$apply();
+		};
+	}(file))
+	reader.readAsDataURL(file);
+};
+
+/*------------------------------------------------------------------
+-----------------ADD FOLDER ICON FROM COMPUTER----------------------
+--------------------------------------------------------------------*/
+if(document.getElementById('folderIconFile') !== null){
+	document.getElementById('folderIconFile').addEventListener('change', handleFoIFileSelect, false);
+}
+
+function handleFoIFileSelect(evt) {
+    var file = evt.target.files[0]; // FileList object
+	var scope = angular.element($("#studio")).scope();
+	
+	var reader = new FileReader()
+	reader.onload = (function (file) {
+		return function (e) {
+			file.data = e.target.result;
+			scope.settings.folderIcon = file.data;
+			scope.changeFolderIcon(0);
+			scope.settings.underMenu = false;
+			scope.$apply();
+		};
+	}(file))
+	reader.readAsDataURL(file);
+};
+
+/*------------------------------------------------------------------
+-----------------ADD FILC ICON FROM COMPUTER------------------------
+--------------------------------------------------------------------*/
+if(document.getElementById('fileIconImg') !== null){
+	document.getElementById('fileIconImg').addEventListener('change', handleFiIFileSelect, false);
+}
+
+function handleFiIFileSelect(evt) {
+    var file = evt.target.files[0]; // FileList object
+	var scope = angular.element($("#studio")).scope();
+	
+	var reader = new FileReader()
+	reader.onload = (function (file) {
+		return function (e) {
+			file.data = e.target.result;
+			scope.settings.fileIcon = file.data;
+			scope.changeFileIcon(0);
 			scope.settings.underMenu = false;
 			scope.$apply();
 		};

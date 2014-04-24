@@ -6,9 +6,11 @@ angular.module('mockApp').controller('CompCtrl', function($scope, $timeout){
     * Should be loaded automatically from the creator depending on login and appID or smt
     */
 	$scope.folder = { "name": "Root", "type": "Folder", "img": null, "checked": false, "id": 2, "children": [{ "name": "Folder1", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 3, "children": [{ "name": "2013-10-06 15.14.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 7, "size": 258252, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-06 15.14.24.jpg", "$$hashKey": "0I3" }, { "name": "2013-10-10 13.10.18.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 8, "size": 2665266, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-10 13.10.18.jpg", "$$hashKey": "0I7" }, { "name": "2013-10-15 12.16.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 9, "size": 2576851, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 12.16.24.jpg", "$$hashKey": "0IB" }, { "name": "2013-10-15 15.16.04.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 10, "size": 1858921, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 15.16.04.jpg", "$$hashKey": "0IF" }, { "name": "2013-10-19 12.54.53.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 11, "size": 1985031, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-19 12.54.53.jpg", "$$hashKey": "0IJ" }], "$$hashKey": "00T" }, { "name": "Folder2", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 4, "children": [{ "name": "Folder2_1", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 12, "children": [], "$$hashKey": "0IZ" }], "$$hashKey": "00X" }, { "name": "Folder3", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 5, "children": [], "$$hashKey": "011" }, { "name": "Folder4", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 6, "children": [], "$$hashKey": "015" }] };
-	$scope.savedSettings = { "nrOfFolders": 4, "cols": true, "nrOfCols": 2, "nrOfRows": 3, "colStyle": "col span_1_of_2", "rowStyleLi": "rowLi", "fNameSize": "15em", "dir": "Root", "editing": true, "mode": "Edit Mode", "notAdded": false, "root": true, "underMenu0": false, "underMenu": false, "underMenu2": false, "underMenu3": false, "underMenu4": false, "underMenu5": false, "underMenuViewAccess": false, "underMenuShareAccess": false, "underMenuMoveAccess": false, "underMenuSyncAccess": false, "viewsAllowed": "Grid & List", "allAllowed": true, "gridMode": true, "showThumb": true, "showFont": true, "listPrev": false, "fontTextInput": false, "folderIcon": "img/folder.png", "fileIcon": "img/file.png", "bgImage": { "background-image": "url(img/sunset.jpg)" }, "bgMini": "img/bw_sunset.jpg", "fontSize": 12, "fontText": "Verdana", "fontColor": "red", "font": { "font-size": "12pt", "font-family": "Verdana", "color": "red" }, "gridPreview": false, "height": 600, "width": 748 };
+	$scope.savedSettings = { "nrOfFolders": 4, "cols": true, "nrOfCols": 2, "nrOfRows": 3, "colStyle": "col span_1_of_2", "rowStyleLi": "rowLi", "fNameSize": "15em", "dir": "Root", "editing": true, "mode": "Edit Mode", "notAdded": false, "root": true, "underMenu0": false, "underMenu": false, "underMenu2": false, "underMenu3": false, "underMenu4": false, "underMenu5": false, "underMenuViewAccess": false, "underMenuShareAccess": false, "underMenuMoveAccess": false, "underMenuSyncAccess": false, "viewsAllowed": "Grid & List", "allAllowed": true, "gridMode": true, "showThumb": true, "showFont": true, "listPrev": false, "fontTextInput": false, "folderIcon": "img/folder.png", "fileIcon": "img/file.png", "bgImage": { "background-image": "url(img/sunset.jpg)" }, "bgMini": "img/bw_sunset.jpg", "fontSize": 12, "fontText": "Verdana", "fontColor": "red", "font": { "font-size": "12pt", "font-family": "Verdana", "color": "gray" }, "gridPreview": false, "height": 600, "width": 748 };
 	$scope.savedPeople = [{ "name": "Nisse", "checked": false, "noViewAccess": false, "viewAccess": [{ "name": "2013-10-06 15.14.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 7, "size": 258252, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-06 15.14.24.jpg", "$$hashKey": "0I3" }, { "name": "2013-10-10 13.10.18.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 8, "size": 2665266, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-10 13.10.18.jpg", "$$hashKey": "0I7" }, { "name": "2013-10-15 12.16.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 9, "size": 2576851, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 12.16.24.jpg", "$$hashKey": "0IB" }, { "name": "2013-10-15 15.16.04.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 10, "size": 1858921, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 15.16.04.jpg", "$$hashKey": "0IF" }, { "name": "2013-10-19 12.54.53.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 11, "size": 1985031, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-19 12.54.53.jpg", "$$hashKey": "0IJ" }, { "name": "Folder1", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 3, "children": [{ "name": "2013-10-06 15.14.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 7, "size": 258252, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-06 15.14.24.jpg", "$$hashKey": "0I3" }, { "name": "2013-10-10 13.10.18.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 8, "size": 2665266, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-10 13.10.18.jpg", "$$hashKey": "0I7" }, { "name": "2013-10-15 12.16.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 9, "size": 2576851, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 12.16.24.jpg", "$$hashKey": "0IB" }, { "name": "2013-10-15 15.16.04.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 10, "size": 1858921, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 15.16.04.jpg", "$$hashKey": "0IF" }, { "name": "2013-10-19 12.54.53.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 11, "size": 1985031, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-19 12.54.53.jpg", "$$hashKey": "0IJ" }], "$$hashKey": "00T" }, { "name": "Folder2_1", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 12, "children": [], "$$hashKey": "0IZ" }, { "name": "Folder2", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 4, "children": [{ "name": "Folder2_1", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 12, "children": [], "$$hashKey": "0IZ" }], "$$hashKey": "00X" }], "shareAccess": [{ "name": "Folder2_1", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 12, "children": [], "$$hashKey": "0IZ" }, { "name": "Folder2", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 4, "children": [{ "name": "Folder2_1", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 12, "children": [], "$$hashKey": "0IZ" }], "$$hashKey": "00X" }], "moveAccess": [{ "name": "2013-10-06 15.14.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 7, "size": 258252, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-06 15.14.24.jpg", "$$hashKey": "0I3" }, { "name": "2013-10-10 13.10.18.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 8, "size": 2665266, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-10 13.10.18.jpg", "$$hashKey": "0I7" }, { "name": "2013-10-15 12.16.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 9, "size": 2576851, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 12.16.24.jpg", "$$hashKey": "0IB" }, { "name": "2013-10-15 15.16.04.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 10, "size": 1858921, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 15.16.04.jpg", "$$hashKey": "0IF" }, { "name": "2013-10-19 12.54.53.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 11, "size": 1985031, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-19 12.54.53.jpg", "$$hashKey": "0IJ" }, { "name": "Folder1", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 3, "children": [{ "name": "2013-10-06 15.14.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 7, "size": 258252, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-06 15.14.24.jpg", "$$hashKey": "0I3" }, { "name": "2013-10-10 13.10.18.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 8, "size": 2665266, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-10 13.10.18.jpg", "$$hashKey": "0I7" }, { "name": "2013-10-15 12.16.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 9, "size": 2576851, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 12.16.24.jpg", "$$hashKey": "0IB" }, { "name": "2013-10-15 15.16.04.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 10, "size": 1858921, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 15.16.04.jpg", "$$hashKey": "0IF" }, { "name": "2013-10-19 12.54.53.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 11, "size": 1985031, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-19 12.54.53.jpg", "$$hashKey": "0IJ" }], "$$hashKey": "00T" }], "syncAccess": [{ "name": "2013-10-06 15.14.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 7, "size": 258252, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-06 15.14.24.jpg", "$$hashKey": "0I3" }, { "name": "2013-10-10 13.10.18.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 8, "size": 2665266, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-10 13.10.18.jpg", "$$hashKey": "0I7" }, { "name": "2013-10-19 12.54.53.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 11, "size": 1985031, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-19 12.54.53.jpg", "$$hashKey": "0IJ" }], "$$hashKey": "00E" }, { "name": "Svenne", "checked": false, "noViewAccess": false, "viewAccess": [{ "name": "2013-10-06 15.14.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 7, "size": 258252, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-06 15.14.24.jpg", "$$hashKey": "0I3" }, { "name": "2013-10-10 13.10.18.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 8, "size": 2665266, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-10 13.10.18.jpg", "$$hashKey": "0I7" }, { "name": "2013-10-15 12.16.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 9, "size": 2576851, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 12.16.24.jpg", "$$hashKey": "0IB" }, { "name": "2013-10-15 15.16.04.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 10, "size": 1858921, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 15.16.04.jpg", "$$hashKey": "0IF" }, { "name": "2013-10-19 12.54.53.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 11, "size": 1985031, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-19 12.54.53.jpg", "$$hashKey": "0IJ" }, { "name": "Folder1", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 3, "children": [{ "name": "2013-10-06 15.14.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 7, "size": 258252, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-06 15.14.24.jpg", "$$hashKey": "0I3" }, { "name": "2013-10-10 13.10.18.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 8, "size": 2665266, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-10 13.10.18.jpg", "$$hashKey": "0I7" }, { "name": "2013-10-15 12.16.24.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 9, "size": 2576851, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 12.16.24.jpg", "$$hashKey": "0IB" }, { "name": "2013-10-15 15.16.04.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 10, "size": 1858921, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-15 15.16.04.jpg", "$$hashKey": "0IF" }, { "name": "2013-10-19 12.54.53.jpg", "type": "image/jpeg", "img": "img/dbFile.png", "checked": false, "id": 11, "size": 1985031, "lastModified": null, "isImg": true, "thumb": null, "origin": "Dropbox", "path": "/Camera Uploads/2013-10-19 12.54.53.jpg", "$$hashKey": "0IJ" }], "$$hashKey": "00T" }, { "name": "Folder2_1", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 12, "children": [], "$$hashKey": "0IZ" }, { "name": "Folder2", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 4, "children": [{ "name": "Folder2_1", "type": "Folder", "img": "img/folder.png", "checked": false, "id": 12, "children": [], "$$hashKey": "0IZ" }], "$$hashKey": "00X" }], "shareAccess": [], "moveAccess": [], "syncAccess": [], "$$hashKey": "00F" }, { "name": "Kalle", "checked": false, "noViewAccess": true, "viewAccess": [], "shareAccess": [], "moveAccess": [], "syncAccess": [], "$$hashKey": "00G" }];
 	init($scope.savedSettings, $scope.folder, $scope.savedPeople);
+	$scope.favAdded = false;
+	$scope.favFolder;
 
 	/*
 	*
@@ -17,7 +19,71 @@ angular.module('mockApp').controller('CompCtrl', function($scope, $timeout){
 	$scope.selectMode = function () {
 		$scope.isSelectMode = !$scope.isSelectMode;
 		if (!$scope.isSelectMode) {
-			//deselect all TODO
+			$scope.uncheckFolders($scope.settings.currentFolder);
+		}
+	}
+	
+	$scope.select = function (f) {
+		$scope.checkFolders(f)
+	}
+	
+	$scope.favorite = function()
+	{
+		//Add favorite folder
+		if(!$scope.favAdded)
+		{
+			$scope.favFolder = new Folder("Favorites");
+			$scope.favFolder.img = 'img/favFolder.png'
+			$scope.favAdded = true;
+			$scope.settings.rootF.add($scope.favFolder);
+		}
+		var current = $scope.settings.currentFolder;
+		addFavFolders(current);
+	}
+	
+	$scope.unFavorite = function()
+	{	
+		var i=0;
+		while(i<$scope.favFolder.children.length)
+		{
+			if($scope.favFolder.children[i].checked)
+			{
+				$scope.favFolder.remove($scope.favFolder.children[i]);
+			}
+			else
+			{
+				i++;
+			}
+		}
+	}
+	
+	var addFavFolders = function(cur)
+	{
+		for(var i=0;i<cur.children.length;i++)
+		{
+			if(cur.children[i].checked)
+			{
+				if(cur.children[i].type === 'Folder')
+				{
+					var fav = new Folder(cur.children[i].name);
+					fav.img = $scope.settings.folderIcon;
+					fav.children = cur.children[i].children;
+					fav.Parent = cur.children[i].Parent;
+					$scope.favFolder.add(fav);
+				}
+				else
+				{
+					var fav = cur.children[i];
+					$scope.favFolder.add(fav);
+				}
+			}
+			else
+			{	
+				if(cur.children[i].type === 'Folder')
+				{
+					addFavFolders(cur.children[i]);
+				}
+			}
 		}
 	}
 });

@@ -75,7 +75,7 @@
 	</style>
 </head>
 <body id="ng" ng-controller="MasterCtrl">
-    <div ng-controller="FirstController">
+    <div id="studio" ng-controller="FirstController">
         <div class="container">
 
 			<h1>Create your component</h1>
@@ -184,7 +184,7 @@
                                         <div class="folderIcon">
                                             <span class="deleteNode"><span class="glyphicon glyphicon-remove-circle" ng-show="settings.editing" ng-click="deleteFolder(folder)"></span></span>
 
-                                            <input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)" />
+                                            <input type="image" class="folderImg" ng-src="{{folder.img}}" ng-click="enter(folder)" />
                                             <span class="glyphicon glyphicon-eye-open overlap" ng-show="hasAccess(folder,'viewAccess')"></span>
                                             <span class="glyphicon glyphicon-share overlap2" ng-show="hasAccess(folder,'shareAccess')"></span>
                                             <span class="glyphicon glyphicon-move overlap3" ng-show="hasAccess(folder,'moveAccess')"></span>
@@ -198,17 +198,16 @@
                                             <img class="clearName" src="img/cleaar.png" ng-click='clearName($index, folder)' />
                                         </div>
                                     </div>
-
+									<!-- ************************* -->
+									
                                     <!-- Files -->
                                     <div ng-class="settings.colStyle" ng-hide="settings.notAdded" ng-repeat="file in getFiles(settings.currentFolder)">
                                         <!--<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFile(file)" />-->
                                         <div class="folderIcon">
                                             <span class="deleteNode"><span class="glyphicon glyphicon-remove-circle" ng-show="settings.editing" ng-click="deleteFile(file)"></span></span>
-                                            <!--<input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg" />
-        <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />-->
 
                                             <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg" />
-                                            <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
+                                            <input type="image" ng-click="showGridPreview(file)" class="folderImg" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
 
                                             <span class="glyphicon glyphicon-eye-open overlap" ng-show="hasAccess(file,'viewAccess')"></span>
                                             <span class="glyphicon glyphicon-share overlap2" ng-show="hasAccess(file,'shareAccess')"></span>
@@ -235,7 +234,7 @@
                                             <li ng-class="settings.rowStyleLi">
                                                 <!--<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFolder(folder)" />-->
                                                 <span class="glyphicon glyphicon-remove-circle" ng-show="settings.editing" ng-click="deleteFolder(folder)"></span>
-                                                <input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)" />
+                                                <input type="image" class="folderImg" ng-src="{{folder.img}}" ng-click="enter(folder)" />
                                                 <input type="checkbox" ng-show="settings.editing" ng-model="folder.checked" />
                                                 <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{folder.name}}</div></div>
                                                 <div ng-show="settings.showFont && settings.editing" class="nameField">
@@ -250,7 +249,7 @@
                                                 <!--<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFile(file)" />-->
                                                 <span class="glyphicon glyphicon-remove-circle" ng-show="settings.editing" ng-click="deleteFile(file)"></span>
                                                 <input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg" />
-                                                <input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
+                                                <input type="image" ng-click="showGridPreview(file)" class="folderImg" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
                                                 <input type="checkbox" ng-show="settings.editing" ng-model="file.checked" />
                                                 <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{file.name}}</div></div>
                                                 <div ng-show="settings.showFont && settings.editing" class="nameField">
@@ -407,6 +406,12 @@
                                     <li><input type="image" src="img/folder.png" ng-click="changeFolderIcon(1)"/>Standard</li>
                                     <li><input type="image" src="img/picFolder.png" ng-click="changeFolderIcon(2)"/>Picture Folder</li>
                                     <li><input type="image" src="img/musicFolder.png" ng-click="changeFolderIcon(3)"/>Music Folder</li>
+									<div class="image-upload">
+										<label for="folderIconFile">
+													Upload your own
+										</label>
+										<input type="file" id="folderIconFile" name="folderIconFile[]"/>
+									</div>
                                 </ul>
                             </div>
                             <!-- --------------------- -->
@@ -418,6 +423,12 @@
                                     <li><input type="image" src="img/file.png" ng-click="changeFileIcon(1)"/>Standard</li>
                                     <li><input type="image" src="img/picFile.png" ng-click="changeFileIcon(2)"/>Picture File</li>
                                     <li><input type="image" src="img/pdfFile.jpg" ng-click="changeFileIcon(3)"/>PDF File</li>
+									<div class="image-upload">
+										<label for="fileIconImg">
+													Upload your own
+										</label>
+										<input type="file" id="fileIconImg" name="fileIconImg[]"/>
+									</div>
                                 </ul>
                             </div>
                             <!-- --------------------- -->
