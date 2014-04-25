@@ -82,7 +82,7 @@
                         <!-- --------------------COLUMN---------------------------- -->
                         <div ng-show="settings.cols">
                             <!-- Folders -->
-							<div ng-class="settings.colStyle" ng-repeat="folder in getFolders(settings.currentFolder) | filter:filterAccess('viewAccess')">
+							<div ng-class="settings.colStyle" ng-repeat="folder in getFolders(settings.currentFolder)">
 								<div class="folderIcon">
 									<input type="image" ng-show="hasAccess(folder, 'syncAccess')" ng-src="{{folder.img}}" ng-click="enter(folder)" />
 									<input type="image" ng-hide="hasAccess(folder, 'syncAccess')" style="opacity:0.3;" ng-src="{{folder.img}}" ng-click="sync(folder)" />
@@ -92,7 +92,7 @@
 								
 							</div>
                             <!-- Files -->
-                            <div ng-class="settings.colStyle" ng-repeat="file in getFiles(settings.currentFolder) | filter:filterAccess('viewAccess')">
+                            <div ng-class="settings.colStyle" ng-repeat="file in getFiles(settings.currentFolder)">
 								<div class="folderIcon">
 									<input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg && hasAccess(file, 'syncAccess')" />
 									<input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg || !hasAccess(file, 'syncAccess')" />

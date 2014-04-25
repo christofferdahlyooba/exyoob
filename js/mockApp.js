@@ -107,7 +107,7 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         bgImage: {'background-image':'url(img/bg.jpg)'},
 		bgMini: "img/bg_mini.jpg",
         fontSize: 12,
-        fontText: 'Verdana',
+        fontText: 'Arial',
         fontColor: 'black',
         font: {'font-size':'12pt','font-family':"Verdana",'color':"black"},
         gridPreview: false,
@@ -372,8 +372,10 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         var canvasImgW, canvasImgH;
 
         var ctx = canvasFrame.getContext("2d");
-        canvasFrame.width = 700;
-        canvasFrame.height = 540;
+        // canvasFrame.width = 700;
+        // canvasFrame.height = 540;
+		canvasFrame.width = divWidth-40;
+		canvasFrame.height = divHeight-40;
         var img = new Image;
         if (f.origin === "Dropbox") {
         	if (f.data === null) {
@@ -395,8 +397,8 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
             var ratio;
 
             if (img.width > img.height) {
-                if (img.width > 700) {
-                    canvasImgW = 700;
+                if (img.width > canvasFrame.width) {
+                    canvasImgW = canvasFrame.width;
                 }
                 else {
                     canvasImgW = img.width;
@@ -405,8 +407,8 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
                 canvasImgH = canvasImgW * ratio;
             }
             else if (img.height > img.width) {
-                if (img.height > 540) {
-                    canvasImgH = 540;
+                if (img.height > canvasFrame.height) {
+                    canvasImgH = canvasFrame.height;
                 }
                 else {
                     canvasImgH = img.height;
@@ -415,8 +417,8 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
                 canvasImgW = canvasImgH * ratio;
             }
             else {
-                if (img.width > 700) {
-                    canvasImgW = 700;
+                if (img.width > canvasFrame.width) {
+                    canvasImgW = canvasFrame.width;
                 }
                 else {
                     canvasImgW = img.width;

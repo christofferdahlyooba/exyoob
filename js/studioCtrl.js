@@ -378,7 +378,6 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
     */
 	$scope.applyFont = function () {
 	    $scope.settings.underMenu3 = false;
-		console.log($scope.settings.fontText);
 	    $scope.settings.font = {
 	        'font-size': $scope.settings.fontSize + 'pt',
 	        'font-family': $scope.settings.fontText,
@@ -412,9 +411,15 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 			}
 			$scope.fontTextInput = false;
 		}
-		else
+		else if($scope.settings.fontSize <= 5)
 		{
-			alert("Font size must be between 6 and 30");
+			$scope.settings.fontSize = 6;
+			alert("Font size must be at least 6");
+		}
+		else if($scope.settings.fontSize > 30)
+		{
+			$scope.settings.fontSize = 30;
+			alert("Font size can not be bigger than 30");
 		}
 	};
 
@@ -609,6 +614,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
     * Adds a folder in the current folder and updates number of folders.
     */
 	$scope.addFolders = function () {
+		$scope.add();
 	    var folder;
 	    if ($scope.settings.currentFolder.Parent === null) {//rootfolder
 	        folder = new Folder("Folder" + ($scope.settings.nrOfFolders + 1));
