@@ -37,15 +37,19 @@
 						<div ng-repeat="folder in getFolders(settings.currentFolder) | filter:filterAccess('viewAccess')">
 							<input type="image" ng-show="hasAccess(folder, 'syncAccess')" src="img/folderList.png" ng-click="enter(folder)">
 							<input type="image" ng-hide="hasAccess(folder, 'syncAccess')" style="opacity:0.3;" src="img/folderList.png" ng-click="enter(folder)">
-							{{folder.name}}
-							</input>
-						</div>
+							<span class="fName">
+								{{folder.name}}
+							</span>
+								</input>
+</div>
 						<div ng-repeat="file in getFiles(settings.currentFolder) | filter:filterAccess('viewAccess')">
 							<input type="image" ng-show="hasAccess(file, 'syncAccess')" src="img/fileList.png" ng-click="showListPreview(file)">
 							<input type="image" ng-hide="hasAccess(file, 'syncAccess')" style="opacity:0.3;" src="img/fileList.png" ng-click="showListPreview(file)">
-							{{file.name}}
-							</input>
-						</div>
+							<span class="fName">
+								{{file.name}}
+							</span>
+								</input>
+</div>
 
                     </div>
                     <div class="col-md-8" id="previewDiv">
@@ -88,7 +92,7 @@
 									<input type="image" ng-hide="hasAccess(folder, 'syncAccess')" style="opacity:0.3;" ng-src="{{folder.img}}" ng-click="sync(folder)" />
 									<input type="checkbox" ng-show="isSelectMode" ng-model="folder.checked" class="checkBox" />
 								</div>
-								<div ng-show="settings.showFont" ng-style="settings.font">{{folder.name}}</div>
+								<div ng-show="settings.showFont" ng-style="settings.font"><div class="fName">{{folder.name}}</div></div>
 								
 							</div>
                             <!-- Files -->
@@ -100,7 +104,7 @@
 									<input type="image" style="opacity:0.3;" ng-click="sync(file)" ng-src="{{file.img}}" ng-hide="hasAccess(file, 'syncAccess')" />
 									<input type="checkbox" ng-show="isSelectMode" ng-model="file.checked" class="checkBox" />
 								</div>
-                                <div ng-show="settings.showFont" ng-style="settings.font">{{file.name}}</div>
+                                <div ng-show="settings.showFont" ng-style="settings.font"><div class="fName">{{file.name}}</div></div>
                             </div>
                         </div>
                         <!-- --------------------ROW---------------------------- -->
@@ -112,7 +116,7 @@
 										<input type="image" ng-show="hasAccess(folder, 'syncAccess')" ng-src="{{folder.img}}" ng-click="enter(folder)" />
 										<input type="image" ng-hide="hasAccess(folder, 'syncAccess')" style="opacity:0.3;" ng-src="{{folder.img}}" ng-click="sync(folder)" />
 										<input type="checkbox" ng-show="isSelectMode" ng-model="folder.checked" class="checkBox" />
-										<div ng-show="settings.showFont" ng-style="settings.font">{{folder.name}}</div>
+										<div ng-show="settings.showFont" ng-style="settings.font"><div class="fName">{{folder.name}}</div></div>
 									</li>
 								</div>
                                 <!-- Files -->
@@ -123,7 +127,7 @@
 										<input type="image" style="opacity:0.3;" ng-click="sync(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg && !hasAccess(file, 'syncAccess')" />
 										<input type="image" style="opacity:0.3;" ng-click="sync(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg || hasAccess(file, 'syncAccess')" />
 										<input type="checkbox" ng-show="isSelectMode" ng-model="file.checked" class="checkBox" />
-										<div ng-show="settings.showFont" ng-style="settings.font">{{file.name}}</div>
+										<div ng-show="settings.showFont" ng-style="settings.font"><div class="fName">{{file.name}}</div></div>
 									</li>
 								</div>
 

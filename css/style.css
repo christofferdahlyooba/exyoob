@@ -161,3 +161,12 @@ canvas{
     left: 50px;
     top: 30px;
 }
+
+.fName 
+{
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    width:100px;
+    display:inline-block;
+}
