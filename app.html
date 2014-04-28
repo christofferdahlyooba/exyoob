@@ -33,32 +33,32 @@
 					<button class="gridButton btn btn-default btn-xs" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-th-large"></span></button>
                 </div>
                 <div class="panel-body contentpanel2">
-                    <div class="col-md-4">
+					<div class="col-md-8">
 						<div ng-repeat="folder in getFolders(settings.currentFolder) | filter:filterAccess('viewAccess')">
-							<input type="image" ng-show="hasAccess(folder, 'syncAccess')" src="img/folderList.png" ng-click="enter(folder)">
-							<input type="image" ng-hide="hasAccess(folder, 'syncAccess')" style="opacity:0.3;" src="img/folderList.png" ng-click="enter(folder)">
+							<input type="image" ng-show="hasAccess(folder, 'syncAccess')" src="img/folderList.png" ng-click="enter(folder)" />
+							<input type="image" ng-hide="hasAccess(folder, 'syncAccess')" style="opacity:0.3;" src="img/folderList.png" ng-click="enter(folder)" />
 							<span class="fName">
 								{{folder.name}}
 							</span>
-								</input>
-</div>
+						</div>
+
 						<div ng-repeat="file in getFiles(settings.currentFolder) | filter:filterAccess('viewAccess')">
-							<input type="image" ng-show="hasAccess(file, 'syncAccess')" src="img/fileList.png" ng-click="showListPreview(file)">
-							<input type="image" ng-hide="hasAccess(file, 'syncAccess')" style="opacity:0.3;" src="img/fileList.png" ng-click="showListPreview(file)">
+							<input type="image" ng-show="hasAccess(file, 'syncAccess')" src="img/fileList.png" ng-click="showListPreview(file)" />
+							<input type="image" ng-hide="hasAccess(file, 'syncAccess')" style="opacity:0.3;" src="img/fileList.png" ng-click="showListPreview(file)" ´ />
 							<span class="fName">
 								{{file.name}}
 							</span>
-								</input>
-</div>
-
-                    </div>
-                    <div class="col-md-8" id="previewDiv">
-						<div ng-show="settings.listPrev">
-							<span id="previewClose" class="glyphicon glyphicon-remove-circle" ng-click="settings.listPrev = false"></span>
-							<canvas id="preview"></canvas>
 						</div>
-                    </div>
-                </div>
+					</div>
+					<div class="col-md-4">
+						<div id="previewDiv">
+							<div ng-show="settings.listPrev">
+								<span id="previewClose" class="glyphicon glyphicon-remove-circle" style="font-size:25px;" ng-click="settings.listPrev = false"></span>
+								<canvas id="preview"></canvas>
+							</div>
+						</div>
+					</div>
+				</div>
 
             </div>
         </div>
@@ -79,7 +79,7 @@
                 <div id="resizable">
                     <div class="panel-body text-center contentpanel2" ng-style="settings.bgImage">
                         <div id="previewGridDiv" ng-show="settings.gridPreview">
-							<span id="previewClose" class="glyphicon glyphicon-remove-circle" ng-click="settings.gridPreview = false"></span>
+							<span id="previewClose" class="glyphicon glyphicon-remove-circle" style="font-size:25px;" ng-click="settings.gridPreview = false"></span>
                             <canvas id="previewGrid"></canvas>
                         </div>
                         <!-- ----------------Content Body-------------------------  -->
@@ -100,7 +100,7 @@
 								<div class="folderIcon">
 									<input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg && hasAccess(file, 'syncAccess')" />
 									<input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg || !hasAccess(file, 'syncAccess')" />
-									<!--<input type="image" style="opacity:0.3;" ng-click="sync(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg && !hasAccess(file, 'syncAccess')" />-->
+									<input type="image" style="opacity:0.3;" ng-click="sync(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg && !hasAccess(file, 'syncAccess')" />
 									<input type="image" style="opacity:0.3;" ng-click="sync(file)" ng-src="{{file.img}}" ng-hide="hasAccess(file, 'syncAccess')" />
 									<input type="checkbox" ng-show="isSelectMode" ng-model="file.checked" class="checkBox" />
 								</div>
