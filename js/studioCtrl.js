@@ -1187,7 +1187,7 @@ function exportPeopleToJson() {
 * Removes 'data' key to save size
 */
 var replacer = function (key, value) {
-    if (key == "Parent" || key === 'data') {
+    if (key === "Parent" || key === 'data') {
         return undefined;
     }
     else return value;
@@ -1197,7 +1197,7 @@ var replacer = function (key, value) {
 * Removes 'currentFolder' key to separate settings and folders
 */
 var replacer2 = function (key, value) {
-    if (key == "currentFolder") {
+    if (key === "currentFolder" ||key === 'rootF') {
         return undefined;
     }
     else return value;
