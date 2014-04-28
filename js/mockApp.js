@@ -357,11 +357,16 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
     * Show a preview in Grid mode
     */
     $scope.showGridPreview = function (f) {
-        $scope.settings.gridPreview = true;
+        
         // Only process image files.
         if (!f.type.match('image.*')) {
+			console.log("Nooooooooooooooo!")
             return;
         }
+		else
+		{
+			$scope.settings.gridPreview = true;
+		}
 
         var canvasFrame = document.getElementById("previewGrid");
         var previewDiv = document.getElementById("resizable");
