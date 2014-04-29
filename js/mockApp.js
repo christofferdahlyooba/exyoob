@@ -264,72 +264,78 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
     * Show a preview in List mode
     */
     $scope.showListPreview = function (f) {
-		$scope.settings.listPrev = true;
-        // Only process image files.
-        if (!f.type.match('image.*')) {
-            return;
-        }
-		console.log(f);
+    	// Only process image files.
+    	if (!f.type.match('image.*')) {
+    		return;
+    	}
+    	else {
+    		$scope.settings.listPrev = true;
+    	}
+    	
+    	var canvasFrame = document.getElementById("preview");
+    	var previewDiv = document.getElementById("moveRight");
+    	var divWidth = previewDiv.offsetWidth;
+    	var divHeight = previewDiv.offsetHeight;
+    	var imgX, imgY;
+    	var canvasImgW, canvasImgH;
 
-        var canvasFrame = document.getElementById("preview");
-        var previewDiv = document.getElementById("previewDiv");
-        var divWidth = previewDiv.offsetWidth;
-        var divHeight = previewDiv.offsetHeight;
-        var ctx = canvasFrame.getContext("2d");
+    	var ctx = canvasFrame.getContext("2d");
+    	canvasFrame.width = divWidth - 40;
+    	canvasFrame.height = divHeight - 40;
+    	
+    	var img = new Image;
+    	if (f.origin === "Dropbox") {
+    		if (f.data === null) {
+    			getFileData.getfiledata(f.path).then(function (data) {
+    				f.data = 'data:image/jpeg;base64,' + btoa(data);
+    				img.src = f.data;
+    			});
+    		}
+    		else {
+    			img.src = f.data;
+    		}
+    	}
+    	else {
+    		img.src = f.data;
+    	}
 
-        var img = new Image;
-        if (f.origin === "Dropbox") {
-        	if (f.data === null) {
-        		getFileData.getfiledata(f.path).then(function (data) {
-        			f.data = 'data:image/jpeg;base64,' + btoa(data);
-        			img.src = f.data;
-        		});
-        	}
-        	else {
-        		img.src = f.data;
-        	}
-        }
-		else
-		{
-			img.src = f.data;
-		}
-		
-        img.onload = function () {
-            var ratio;
+    	img.onload = function () {
+    		var ratio;
 
-            if (img.width > img.height) {
-                if (img.width > 460) {
-                    canvasFrame.width = 460;
-                }
-                else {
-                    canvasFrame.width = img.width;
-                }
-                ratio = img.height / img.width;
-                canvasFrame.height = canvasFrame.width * ratio;
-            }
-            else if (img.height > img.width) {
-                if (img.height > 560) {
-                    canvasFrame.height = 560;
-                }
-                else {
-                    canvasFrame.height = img.height;
-                }
-                ratio = img.width / img.height;
-                canvasFrame.width = canvasFrame.height * ratio;
-            }
-            else {
-                if (img.width > 460) {
-                    canvasFrame.width = 460;
-                }
-                else {
-                    canvasFrame.width = img.width;
-                }
-                ratio = img.height / img.width;
-                canvasFrame.height = canvasFrame.width * ratio;
-            }
-
-            ctx.drawImage(img, 0, 0, canvasFrame.width, canvasFrame.height);
-        }
+    		if (img.width > img.height) {
+    			if (img.width > canvasFrame.width) {
+    				canvasImgW = canvasFrame.width;
+    			}
+    			else {
+    				canvasImgW = img.width;
+    			}
+    			ratio = img.height / img.width;
+    			canvasImgH = canvasImgW * ratio;
+    		}
+    		else if (img.height > img.width) {
+    			if (img.height > canvasFrame.height) {
+    				canvasImgH = canvasFrame.height;
+    			}
+    			else {
+    				canvasImgH = img.height;
+    			}
+    			ratio = img.width / img.height;
+    			canvasImgW = canvasImgH * ratio;
+    		}
+    		else {
+    			if (img.width > canvasFrame.width) {
+    				canvasImgW = canvasFrame.width;
+    			}
+    			else {
+    				canvasImgW = img.width;
+    			}
+    			ratio = img.height / img.width;
+    			canvasImgH = canvasImgW * ratio;
+    		}
+    		imgX = (canvasFrame.width - canvasImgW) / 2;
+    		imgY = (canvasFrame.height - canvasImgH) / 2;
+    		ctx.drawImage(img, imgX, imgY, canvasImgW, canvasImgH);
+    	}
     };
 
 	$scope.readFiles = function(fileName)

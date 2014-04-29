@@ -170,3 +170,13 @@ canvas{
     width:100px;
     display:inline-block;
 }
+#moveRight{
+    float:right;
+    width:59%;
+    height: 100%;
+}
+.moveLeft{
+    float:left;
+    width:39%;
+    height: 100%;
+}
