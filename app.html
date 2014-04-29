@@ -72,9 +72,9 @@
 					<button class="gridButton btn btn-default btn-xs" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-list"></span></button>
 					<button class="gridButton btn btn-default btn-xs" ng-hide="isSelectMode" ng-click="selectMode()"><span class="glyphicon glyphicon-ok-circle"></span> Select</button>
 					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode" ng-click="selectMode()"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</button>
-					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode && !settings.inFavFolder" ng-click="favorite()"><span class="glyphicon glyphicon-star-empty"></span> Favorite</button>
-					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode && settings.inFavFolder" ng-click="unFavorite()"><span class="glyphicon glyphicon-remove"></span> Unfavorite</button>
-					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode" ng-click="share(settings.rootF)"><span class=" glyphicon glyphicon-share"></span> Share</button>
+					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode && !settings.inFavFolder" ng-click="favorite()" data-toggle="modal" data-target="#addFav"><span class="glyphicon glyphicon-star-empty"></span> Favorite</button>
+					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode && settings.inFavFolder" ng-click="unFavorite()" data-toggle="modal" data-target="#remFav"><span class="glyphicon glyphicon-remove"></span>Unfavorite</button>
+					<button class="gridButton btn btn-default btn-xs" ng-show="isSelectMode" ng-click="share(settings.rootF)" data-toggle="modal" data-target="#shareModal"><span class=" glyphicon glyphicon-share"></span> Share</button>
                 </div>
                 <div id="resizable">
                     <div class="panel-body text-center contentpanel2" ng-style="settings.bgImage">
@@ -139,6 +139,41 @@
                 </div>
             </div>
         </div>
+
+
+		<!------------ MODAL -------------------------->
+		<div class="modal" id="addFav">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content text-center">
+					<div class="modal-body">
+						<p>Added files to favorites</p>
+						<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">OK/Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal" id="remFav">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content text-center">
+					<div class="modal-body">
+						<p>Removed files from favorites</p>
+						<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">OK/Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal" id="shareModal">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content text-center">
+					<div class="modal-body">
+						<p>Shared files</p>
+						<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">OK/Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 
