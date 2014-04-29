@@ -86,17 +86,17 @@
                         <!-- --------------------COLUMN---------------------------- -->
                         <div ng-show="settings.cols">
                             <!-- Folders -->
-							<div ng-class="settings.colStyle" ng-repeat="folder in getFolders(settings.currentFolder)">
+							<div ng-class="settings.colStyle" ng-repeat="folder in getFolders(settings.currentFolder) | filter:filterAccess('viewAccess')">
 								<div class="folderIcon">
 									<input type="image" ng-show="hasAccess(folder, 'syncAccess')" ng-src="{{folder.img}}" ng-click="enter(folder)" />
 									<input type="image" ng-hide="hasAccess(folder, 'syncAccess')" style="opacity:0.3;" ng-src="{{folder.img}}" ng-click="sync(folder)" />
 									<input type="checkbox" ng-show="isSelectMode" ng-model="folder.checked" class="checkBox" />
 								</div>
 								<div ng-show="settings.showFont" ng-style="settings.font"><div class="fName">{{folder.name}}</div></div>
-								
+
 							</div>
                             <!-- Files -->
-                            <div ng-class="settings.colStyle" ng-repeat="file in getFiles(settings.currentFolder)">
+							<div ng-class="settings.colStyle" ng-repeat="file in getFiles(settings.currentFolder) | filter:filterAccess('viewAccess')">
 								<div class="folderIcon">
 									<input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg && hasAccess(file, 'syncAccess')" />
 									<input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg || !hasAccess(file, 'syncAccess')" />
@@ -104,8 +104,8 @@
 									<input type="image" style="opacity:0.3;" ng-click="sync(file)" ng-src="{{file.img}}" ng-hide="hasAccess(file, 'syncAccess')" />
 									<input type="checkbox" ng-show="isSelectMode" ng-model="file.checked" class="checkBox" />
 								</div>
-                                <div ng-show="settings.showFont" ng-style="settings.font"><div class="fName">{{file.name}}</div></div>
-                            </div>
+								<div ng-show="settings.showFont" ng-style="settings.font"><div class="fName">{{file.name}}</div></div>
+							</div>
                         </div>
                         <!-- --------------------ROW---------------------------- -->
                         <div ng-hide="settings.cols">
