@@ -180,7 +180,6 @@
                                     <!-- ******** Folders ******** -->
                                     <div ng-class="settings.colStyle" ng-hide="settings.notAdded" ng-repeat="folder in getFolders(settings.currentFolder)">
 										<!-- Edit folder name -->
-                                        <!--<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFolder(folder)" />-->
                                         <div class="folderIcon">
                                             <span class="deleteNode"><span class="glyphicon glyphicon-remove-circle" ng-show="settings.editing" ng-click="deleteFolder(folder)"></span></span>
 
@@ -190,9 +189,9 @@
                                             <span class="glyphicon glyphicon-move overlap3" ng-show="hasAccess(folder,'moveAccess')"></span>
                                             <span class="glyphicon glyphicon-download overlap4" ng-show="hasAccess(folder,'syncAccess')"></span>
 
-                                            <input type="checkbox" ng-show="settings.editing" ng-model="folder.checked" ng-click="folderCheck()" class="checkBox" />
+                                            <input type="checkbox" ng-show="settings.editing" ng-model="folder.checked" ng-change="folderCheck()" class="checkBox" />
                                         </div>
-                                        <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{folder.name}}</div></div>
+                                        <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="fName">{{folder.name}}</div></div>
                                         <div ng-show="settings.showFont && settings.editing" class="nameField">
                                             <input type="text" id="{{'folder-'+$index}}" ng-model="folder.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);" />
                                             <img class="clearName" src="img/cleaar.png" ng-click='clearName($index, folder)' />
@@ -202,7 +201,6 @@
 									
                                     <!-- Files -->
                                     <div ng-class="settings.colStyle" ng-hide="settings.notAdded" ng-repeat="file in getFiles(settings.currentFolder)">
-                                        <!--<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFile(file)" />-->
                                         <div class="folderIcon">
                                             <span class="deleteNode"><span class="glyphicon glyphicon-remove-circle" ng-show="settings.editing" ng-click="deleteFile(file)"></span></span>
 
@@ -214,9 +212,9 @@
                                             <span class="glyphicon glyphicon-move overlap3" ng-show="hasAccess(file,'moveAccess')"></span>
                                             <span class="glyphicon glyphicon-download overlap4" ng-show="hasAccess(file,'syncAccess')"></span>
 
-                                            <input type="checkbox" ng-show="settings.editing" ng-model="file.checked" ng-click="fileCheck()" class="checkBox"/>
+                                            <input type="checkbox" ng-show="settings.editing" ng-model="file.checked" ng-change="fileCheck()" class="checkBox"/>
                                         </div>
-                                            <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{file.name}}</div></div>
+                                            <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="fName">{{file.name}}</div></div>
                                         <div ng-show="settings.showFont && settings.editing" class="nameField">
                                             <input id="fName" type="text" id="{{'file-'+$index}}" ng-model="file.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);"/>
                                             <img class="clearName" src="img/cleaar.png" ng-click='clearName($index, file)' />
@@ -233,16 +231,16 @@
                                         <div ng-hide="settings.notAdded" ng-repeat="folder in getFolders(settings.currentFolder)">
                                             <li ng-class="settings.rowStyleLi">
 												<div class="folderIcon">
-													<!--<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFolder(folder)" />-->
 													<span class="glyphicon glyphicon-remove-circle" ng-show="settings.editing" ng-click="deleteFolder(folder)"></span>
-													<input type="image" ng-src="{{folder.img}}" ng-click="enter(folder)" />
+													<input type="image" class="folderImg" ng-src="{{folder.img}}" ng-click="enter(folder)" />
 													<span class="glyphicon glyphicon-eye-open overlap1" ng-show="hasAccess(folder,'viewAccess')"></span>
 													<span class="glyphicon glyphicon-share overlap21" ng-show="hasAccess(folder,'shareAccess')"></span>
 													<span class="glyphicon glyphicon-move overlap31" ng-show="hasAccess(folder,'moveAccess')"></span>
 													<span class="glyphicon glyphicon-download overlap41" ng-show="hasAccess(folder,'syncAccess')"></span>
-													<input type="checkbox" ng-show="settings.editing" ng-model="folder.checked" />
+													
+													<input type="checkbox" ng-show="settings.editing" ng-model="folder.checked" ng-change="folderCheck()" />
 												</div>
-                                                <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{folder.name}}</div></div>
+                                                <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="fName">{{folder.name}}</div></div>
                                                 <div ng-show="settings.showFont && settings.editing" class="nameField">
                                                     <input type="text" id="{{'folder-'+$index}}" ng-model="folder.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);" />
                                                     <img class="clearName" src="img/cleaar.png" ng-click='clearName($index, folder)' />
@@ -253,22 +251,22 @@
                                         <div ng-hide="settings.notAdded" ng-repeat="file in getFiles(settings.currentFolder)">
                                             <li ng-class="settings.rowStyleLi">
 												<div class="folderIcon">
-													<!--<input type="image" ng-show="settings.editing" src="img/cleaar.png" ng-click="deleteFile(file)" />-->
 													<span class="glyphicon glyphicon-remove-circle" ng-show="settings.editing" ng-click="deleteFile(file)"></span>
 													<input type="image" ng-click="showGridPreview(file)" class="imageThumb" ng-src="{{file.thumb}}" ng-show="settings.showThumb && file.isImg" />
-													<input type="image" ng-click="showGridPreview(file)" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
+													<input type="image" ng-click="showGridPreview(file)" class="folderImg" ng-src="{{file.img}}" ng-hide="settings.showThumb && file.isImg" />
 													<span class="glyphicon glyphicon-eye-open overlap1" ng-show="hasAccess(file,'viewAccess')"></span>
 													<span class="glyphicon glyphicon-share overlap21" ng-show="hasAccess(file,'shareAccess')"></span>
 													<span class="glyphicon glyphicon-move overlap31" ng-show="hasAccess(file,'moveAccess')"></span>
 													<span class="glyphicon glyphicon-download overlap41" ng-show="hasAccess(file,'syncAccess')"></span>
-													<input type="checkbox" ng-show="settings.editing" ng-model="file.checked" />
+													
+													<input type="checkbox" ng-show="settings.editing" ng-model="file.checked" ng-change="fileCheck()"/>
 												</div>
-													<div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="divfName">{{file.name}}</div></div>
-													<div ng-show="settings.showFont && settings.editing" class="nameField">
-														<input type="text" id="{{'file-'+$index}}" ng-model="file.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);" />
-														<img class="clearName" src="img/cleaar.png" ng-click='clearName($index, file)' />
-													</div>
-</li>
+												<div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="fName">{{file.name}}</div></div>
+												<div ng-show="settings.showFont && settings.editing" class="nameField">
+													<input type="text" id="{{'file-'+$index}}" ng-model="file.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);" />
+													<img class="clearName" src="img/cleaar.png" ng-click='clearName($index, file)' />
+												</div>
+											</li>
                                         </div>
 
                                         <div>
@@ -295,14 +293,18 @@
                         <div class="panel-body settingsMenu" ng-show="settings.editing">
                             <!-- Standard Settings -->
                             <div class="firstSetting" ng-hide="subMenuOpen()">
-                                Scrolling:
-                                <input type="checkbox" name="scrollingBox" id="scrollingBox" data-on-color="default" data-off-color="default" data-on-text="<span class='glyphicon glyphicon-resize-vertical'></span>" data-off-text="<span class='glyphicon glyphicon-resize-horizontal'></span>">
-                                <p>
-                                    Views allowed: {{settings.viewsAllowed}} <button class="btn btn-default btn-sm"  ng-click="viewMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                                <div class="toggle">
+									Scrolling:
+									<div class="right">
+										<input type="checkbox" name="scrollingBox" id="scrollingBox" data-on-color="default" data-off-color="default" data-on-text="<span class='glyphicon glyphicon-resize-vertical'></span>" data-off-text="<span class='glyphicon glyphicon-resize-horizontal'></span>">
+									</div>
+								</div>
+								<p class="menuItem">
+                                    Views allowed: {{settings.viewsAllowed}} <button class="btn btn-default btn-sm right"  ng-click="viewMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button>
                                 </p>
-
-                                <p ng-hide="settings.cols">
-                                    Number of rows:
+								<span ng-hide="settings.cols">Number of rows:</span>
+                                <p class="right" ng-hide="settings.cols">
+                                    
                                     <button type="button" class="btn btn-default" ng-click="changeRow(-1)">-</button>
 
                                     {{settings.nrOfRows}}
@@ -311,68 +313,69 @@
                                 </p>
                                 <p ng-show="settings.cols">
                                     Number of cols:
-                                    <button type="button" class="btn btn-default" ng-click="changeCol(-1)">-</button>
+									<button type="button" class="btn btn-default right" ng-click="changeCol(1)">+</button>
 
-                                    {{settings.nrOfCols}}
+                                    <span class="right">{{settings.nrOfCols}}</span>
 
-                                    <button type="button" class="btn btn-default" ng-click="changeCol(1)">+</button>
+                                    <button type="button" class="btn btn-default right" ng-click="changeCol(-1)">-</button>
                                 </p>
+								
                                 <hr>
-                                Change background: <input type="image" class="bgMini" ng-src="{{settings.bgMini}}" ng-click="bgMenu()"/>
+                                Change background: <input type="image" class="bgMini right" ng-src="{{settings.bgMini}}" ng-click="bgMenu()"/>
                                 <hr>
                                 <div class="folderSettings">
                                     <p>
-                                        Number of folders:<!-- TODO
-                                        <button type="button" class="btn btn-default" ng-click="minusFolder()">-</button> -->
-
-                                        {{settings.nrOfFolders}}
-
-                                        <button type="button" class="btn btn-default" ng-click="addFolders()">+</button>
+                                        Add folder
+										<button type="button" class="btn btn-default right" ng-click="addFolders()">+</button>
                                     </p>
-                                    <p>
-                                        Folder icon: <input type="image" src="img/folder.png" ng-click="folderIconMenu()"/>
-                                    </p>
-
-                                    <p>
-                                        File icon: <input type="image" src="img/file.png" ng-click="fileIconMenu()"/>
-                                    </p>
-
-                                    <p>
+									<hr>
+									<div class="toggle">
                                         Show Thumbnails:
-                                        <input type="checkbox" name="showThumb" id="showThumb" data-on-color="default" data-off-color="default">
-                                    </p>
-                                    <p>
+										<div class="right">
+											<input type="checkbox" name="showThumb" id="showThumb" data-on-color="default" data-off-color="default">
+										</div>
+									</div>
+									<div class="toggle">
                                         Show Folder names:
-                                        <input type="checkbox" name="showFolderName" id="showFolderName" data-on-color="default" data-off-color="default">
-                                    </p>
+										<div class="right">
+											<input type="checkbox" name="showFolderName" id="showFolderName" data-on-color="default" data-off-color="default">
+										</div>
+									</div>
                                     <!-- FONT SETTINGS -->
                                     <div class="fontSettings" ng-show="settings.showFont">
-                                        Font size:
-                                        <button type="button" class="btn btn-default" ng-click="changeFontSize(-1)">-</button>
-
-                                        <span ng-click="testing()" ng-show="!fontTextInput">{{settings.fontSize}}</span>
-										<input class="inputFontSize" ng-model="settings.fontSize" type="text" ng-show="fontTextInput" ng-blur="applyFontSize()"></input>
-
-                                        <button type="button" class="btn btn-default" ng-click="changeFontSize(1)">+</button>
-
-                                        <p>
-                                            Font: {{settings.fontText}} <button class="btn btn-default btn-sm" ng-click="fontMenu()"><span class="glyphicon glyphicon-chevron-right"></span> </button>
+                                        <strong>Font size:</strong>
+										<button type="button" class="btn btn-default right" ng-click="changeFontSize(1)">+</button>
+										<span class="right" ng-click="testing()" ng-show="!fontTextInput">{{settings.fontSize}}</span>
+										<input class="inputFontSize right" ng-model="settings.fontSize" type="text" ng-show="fontTextInput" ng-blur="applyFontSize()"></input>
+                                        <button type="button" class="btn btn-default right" ng-click="changeFontSize(-1)">-</button>
+										
+                                        <p id="marg">
+                                            <strong>Font:</strong> {{settings.fontText}} <button class="btn btn-default btn-sm right" ng-click="fontMenu()"><span class="glyphicon glyphicon-chevron-right"></span> </button>
                                         </p>
 
-                                        <p>
-                                            Font Color: {{settings.fontColor}} <button class="btn btn-default btn-sm" ng-click="fontColorMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                                        <p id="marg">
+                                            <strong>Font Color:</strong> {{settings.fontColor}} <button class="btn btn-default btn-sm right" ng-click="fontColorMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button>
                                         </p>
                                     </div>
                                     <!-- ----------- -->
-                                    <hr>
-                                    <div class="permissionSettings">
-                                        <p> View Access: <button class="btn btn-default btn-sm" ng-click="openViewAccessMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
-                                        <p> Share Access: <button class="btn btn-default btn-sm" ng-click="openShareAccessMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
-                                        <p> Move Access: <button class="btn btn-default btn-sm" ng-click="openMoveAccessMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
-                                        <p> Download Auto: <button class="btn btn-default btn-sm" ng-click="openSyncAccessMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
-                                    </div>
+									<div ng-hide="settings.noCheck">
+										<hr>
+										<p>
+											Folder icon: <input class="right" type="image" src="img/folder.png" ng-click="folderIconMenu()"/>
+										</p>
 
+										<p class="menuItem2">
+											File icon: <input class="right" type="image" src="img/file.png" ng-click="fileIconMenu()"/>
+										</p>
+									</div>
                                     <hr>
+                                    <div class="permissionSettings" ng-hide="settings.noCheck">
+                                        <p> View Access: <button class="btn btn-default btn-sm right" ng-click="openViewAccessMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
+                                        <p> Share Access: <button class="btn btn-default btn-sm right" ng-click="openShareAccessMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
+                                        <p> Move Access: <button class="btn btn-default btn-sm right" ng-click="openMoveAccessMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
+                                        <p> Download Auto: <button class="btn btn-default btn-sm right" ng-click="openSyncAccessMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
+										<hr>
+                                    </div>
                                 </div>
                             </div>
                             <!-- ----------------------- -->
@@ -418,11 +421,14 @@
                                     <li><input type="image" src="img/folder.png" ng-click="changeFolderIcon(1)"/>Standard</li>
                                     <li><input type="image" src="img/picFolder.png" ng-click="changeFolderIcon(2)"/>Picture Folder</li>
                                     <li><input type="image" src="img/musicFolder.png" ng-click="changeFolderIcon(3)"/>Music Folder</li>
-									<div class="image-upload">
+									<div class="image-upload" ng-hide="settings.noCheck">
 										<label for="folderIconFile">
 													Upload your own
 										</label>
 										<input type="file" id="folderIconFile" name="folderIconFile[]"/>
+									</div>
+									<div ng-show="settings.noCheck">
+										Upload your own
 									</div>
                                 </ul>
                             </div>
@@ -478,21 +484,21 @@
                                 <button class="btn btn-default btn-xs" ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <h2>Share Access</h2>
                                 <ul ng-repeat="person in persons">
-                                    <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'shareAccess')" />{{person.name}}</li>
+                                    <li><input type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'shareAccess')" />{{person.name}}</li>
                                 </ul>
                             </div>
                             <div class="setMoveAccess" ng-show="settings.underMenuMoveAccess">
                                 <button class="btn btn-default btn-xs" ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <h2>Move Access</h2>
                                 <ul ng-repeat="person in persons">
-                                    <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'moveAccess')" />{{person.name}}</li>
+                                    <li><input type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'moveAccess')" />{{person.name}}</li>
                                 </ul>
                             </div>
                             <div class="setSyncAccess" ng-show="settings.underMenuSyncAccess">
                                 <button class="btn btn-default btn-xs" ng-click="exitAccessMenu()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                                 <h2>Sync Access</h2>
                                 <ul ng-repeat="person in persons">
-                                    <li><input ng-disabled="person.noViewAccess" type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'syncAccess')" />{{person.name}}</li>
+                                    <li><input type="checkbox" ng-model="person.checked" ng-change="addAccess({event:{checked:person.checked,person:person}}, 'syncAccess')" />{{person.name}}</li>
                                 </ul>
                             </div>
                         </div>

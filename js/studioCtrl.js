@@ -430,22 +430,19 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	    $scope.settings.underMenu2 = true;
 	};
 	
+	/*
+	*Checks if any folders are checked
+	*/
 	$scope.folderCheck = function () {
 		var folders = $scope.getFolders($scope.settings.currentFolder);
 	    for (var i = 0; i < folders.length; i++) {
 	        if (folders[i].checked) {
 				$scope.settings.noCheck = false;
+				return;
 	        }
 	    }
-	}
-	
-	$scope.fileCheck = function () {
-		var files = $scope.getFiles($scope.settings.currentFolder);
-	    for (var i = 0; i < files.length; i++) {
-	        if (files[i].checked) {
-				$scope.settings.noCheck = false;
-	        }
-	    }
+		$scope.settings.noCheck = true;
+		$scope.settings.underMenu2 = false;
 	}
 
     /*
@@ -476,14 +473,30 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	};
 
     /*
-    * toggles file icon menu
+    * Toggles file icon menu
     */
 	$scope.fileIconMenu = function () {
 	    $scope.settings.underMenu5 = true;
 	};
+	
+	
+	/*
+	*Checks if any files are checked
+	*/
+	$scope.fileCheck = function () {
+		var files = $scope.getFiles($scope.settings.currentFolder);
+	    for (var i = 0; i < files.length; i++) {
+	        if (files[i].checked) {
+				$scope.settings.noCheck = false;
+				return;
+	        }
+	    }
+		$scope.settings.noCheck = true;
+		$scope.settings.underMenu5 = false;
+	}
 
     /*
-    * changes file icon
+    * Changes file icon
     */  
 	$scope.changeFileIcon = function (i) {
 	    $scope.settings.underMenu5 = false;
@@ -662,6 +675,15 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	{
 		$scope.fontTextInput = true;
 	}
+	
+	$scope.noChecked = function()
+	{
+		console.log($scope.settings.noCheck)
+		if($scope.settings.noCheck)
+		{
+			alert("You must check a file");
+		}
+	}
 
     /*
     * Clears the name of a node and focuses the input field
@@ -813,26 +835,34 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	    var checked = evt['event'].checked;
 	    var person = evt['event'].person;
 		var noCheck = true;
-
-	    for (var i = 0, nodes = getCheckedNodes() ; i < nodes.length; i++) {
-	        var index = person[access].indexOf(nodes[i]);
-	        if (checked) {
-	            if (index === -1) {
-	                $scope.insertAccess(person, nodes[i], access);
-	                //person[access].push(nodes[i]);
-	            }
-				noCheck = false;
-	        }
-	        else {
-	            if (index !== -1) {
-	                person[access].splice(index, 1);
-	            }
-	        }
-	    }
-		if(noCheck)
+		if(!person.noViewAccess || access === 'viewAccess')
 		{
-			alert("No files/folders are checked!")
+			for (var i = 0, nodes = getCheckedNodes() ; i < nodes.length; i++) {
+				var index = person[access].indexOf(nodes[i]);
+				if (checked) {
+					if (index === -1) {
+						$scope.insertAccess(person, nodes[i], access);
+						//person[access].push(nodes[i]);
+					}
+					noCheck = false;
+				}
+				else {
+					if (index !== -1) {
+						person[access].splice(index, 1);
+					}
+				}
+			}
+			if(noCheck)
+			{
+				alert("No files/folders are checked!")
+			}
 		}
+		else
+		{
+			person.checked = false;
+			alert("Can´t set this access without having view access");
+		}
+	    
 	};
 
 	$scope.insertAccess = function (person, node, access) {
@@ -1017,8 +1047,15 @@ function handleFoIFileSelect(evt) {
 	reader.readAsDataURL(file);
 };
 
+function checkNone()
+{
+	var scope = angular.element($("#studio")).scope();
+	console.log(scope.settings.noCheck)
+	return !scope.settings.noCheck
+}
+
 /*------------------------------------------------------------------
------------------ADD FILC ICON FROM COMPUTER------------------------
+-----------------ADD FILE ICON FROM COMPUTER------------------------
 --------------------------------------------------------------------*/
 if(document.getElementById('fileIconImg') !== null){
 	document.getElementById('fileIconImg').addEventListener('change', handleFiIFileSelect, false);

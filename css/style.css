@@ -36,6 +36,33 @@
 	float:right;
 }
 
+#marg
+{
+	margin-top: 20px;
+}
+
+.right
+{
+	float:right;
+}
+
+.toggle
+{
+	margin-bottom: 15px;
+}
+
+.menuItem
+{
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.menuItem2
+{
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+
 
 ul
 {

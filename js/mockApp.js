@@ -366,7 +366,6 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         
         // Only process image files.
         if (!f.type.match('image.*')) {
-			console.log("Nooooooooooooooo!")
             return;
         }
 		else
