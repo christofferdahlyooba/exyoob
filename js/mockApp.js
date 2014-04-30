@@ -549,9 +549,10 @@ function getFolderPath(folder, path) {
         path = [];
     }
     path.push(folder.name);
-    if (folder.Parent != null) {
-        getFolderPath(folder.Parent, path);
-    }
+	//Uncomment to show full path not just current folder name
+    //if (folder.Parent != null) {
+    //    getFolderPath(folder.Parent, path);
+    //}
     return path;
 };
 

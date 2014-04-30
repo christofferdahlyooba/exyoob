@@ -16,6 +16,11 @@
 	overflow-x: hidden;
     padding: 0;
 }
+.panel-heading{
+    padding: 10px;
+    height: 55px;
+    max-height: 55px;
+}
 
 
 #previewGrid, #preview
