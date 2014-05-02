@@ -166,7 +166,7 @@
                             <button class="gridButton btn btn-default btn-xs" ng-show="settings.allAllowed" ng-click="changeView()"><span class="glyphicon glyphicon-list"></span></button>
 							<button class="gridButton btn btn-default btn-xs" ng-hide="settings.noCheck" ng-click="deselect()">Deselect all</button>
                         </div>
-                        <div id="resizable" class="draggable">
+                        <div id="resizable">
                             <div class="panel-body text-center contentpanel2" ng-style="settings.bgImage">
                                 <div id="previewGridDiv" ng-show="settings.gridPreview">
                                     <!--<input id="previewClose" type="image" src="img/cleaar.png" ng-click="settings.gridPreview = false" />-->
@@ -194,7 +194,8 @@
                                         <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="fName">{{folder.name}}</div></div>
                                         <div ng-show="settings.showFont && settings.editing" class="nameField">
                                             <input type="text" id="{{'folder-'+$index}}" ng-model="folder.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);" />
-                                            <img class="clearName" src="img/cleaar.png" ng-click='clearName($index, folder)' />
+                                            <!-- <img class="clearName" src="img/cleaar.png" ng-click='clearName($index, folder)' /> -->
+											<span class="clearName glyphicon glyphicon-remove-circle" ng-click='clearName($index,folder)'/>
                                         </div>
                                     </div>
 									<!-- ************************* -->
@@ -296,26 +297,25 @@
                                 <div class="toggle">
 									Scrolling:
 									<div class="right">
-										<input type="checkbox" name="scrollingBox" id="scrollingBox" data-on-color="default" data-off-color="default" data-on-text="<span class='glyphicon glyphicon-resize-vertical'></span>" data-off-text="<span class='glyphicon glyphicon-resize-horizontal'></span>">
+										<input type="checkbox" name="scrollingBox" id="scrollingBox" data-on-color="default" data-off-color="default" data-on-text="<span>ROW</span>" data-off-text="<span>COL</span>">
 									</div>
 								</div>
 								<p class="menuItem">
                                     Views allowed: {{settings.viewsAllowed}} <button class="btn btn-default btn-sm right"  ng-click="viewMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button>
                                 </p>
-								<span ng-hide="settings.cols">Number of rows:</span>
-                                <p class="right" ng-hide="settings.cols">
-                                    
-                                    <button type="button" class="btn btn-default" ng-click="changeRow(-1)">-</button>
-
-                                    {{settings.nrOfRows}}
-
-                                    <button type="button" class="btn btn-default" ng-click="changeRow(1)">+</button>
+                                <p ng-hide="settings.cols">
+                                    Number of rows:
+									<button type="button" class="btn btn-default right" ng-click="changeRow(1)">+</button>
+									
+									<span class="right textmarg">{{settings.nrOfRows}}</span>
+									
+                                    <button type="button" class="btn btn-default right" ng-click="changeRow(-1)">-</button>
                                 </p>
                                 <p ng-show="settings.cols">
                                     Number of cols:
 									<button type="button" class="btn btn-default right" ng-click="changeCol(1)">+</button>
 
-                                    <span class="right">{{settings.nrOfCols}}</span>
+                                    <span class="right textmarg">{{settings.nrOfCols}}</span>
 
                                     <button type="button" class="btn btn-default right" ng-click="changeCol(-1)">-</button>
                                 </p>
@@ -345,7 +345,7 @@
                                     <div class="fontSettings" ng-show="settings.showFont">
                                         <strong>Font size:</strong>
 										<button type="button" class="btn btn-default right" ng-click="changeFontSize(1)">+</button>
-										<span class="right" ng-click="testing()" ng-show="!fontTextInput">{{settings.fontSize}}</span>
+										<span class="right textmarg" ng-click="testing()" ng-show="!fontTextInput">{{settings.fontSize}}</span>
 										<input class="inputFontSize right" ng-model="settings.fontSize" type="text" ng-show="fontTextInput" ng-blur="applyFontSize()"></input>
                                         <button type="button" class="btn btn-default right" ng-click="changeFontSize(-1)">-</button>
 										
