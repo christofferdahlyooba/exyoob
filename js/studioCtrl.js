@@ -133,7 +133,6 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 				$scope.dbItems[i].name = $scope.dbItems[i].name.replace('/',"");
 			}
 		});
-		console.log($scope.dir);
 	};
 	
 	$scope.back = function()

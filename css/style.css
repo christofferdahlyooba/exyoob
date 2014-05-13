@@ -118,6 +118,24 @@ input
 	border: 2px solid #000;
 }
 
+.addModal
+{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	vertical-align: middle;
+}
+
+.modalImg
+{
+	display: inline-block;
+	vertical-align: middle;
+}
+
+label:hover 
+{
+	cursor:pointer;
+}
+
 canvas{
   border:1px solid red;
 }

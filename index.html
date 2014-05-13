@@ -71,7 +71,6 @@
 			margin-right: 14px;
 			float: left;
 		}
-		
 	</style>
 </head>
 <body id="ng" ng-controller="MasterCtrl">
@@ -157,6 +156,7 @@
                     </div>
                 </div>
                 <!--******************************************************************************************************************-->
+				
                 <!--************************************** GRID VIEW *****************************************************************-->
                 <div class="col-md-8" ng-show="settings.gridMode">
                     <div class="panel panel-default">
@@ -284,6 +284,7 @@
                     </div>
                 </div>
                 <!--*********************************************************************************************************-->
+				
                 <!--************************************** SETTINGS PANEL *****************************************************************-->
                 <div class="col-md-4 col-settings">
                     <div class="panel panel-default">
@@ -294,33 +295,35 @@
                         <div class="panel-body settingsMenu" ng-show="settings.editing">
                             <!-- Standard Settings -->
                             <div class="firstSetting" ng-hide="subMenuOpen()">
-                                <div class="toggle">
-									Scrolling:
-									<div class="right">
-										<input type="checkbox" name="scrollingBox" id="scrollingBox" data-on-color="default" data-off-color="default" data-on-text="<span>ROW</span>" data-off-text="<span>COL</span>">
-									</div>
-								</div>
 								<p class="menuItem">
                                     Views allowed: {{settings.viewsAllowed}} <button class="btn btn-default btn-sm right"  ng-click="viewMenu()"><span class="glyphicon glyphicon-chevron-right"></span></button>
                                 </p>
-                                <p ng-hide="settings.cols">
-                                    Number of rows:
-									<button type="button" class="btn btn-default right" ng-click="changeRow(1)">+</button>
-									
-									<span class="right textmarg">{{settings.nrOfRows}}</span>
-									
-                                    <button type="button" class="btn btn-default right" ng-click="changeRow(-1)">-</button>
-                                </p>
-                                <p ng-show="settings.cols">
-                                    Number of cols:
-									<button type="button" class="btn btn-default right" ng-click="changeCol(1)">+</button>
+								<hr>
+								<div ng-show="settings.gridMode">
+									<div class="toggle">
+										Scrolling:
+										<div class="right">
+											<input type="checkbox" name="scrollingBox" id="scrollingBox" data-on-color="default" data-off-color="default" data-on-text="<span>ROW</span>" data-off-text="<span>COL</span>">
+										</div>
+									</div>
+									<p ng-hide="settings.cols">
+										Number of rows:
+										<button type="button" class="btn btn-default right" ng-click="changeRow(1)">+</button>
+										
+										<span class="right textmarg">{{settings.nrOfRows}}</span>
+										
+										<button type="button" class="btn btn-default right" ng-click="changeRow(-1)">-</button>
+									</p>
+									<p ng-show="settings.cols">
+										Number of cols:
+										<button type="button" class="btn btn-default right" ng-click="changeCol(1)">+</button>
 
-                                    <span class="right textmarg">{{settings.nrOfCols}}</span>
+										<span class="right textmarg">{{settings.nrOfCols}}</span>
 
-                                    <button type="button" class="btn btn-default right" ng-click="changeCol(-1)">-</button>
-                                </p>
-								
-                                <hr>
+										<button type="button" class="btn btn-default right" ng-click="changeCol(-1)">-</button>
+									</p>
+									<hr>
+								</div>
                                 Change background: <input type="image" class="bgMini right" ng-src="{{settings.bgMini}}" ng-click="bgMenu()"/>
                                 <hr>
                                 <div class="folderSettings">
@@ -520,18 +523,18 @@
                             </div>
                             <div class="modal-body">
                                 <ul>
-                                    <li><input type="image" src="img/addFolder.jpg" data-dismiss="modal" ng-click="addFirstFolder()"/>Add Folders</li>
+                                    <li class="addModal"><input type="image" src="img/addFolder.png" data-dismiss="modal" ng-click="addFirstFolder()"/>Add Folders</li>
 
-                                    <li><input type="image" data-toggle="modal" data-target="#addDropbox" src="img/dropbox.jpg" data-dismiss="modal" ng-click="list('/')">Add from Dropbox</li>
+                                    <li class="addModal"><input type="image" data-toggle="modal" data-target="#addDropbox" src="img/dropbox.jpg" data-dismiss="modal" ng-click="list('/')">Add from Dropbox</li>
 
-                                    <li>
+                                    <li class="addModal">
                                         <div class="image-upload">
 
                                             <label for="files">
                                                 <img src="img/computer.png" />
                                             </label>
 
-                                            <input type="file" multiple id="files" name="files[]" ng-click="add()"/> Add from computer
+                                            <input type="file" multiple id="files" name="files[]" ng-click="add()"/>Add from computer
 
                                         </div>
                                     </li>
@@ -553,9 +556,10 @@
 								<h2>{{dir}}</h2>
 								<input type="checkbox" ng-checked="allSelected" ng-click="selectAll($event)">Select All</input>
 								<ul ng-repeat="dbItem in dbItems">
-									<input type="checkbox" ng-checked="isSelected(dbItem)" ng-click="updateSelection($event,dbItem)"/>
+									<label class="db"><input type="checkbox" ng-checked="isSelected(dbItem)" ng-click="updateSelection($event,dbItem)"/>
 									<li ng-show="dbItem.is_dir"><input type="image" src="img/dbFolder.png" ng-click="list(dbItem.path)">{{dbItem.name}}</input></li>
 									<li ng-hide="dbItem.is_dir"><input type="image" src="img/file.png">{{dbItem.name}}</input></li>
+									</label>
 									</ul>
 								<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="addDB()">Add files</button>
                             </div>
