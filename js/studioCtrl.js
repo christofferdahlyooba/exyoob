@@ -187,7 +187,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	};
 	
 	/*********************************/
-	/*Function for selecting files when browsing DB files*/
+	/*Functions for selecting files when browsing DB files*/
 	/*********************************/
 	
 	$scope.updateSelection = function ($event, item) {
