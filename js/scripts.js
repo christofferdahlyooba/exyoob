@@ -36,16 +36,6 @@ $('#showThumb').on('switchChange', function (e, data) {
         scope.settings.showThumb = !scope.settings.showThumb;
         var curr = scope.settings.currentFolder;
         if (scope.settings.showThumb) {
-            // for (var i = 0; i < curr.children.length; i++) {
-                // if (curr.children[i].origin === 'Dropbox') {
-                    // scope.thumbs(curr.children[i]);
-                // }
-                // else {
-                    // if (curr.children[i].type.indexOf('image') !== -1) {
-                        // curr.children[i].thumb = curr.children[i].data;
-                    // }
-                // }
-            // }
 			getThumbs(curr);
         }
     });

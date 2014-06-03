@@ -169,7 +169,6 @@
                         <div id="resizable">
                             <div class="panel-body text-center contentpanel2" ng-style="settings.bgImage">
                                 <div id="previewGridDiv" ng-show="settings.gridPreview">
-                                    <!--<input id="previewClose" type="image" src="img/cleaar.png" ng-click="settings.gridPreview = false" />-->
                                     <span id="previewClose" class="glyphicon glyphicon-remove-circle" ng-click="settings.gridPreview = false"></span>
                                     <canvas id="previewGrid"></canvas>
                                 </div>
@@ -194,7 +193,6 @@
                                         <div ng-show="settings.showFont && !settings.editing" ng-style="settings.font"><div class="fName">{{folder.name}}</div></div>
                                         <div ng-show="settings.showFont && settings.editing" class="nameField">
                                             <input type="text" id="{{'folder-'+$index}}" ng-model="folder.name" ng-style="settings.font" style="background: rgba(5, 5, 5, .2);" />
-                                            <!-- <img class="clearName" src="img/cleaar.png" ng-click='clearName($index, folder)' /> -->
 											<span class="clearName glyphicon glyphicon-remove-circle" ng-click='clearName($index,folder)'/>
                                         </div>
                                     </div>
@@ -533,8 +531,8 @@
                                             <label for="files">
                                                 <img src="img/computer.png" />
                                             </label>
-
                                             <input type="file" multiple id="files" name="files[]" ng-click="add()"/>Add from computer
+
 
                                         </div>
                                     </li>

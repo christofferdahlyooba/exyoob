@@ -1,5 +1,6 @@
 "use strict";
 
+//Creates a factory for the studioCtrl that gets files from Dropbox
 angular.module('mockApp').factory('getFiles', function($q) {
 	return {
 		getfiles: function (dir) {
@@ -15,8 +16,6 @@ angular.module('mockApp').factory('getFiles', function($q) {
 });
 
 angular.module('mockApp').controller('FirstController', function($scope,getFiles,$timeout){
-	/*****************************************DROPBOX SHIEEEEEET**************************************/
-	/************************************************************************************************/
 	$scope.folder;
 	$scope.dir;
 	$scope.pathCheck = [];
@@ -24,11 +23,14 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 	$scope.dirArr = [];
 	$scope.dbRoot = true;
 	$scope.save = [];
+	//Calls the factory function for getting Dropbox files
 	getFiles.getfiles('/').then(function (entries) {
 		$scope.files = entries;
 	});
 	
-	$scope.test2 = function(f,c){
+	
+	//Recursively fetches all the dropbox files from one directory
+	$scope.getDBfiles = function(f,c){
 		getFiles.getfiles(f.path).then(function (stat1) {
 			f.contents = stat1._json.contents;
 			//Check if f is a file/empty folder or a folder with content
@@ -61,7 +63,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 						folder.img = "img/dbFolder.png";
 						c.add(folder);
 						$scope.settings.nrOfFolders++;
-						setTimeout($scope.test2,0,f.contents[i], folder);
+						setTimeout($scope.getDBfiles,0,f.contents[i], folder);
 					}
 					else
 					{
@@ -86,6 +88,9 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 		return f;
 	};
 	
+	/*
+	Adds the selected files from Dropxbox to the application
+	*/
 	$scope.addDB = function()
 	{
 		$scope.add();
@@ -104,7 +109,7 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 			{
 				var folder = $scope.settings.currentFolder;
 			}
-			$scope.save.push($scope.test2($scope.addCheck[i],folder));
+			$scope.save.push($scope.getDBfiles($scope.addCheck[i],folder));
 		}
 		if($scope.settings.showThumb)
 		{
@@ -115,7 +120,10 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 		$scope.dir = "";
 		$scope.dirArr = [];
 	};
-
+	
+	/*
+	List the dropbox files for browsing
+	*/
 	$scope.list = function(path)
 	{
 		if($scope.dirArr.lastIndexOf(path) === -1)
@@ -135,6 +143,9 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 		});
 	};
 	
+	/*
+	Changes dir when going back when browsing files in Dropbox
+	*/
 	$scope.back = function()
 	{
 		if($scope.dirArr.length > 1)
@@ -147,6 +158,9 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 		$scope.allSelected = false;
 	};
 	
+	/*
+	Closes the dropbox browsing
+	*/
 	$scope.closeDB = function()
 	{
 		$scope.allSelected = false;
@@ -154,6 +168,9 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 		$scope.dirArr = [];
 	}
 	
+	/*
+	Saves the checked dropbox files into an array
+	*/
 	var saveChecked = function()
 	{
 		for(var i=0;i<$scope.checked.length;i++)
@@ -168,6 +185,10 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 			}
 		}
 	};
+	
+	/*********************************/
+	/*Function for selecting files when browsing DB files*/
+	/*********************************/
 	
 	$scope.updateSelection = function ($event, item) {
         var checkbox = $event.target;
@@ -274,8 +295,8 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 			updateSelected(action, dbItem);
 		}
     };
-	/************************************************************************************************/
-	/************************************************************************************************/
+	/*********************************/
+	/*********************************/
 	
 	
     /*
@@ -669,11 +690,6 @@ angular.module('mockApp').controller('FirstController', function($scope,getFiles
 			}
 	    }
 	};
-	
-	$scope.testing = function()
-	{
-		$scope.fontTextInput = true;
-	}
 	
 	$scope.noChecked = function()
 	{
