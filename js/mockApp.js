@@ -1,24 +1,26 @@
 "use strict";
+//Create Angular application
 var app = angular.module('mockApp', []);
 
 app.config(function($sceProvider) {
-
 	$sceProvider.enabled(false);
-	// $sceDelegateProvider.resourceUrlWhitelist([
-	// // Allow same origin resource loads.
-	// 'self']);
 });
 
+//Create rootFolder and defaultIcons
 var rootFolder = new Folder('Root');
 var defaultFileIcon = 'img/file.png';
 var defaultFolderIcon = 'img/folder.png';
 
 /* ******************* CONNECT TO DROPBOX ****************************** */
+/* 
+Creating a dropbox client with the API key. 
+The API key generated when registering an Dropbox application
+*/
+
 var client = new Dropbox.Client({key: 'ltogrg3uneusbmy'});
 client.authenticate(function(error, client) {
 	if (error) {
-		console.log("Feeeeeel fel fel!")
-		//return showError(error);
+		console.log(error)
 	}
 	else
 	{
@@ -27,6 +29,11 @@ client.authenticate(function(error, client) {
 });
 /* ********************************************************************** */
 
+/*
+Angular factory for getting filedata from Dropbox
+Inparameter dir is the Dropbox directory
+opt.binary means the data is fetched as binary data
+*/
 app.factory('getFileData', function($q) {
 	return {
 		getfiledata: function (dir) {
@@ -48,6 +55,11 @@ app.factory('getFileData', function($q) {
 	}
 });
 
+/*
+Angular factory for getting thumbnails for imagefiles from Dropbox
+Inparameter dir is the Dropbox directory
+opt.size specifies the size of the thumbnail
+*/
 app.factory('getThumb',function($q) {
 	return {
 		getthumb: function (dir) {
@@ -64,7 +76,12 @@ app.factory('getThumb',function($q) {
 	}
 });
 
-app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
+/*
+Creating the angular controller called MasterCtrl
+The MasterCtrl has the factories as inparameters
+*/
+
+app.controller('MasterCtrl', function ($scope,$timeout,getFileData,getThumb) {
     /*
     * All settings variables
     */
@@ -189,6 +206,11 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
 		$scope.settings.inFavFolder = false;
     };
 	
+	/*
+	Inparameter f is a file or a folder
+	If f is a folder the functions calls itself to uncheck all the items in this folder
+	If f is a file the file is just unchecked
+	*/
 	$scope.uncheckFolders = function(f)
 	{
 		if(f.type === 'Folder')
@@ -208,6 +230,10 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
 		}
 	}
 	
+	/*
+	Works similar to the uncheckFolders function
+	if the inparameter is a folder the function calls itselft
+	*/
 	$scope.checkFolders = function(f)
 	{
 		if(f.type === 'Folder')
@@ -278,12 +304,14 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
     	var divHeight = previewDiv.offsetHeight;
     	var imgX, imgY;
     	var canvasImgW, canvasImgH;
-
+		
+		//Creates a canvas frame to display the image preview
     	var ctx = canvasFrame.getContext("2d");
     	canvasFrame.width = divWidth - 40;
     	canvasFrame.height = divHeight - 40;
     	
     	var img = new Image;
+		//Changes the image source if the image files is a Dropbox file
     	if (f.origin === "Dropbox") {
     		if (f.data === null) {
     			getFileData.getfiledata(f.path).then(function (data) {
@@ -298,7 +326,8 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
     	else {
     		img.src = f.data;
     	}
-
+		
+		//Resizes the image if its to big
     	img.onload = function () {
     		var ratio;
 
@@ -337,7 +366,8 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
     		ctx.drawImage(img, imgX, imgY, canvasImgW, canvasImgH);
     	}
     };
-
+	
+	//Read filedata from Dropbox
 	$scope.readFiles = function(fileName)
 	{
 		var opt = new Object();
@@ -349,6 +379,7 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
 		});
 	};
 	
+	//Gets thumbnails data from image files on Dropbox
 	$scope.thumbs = function (file) {
 	    if (file.type.indexOf('image') !== -1) {
 	        if (file.thumb === null) {
@@ -382,8 +413,6 @@ app.controller('MasterCtrl', function ($scope, $timeout,getFileData,getThumb) {
         var canvasImgW, canvasImgH;
 
         var ctx = canvasFrame.getContext("2d");
-        // canvasFrame.width = 700;
-        // canvasFrame.height = 540;
 		canvasFrame.width = divWidth-40;
 		canvasFrame.height = divHeight-40;
         var img = new Image;
